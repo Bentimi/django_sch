@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 # from django_countries.fields import CountryField
 
 # Create your models here.
@@ -15,6 +16,13 @@ class aspirants_profile(models.Model):
         ("Sister", "Sister"),
         ("Other", "Other"),
     ]
+    course_options = [
+        ("Digital Marketing", "Digital Marketing"),
+        ("Business World", "Business World"),
+        ("Media Technology", "Media Technology"),
+        ("Communications", "Communications"),
+        ("Business Ethics", "Business Ethics"),
+    ]
     aspirant_id = models.AutoField(primary_key=True)
     first_name  = models.CharField(unique=False, max_length=50)
     middle_name = models.CharField(unique=False, max_length=50)
@@ -27,17 +35,23 @@ class aspirants_profile(models.Model):
     address = models.CharField(unique=False, max_length=500, null=True, blank=True)
     country = models.CharField(unique=False, max_length=50, null=True, blank=True)
     state = models.CharField(unique=False, max_length=50, null=True, blank=True)
-    next_of_kin = models.CharField(unique=False, max_length=20, null=True)
+    course = models.CharField(choices=course_options, unique=False, max_length=50, null=True)
+    next_of_kin = models.CharField(unique=False, max_length=50, null=True)
     next_of_kin_number = models.CharField(unique=False, max_length=15, null=True)
     next_of_kin_email = models.CharField(unique=False, max_length=30, null=True)
+    next_of_kin_address = models.CharField(unique=False, max_length=50, null=True)
     next_of_kin_relationship = models.CharField(choices=next_of_kin_relationship_option, unique=False, max_length=15, null=True)
     passport = models.FileField(upload_to='passportImage/', unique=True, null=True)
     o_levels = models.FileField(upload_to='o_levelImage/', unique=True, null=True)
     utme = models.FileField(upload_to='utmeImage/', unique=True, null=True)
+    national_identity = models.FileField(upload_to='naional_identityImage/', unique=True, null=True)
     password = models.CharField(max_length=80, unique=False, null=False, blank=False)
-
+    create_time = models.DateField(auto_now_add=True, unique=False)
+    last_login = models.DateField(auto_now_add=True, unique=False)
 
 class admission_approval(models.Model):
     admission_id = models.AutoField(primary_key=True)
     aspirant = models.OneToOneField(aspirants_profile, on_delete=models.CASCADE)
+    officer_incharge = models.ForeignKey(User, on_delete=models.CASCADE)
     admitted = models.BooleanField(default=False)
+    approved_time = models.DateField(auto_now_add=True, unique=False)

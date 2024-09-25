@@ -21,10 +21,11 @@
           {% for profile in my_profile %}
           
             <!-- DETAILS -->
-            <div class="card p-4 col-sm-10 col-md-8 col-lg-6" style="min-height: 70vh; max-height: 100%;">
+            <div class="card p-4 col-10" style="min-height: 70vh; max-height: 100%;">
                 
                     <!-- passport -->
-                    <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h3>Profile</h3></div>
                         {% if profile.passport %}
                             <img src="{{profile.passport.url}}" alt="{{profile.username}}" class="rounded-circle" style="width: 5em; height: 5em;">
                         {% else %}
@@ -32,16 +33,85 @@
                         {% endif %}
                     </div>
                 
+                    <!-- details -->
                     <div class="d-flex align-items-center">
-                        
-                        <!-- details -->
-                         <div class="mx-auto">
-                            <h5 class="fw-bold ">Person Information</h5>
 
-                            <div>
-                                <div>Name: {{profile.first_name|upper}} {{profile.middle_name}} {{profile.last_name}}</div>
-                            </div>
+                        <!-- Person Information -->
+                        <div class="my-2">
+                            <h5 class="fw-bold text-capitalize text-decoration-underline">Person Information</h5>
+
+                            <div class="d-flex justify-content-evenly row g-2 gap-2">
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong>NAME:</strong> {{profile.last_name|upper}} {{profile.first_name}} {{profile.middle_name}}</div>
+
+                               
+                                <div class="col-sm-12 col-md-6 col-lg-5 d-flex gap-2"> <strong class="text-uppercase">contact:</strong> <a class="text-decoration-none d-flex align-items-center justify-content-center" href="tel:{{profile.phone_no}}"><i class="fa fa-phone fs-5 text-dark"></i>{{profile.phone_no}}</a>  <a class="text-decoration-none d-flex align-items-center justify-content-center" href="mailto:{{profile.email}}"><i class="fa fa-envelope fs-5 text-dark"></i>{{profile.email}}</a></div>
+
+
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">date of birth:</strong> {{profile.d_o_b}}</div>
+                                
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">gender:</strong> {{profile.gender}}</div>
+                                
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">address:</strong> {{profile.address}}</div>
+                                
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">state</strong> {{profile.state}}</div>
+                                
                          </div>
+
+                         <!-- next of kin information -->
+                         <div class="my-2">
+                            <h5 class="fw-bold text-capitalize text-decoration-underline">next of kin information</h5>
+
+                            <div class="d-flex justify-content-evenly row g-2 gap-2">
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong>NAME:</strong> {{profile.next_of_kin}}</div>
+
+                               
+                                <div class="col-sm-12 col-md-6 col-lg-5 d-flex gap-2"> <strong class="text-uppercase">contact:</strong> <a class="text-decoration-none d-flex align-items-center justify-content-center" href="tel:{{profile.next_of_kin_number}}"><i class="fa fa-phone fs-5 text-dark"></i>{{profile.next_of_kin_number}}</a>  <a class="text-decoration-none d-flex align-items-center justify-content-center" href="mailto:{{profile.next_of_kin_email}}"><i class="fa fa-envelope fs-5 text-dark"></i>{{profile.next_of_kin_email}}</a></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">address:</strong> {{profile.next_of_kin_address}}</div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">relationship:</strong> {{profile.next_of_kin_relationship}}</div>  
+                         </div>
+
+                         <!-- others -->
+                         <div class="my-2">
+                            <h5 class="fw-bold text-capitalize text-decoration-underline">other information</h5>
+
+                            <div class="d-flex justify-content-evenly row g-2 gap-2">
+                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">passport:</strong> 
+                                <div>
+                                    <img src="{{profile.passport.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
+                                </div>
+                                <a href="{{profile.passport.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-5"> 
+                                    <strong class="text-uppercase">o'level:</strong> 
+                                    <div>
+                                        <img src="{{profile.o_levels.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
+                                    </div>
+                                    <a href="{{profile.o_levels.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                </div>
+
+                                
+                                <div class="col-sm-12 col-md-6 col-lg-5"> 
+                                    <strong class="text-uppercase">utme:</strong> 
+                                   <div>
+                                    <img src="{{profile.utme.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
+                                   </div>
+                                    <a href="{{profile.utme.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                </div>
+                               
+                                <div class="col-sm-12 col-md-6 col-lg-5"> 
+                                    <strong class="text-uppercase">identity card:</strong> 
+                                    <div>
+                                        <img src="{{profile.identity.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
+                                    </div>
+                                    <a href="{{profile.identity.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                </div>
+                               
+                               
+                         </div>
+
                     </div>
 
             </div>
