@@ -77,36 +77,53 @@
                             <h5 class="fw-bold text-capitalize text-decoration-underline">other information</h5>
 
                             <div class="d-flex justify-content-evenly row g-2 gap-2">
-                                <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">passport:</strong> 
+
+                                <div class="col-5"> <strong class="text-uppercase">passport:</strong> 
                                 <div>
                                     <img src="{{profile.passport.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
                                 </div>
-                                <a href="{{profile.passport.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                
+                                {% if request.user.is_superuser and profile.passport %}
+                                  <a href="{{profile.passport.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                {% endif %}
+
                                 </div>
 
-                                <div class="col-sm-12 col-md-6 col-lg-5"> 
-                                    <strong class="text-uppercase">o'level:</strong> 
+                                <div class="col-5"> 
+                                    <strong class="text-uppercase">o'level result:</strong> 
                                     <div>
                                         <img src="{{profile.o_levels.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
                                     </div>
-                                    <a href="{{profile.o_levels.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                    
+                                    {% if request.user.is_superuser and profile.o_levels %}
+                                      <a href="{{profile.o_levels.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                    {% endif %}
+
                                 </div>
 
                                 
-                                <div class="col-sm-12 col-md-6 col-lg-5"> 
-                                    <strong class="text-uppercase">utme:</strong> 
+                                <div class="col-5"> 
+                                    <strong class="text-uppercase">utme result:</strong> 
                                    <div>
                                     <img src="{{profile.utme.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
                                    </div>
-                                    <a href="{{profile.utme.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                   
+                                   {% if request.user.is_superuser and profile.utme %}
+                                     <a href="{{profile.utme.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                   {% endif %}
+
                                 </div>
                                
-                                <div class="col-sm-12 col-md-6 col-lg-5"> 
+                                <div class="col-5"> 
                                     <strong class="text-uppercase">identity card:</strong> 
                                     <div>
                                         <img src="{{profile.identity.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
                                     </div>
-                                    <a href="{{profile.identity.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                    
+                                    {% if request.user.is_superuser and profile.identity %}
+                                      <a href="{{profile.identity.url}}" class="text-decoration-none text-capitalize">view image</a>
+                                    {% endif %}
+
                                 </div>
                                
                                

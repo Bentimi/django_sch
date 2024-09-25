@@ -1,6 +1,5 @@
 from django import forms
 from admissionApp.models import admission_approval, aspirants_profile
-from django_countries.data import COUNTRIES
 
 class admissionForm(forms.ModelForm):
      gender_options = [
@@ -16,6 +15,15 @@ class admissionForm(forms.ModelForm):
         ("Sister", "Sister"),
         ("Other", "Other"),
     ]
+     course_options = [
+        ("--Select Course--", "--Select Course--"),
+        ("Digital Marketing", "Digital Marketing"),
+        ("Business World", "Business World"),
+        ("Media Technology", "Media Technology"),
+        ("Communications", "Communications"),
+        ("Business Ethics", "Business Ethics"),
+    ]
+
      first_name = forms.CharField(widget=forms.NumberInput(attrs={
          'placeholder':'First Name',
          'class':'form-control shadow-sm rounded-0',
@@ -69,6 +77,10 @@ class admissionForm(forms.ModelForm):
          'class':'form-control shadow-sm rounded-0',
          'type':'text'
      }), required=False)
+     course = forms.CharField(widget=forms.Select(choices=course_options,attrs={
+            'placeholder':'Course',
+            'class':'form-select shadow-sm rounded-0'
+        }), required=False)
      next_of_kin = forms.CharField(widget=forms.TextInput(attrs={
          'placeholder':'Next of kin',
          'class':'form-control shadow-sm rounded-0',
@@ -112,6 +124,14 @@ class admissionForm(forms.ModelForm):
                 'class':"form-control shadow-sm rounded-0", 
                 'aria-describedby':"fileHelpId"
                 }), required=False)
+     national_identity = forms.ImageField( 
+        label="National Identity Card", 
+        widget=forms.FileInput(
+            attrs={
+                'type' : 'file',
+                'class':"form-control shadow-sm rounded-0", 
+                'aria-describedby':"fileHelpId"
+                }), required=False)
      password = forms.CharField(widget=forms.TextInput(attrs={
          'placeholder':'Next of Kin Email',
          'class':'form-control shadow-sm rounded-0',
@@ -121,5 +141,5 @@ class admissionForm(forms.ModelForm):
      class Meta:
         model = aspirants_profile
         fields = [
-            'first_name', 'middle_name', 'last_name', 'username', 'gender', 'd_o_b', 'phone_no', 'email', 'address', 'country', 'state', 'next_of_kin', 'next_of_kin_number', 'next_of_kin_email', 'next_of_kin_relationship', 'passport', 'o_levels', 'utme', 'password'
+            'first_name', 'middle_name', 'last_name', 'username', 'gender', 'd_o_b', 'phone_no', 'email', 'address', 'country', 'state', 'course', 'next_of_kin', 'next_of_kin_number', 'next_of_kin_email', 'next_of_kin_address', 'next_of_kin_relationship', 'passport', 'o_levels', 'utme', 'national_identity', 'password'
         ]
