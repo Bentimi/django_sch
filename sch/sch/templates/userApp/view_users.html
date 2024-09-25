@@ -1,0 +1,80 @@
+{% extends "side_nav.html" %}
+{% block personal_page %}
+{% load static %}
+
+<section>
+
+   
+    
+    <div
+        class="table-responsive-sm px-3"
+    >
+        <table
+            class="table table-striped table-hover table-border table-light align-middle"
+        >
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center">
+                        {% if status == staff %}
+                          Staff Id
+                        {% else %}
+                          User Id
+                        {% endif %}
+                    </th>
+                    <th class="text-center">Full Name</th>
+                    <th class="text-center">Username</th>
+                    <th class="text-center">Department</th>
+                    <th class="text-center">Category</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+           {% if users %}
+                {% for user in users  %}
+                <tbody class="">
+                    <tr
+                        class="table-light"
+                    >
+                        <td scope="row" class="text-center">{{user.profile_id}}</td>
+                        <td scope="row" class="text-center">{{user.user.first_name}} {{user.user.last_name}}</td>
+                        <td class="text-center">{{user.user.username}}</td>
+                        <td class="text-center">{{user.department}}</td>
+                        <td class="text-center">{{status}}</td>
+                        <td class="text-center">
+                            {% if user.user.is_active %}
+                              <i class="fa fa-check-circle text-success fs-5"></i>
+                            {% else %}
+                               <i class="fa fa-times-circle text-danger fs-5"></i> 
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-3 justify-content-center">
+                                <div>
+                                    <a href="{% url 'profile' user.user.id %}" class="text-decoration-none fs-5">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </div>
+                               <div>
+                                <a href="{% url 'delete_user' user.user.id %}" class="text-decoration-none fs-5">
+                                    <i class="fa fa-trash text-danger"></i>
+                                </a>
+                               </div>
+                            </div>
+                        </td>
+                    </tr>
+                   
+                </tbody>
+                {% endfor %}
+           {% endif %}
+            <tfoot>
+                
+            </tfoot>
+        </table>
+    </div>
+    
+
+   
+
+
+</section>
+{% endblock personal_page %}

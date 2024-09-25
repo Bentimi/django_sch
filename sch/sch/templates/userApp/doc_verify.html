@@ -1,0 +1,130 @@
+{% extends "side_nav.html" %}
+{% block personal_page %}
+{% load static %}
+
+<section>
+
+   
+    
+    <div
+        class="table-responsive-sm px-3"
+    >
+        <table
+            class="table table-striped table-hover table-border table-light align-middle"
+        >
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center">
+                          Staff Id
+                    </th>
+                    <th class="text-center">Full Name</th>
+                    <!-- <th class="text-center">Username</th> -->
+                    <th class="text-center">Department</th>
+                    <th class="text-center">Means Of Identity</th>
+                    <th class="text-center">Particulars</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+           {% if users %}
+                {% for user in users  %}
+                <tbody class="">
+                    <tr
+                        class="table-light"
+                    >
+                        <td scope="row" class="text-center">{{user.profile_id}}</td>
+                        <td scope="row" class="text-center">{{user.user.first_name}} {{user.user.last_name}}</td>
+                        <!-- <td class="text-center">{{user.user.username}}</td> -->
+                        <td class="text-center">{{user.department}}</td>
+                        <!-- <td class="text-center">{{status}}</td> -->
+                        <td class="text-center">
+                            {% if user.means_of_identity %}
+                                <div class="d-flex row gap-1 justify-content-center align-items-center">
+                                   
+                            <a href="{% url 'doc_approval_identity' user.user_id %}" class="col-md-5">
+                             {% if user.means_of_identity_approval == 'Approved' %}
+                             <button class="btn btn-success rounded-0 text-center fw-bold" style="width: 10rem;">
+                                <i class="fa fa-check-circle"></i> Approved
+                            </button>
+                             {% else %}
+                             <button class="btn btn-danger rounded-0 text-center fw-bold" style="width: 10rem;">
+                                <i class="fa fa-times-circle"></i> Unapproved
+                            </button>
+                              {% endif %}
+                              </a>
+                              <div class="col-md-5">
+                                  <a href="{{user.means_of_identity.url}}" class="text-decoration-none rounded-0 col-md-3 text-center fw-bold"><i class="fa fa-eye"></i></a>
+
+                                  <a href="{% url 'delete_identity' user.user_id %}" class="text-decoration-none col-md-3">
+                                      <i class="fa fa-trash text-danger"></i>
+                                      </a>
+                              </div>
+                                </div>
+                            {% else %}
+                                <span>No File Found</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                        {% if user.particulars %}
+                            <div class="d-flex row justify-content-center align-items-center">
+                                <a href="{% url 'doc_approval_particulars' user.user_id %}" class="col-md-5 text-decoration-none">
+                                {% if user.particulars_approval == 'Approved' %}
+                                    <button class="btn btn-success rounded-0 text-center fw-bold" style="width: 10rem;">
+                                        <i class="fa fa-check-circle"></i> Approved
+                                    </button>
+                                {% else %}
+                                <button class="btn btn-danger rounded-0 text-center fw-bold" style="width: 10rem;">
+                                    <i class="fa fa-times-circle"></i> Unapproved
+                                </button>
+                                {% endif %}
+                                </a>
+                                <div class="col-md-5">
+                                    <a href="{{user.particulars.url}}" class="text-decoration-none text-center fw-bold"><i class="fa fa-eye"></i> </a>
+                                    <a href="{% url 'delete_particulars' user.user_id %}" class="text-decoration-none col-md-3">
+                                        <i class="fa fa-trash text-danger"></i>
+                                        </a>
+                                </div>
+                            </div>
+                            {% else %}
+                                <span>No File Found</span>
+                            {% endif %}
+                        </td>
+                          
+                        <td class="text-center">
+                            {% if user.user.is_active %}
+                              <i class="fa fa-check-circle text-success fs-5"></i>
+                            {% else %}
+                               <i class="fa fa-times-circle text-danger fs-5"></i> 
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-3 justify-content-center">
+                                <div>
+                                    <a href="{% url 'profile' user.user_id %}" class="text-decoration-none fs-5">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </div>
+                               <div>
+                                <a href="{% url 'delete_user' user.user_id %}" class="text-decoration-none fs-5">
+                                    <i class="fa fa-trash text-danger"></i>
+                                </a>
+                               </div>
+                            </div>
+                        </td>
+                    </tr>
+                   
+                </tbody>
+                {% endfor %}
+           {% endif %}
+            <tfoot>
+                
+            </tfoot>
+        </table>
+    </div>
+    
+
+   
+
+
+</section>
+{% endblock personal_page %}

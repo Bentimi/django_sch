@@ -1,0 +1,50 @@
+{% extends "common.html" %}
+{% load static %}
+{% block title %}
+<title>home</title>
+{% endblock title %}
+
+{% block page_content %}
+
+<section id="home-sect">
+
+    <!-- VIDEO BANNER -->
+
+    <video autoplay loop muted id="home-video">
+        <source src="{% static 'images/course-video.mp4' %}" type="video/mp4">
+    </video>
+
+    <div class="video-overlay d-flex align-items-center justify-content-center">
+      
+        <!-- BANNER CAPTION -->
+       <div class="g-4 row">
+        <h6 class="text-white text-center text-uppercase">Graduate school of management</h6>
+        <h1 id="vid-banner-h1" class="text-white text-center text-uppercase"><em id="banner-em">your</em> classroom</h1>
+       
+        <div class="d-flex justify-content-center">
+            <button id="banner-btn" class="btn border-0 rounded-0 text-white text-uppercase p-2">
+                <a href="" class="text-decoration-none text-white">discover more</a>
+            </button>
+        </div>
+       </div>
+    </div>
+</section>
+
+
+<!-- BANNER CARDS -->
+ <Section id="cards" class="d-flex justify-content-center position-relative">
+    <div id="container" class="d-flex justify-content-center gap-5 g-4 position-absolute row">
+        <div id="banner-cards" class="d-flex justify-content-center align-items-center col-sm-12 col-md-10 col-lg-4">
+            <h6 class="text-white text-center text-uppercase fw-bold"><i class="fa fa-pencil fs-4"></i>&nbsp; all courses</h6>
+        </div>
+        <div id="banner-cards" class="d-flex justify-content-center align-items-center col-sm-12 col-md-10 col-lg-4">
+            <h6 class="text-white text-center text-uppercase fw-bold"><i class="fa fa-graduation-cap fs-4"></i>&nbsp;virtual class</h6>
+        </div>
+        <div id="banner-cards" class="d-flex justify-content-center align-items-center col-sm-12 col-md-10 col-lg-4">
+            <h6 class="text-white text-center text-uppercase fw-bold"><i class="fa fa-book fs-4"></i>&nbsp; real meeting</h6>
+        </div>
+    </div>
+ </Section>
+
+
+{% endblock page_content %}

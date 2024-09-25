@@ -1,0 +1,139 @@
+{% extends "index.html" %}
+
+{% block title %}<title>Admission Reg Page</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section id="about_section" class="py-5">
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+       <form action="" method="post" class="d-flex row justify-content-center form-layout gap-3 card px-2 mx-auto w-75 rounded-0 py-5" enctype="multipart/form-data">
+        <h2 class="text-center">
+            Registration Form
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+       <div class="d-flex row justify-content-center">
+        {% csrf_token %}
+
+        <!-- {{form.as_p}} -->
+
+        <p class="text-center  text-secondary fst-italic">Carefully fill the form below correctly...</p>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.first_name}}
+            <label for="first_name" class="ms-3">First Name</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.middle_name}}
+            <label for="middle_name" class="ms-3">Middle Name</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.last_name}}
+            <label for="last_name" class="ms-3">Last Name</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.username}}
+            <label for="username" class="ms-3">Username</label>
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="gender">Gender</label>
+            {{form.gender}}
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.d_o_b}}
+            <label for="d_o_b" class="ms-3">Date of Birth</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.phone_no}}
+            <label for="phone_no" class="ms-3">Phone Number</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.email}}
+            <label for="email" class="ms-3">Email</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.address}}
+            <label for="" class="ms-3">Address</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.country}}
+            <label for="country" class="ms-3">Country</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.state}}
+            <label for="state" class="ms-3">State</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.next_of_kin}}
+            <label for="next_of_kin" class="ms-3">Next of Kin</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.next_of_kin_number}}
+            <label for="next_of_kin_number" class="ms-3">Next of Kin Number</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.next_of_kin_email}}
+            <label for="next_of_kin_email" class="ms-3">Next of Kin Email</label>
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="next_of_kin_relationship">Next of Kin Relationship</label>
+            {{form.next_of_kin_relationship}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="passport" class="">Passport</label>
+            {{form.passport}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="o_levels" class="">O'Level Result</label>
+            {{form.o_levels}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="utme" class="">UTME Result</label>
+            {{form.utme}}
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            <input type="password" placeholder="" name="pWd" class="form-control shadow-sm rounded-0">
+            <label for="pWd" class="ms-3">Enter Password</label>
+        </div>
+
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.password}}
+            <label for="password" class="ms-3">Confirm Password</label>
+        </div>
+       
+       <div class="d-flex justify-content-center">
+         <button type="submit" class="btn btn-primary rounded-0" style="width: 10rem; height: 3rem;">Register</button>
+        </div>
+        
+        <!-- <div class="d-flex justify-content-evenly">
+          <p class="">Don't have an account?<a href="{% url 'signup' %}" class="text-decoration-none"> Signup</a></p>
+          <a href="{% url 'password_reset' %}" class="text-decoration-none">Forget Password?</a>
+        </div> -->
+
+       </form>
+    </div>
+</section>
+
+  {% endblock personal_page %}  

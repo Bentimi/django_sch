@@ -1,0 +1,266 @@
+{% extends "side_nav.html" %}
+{% block personal_page %}
+{% load static %}
+
+<style>
+  @media screen and (max-width: 900px) {
+    .card{
+      width: 75%;
+    }
+    
+  }
+</style>
+
+<aside class="" id="body">
+  {% if my_profile %}
+  {% for profile in my_profile  %}
+    <section class=" mx-auto">
+       <div class="d-flex row justify-content-evenly gap-3 align-items-center" style="min-height: 100vh; max-height: 100%;">
+
+        <!-- MAIN INFORMATION -->
+        <div class="card p-3 col-sm-10 col-md-8 col-lg-6" style="min-height: fit-content; max-height: 70vh;">
+          <div class=" justify-content-center d-flex row">
+                    <div class="d-flex justify-content-center">
+
+                    <div class="d-flex align-items-end py-3">          
+                      {% if profile.profile.profile_passport %}
+                      <div class="d-flex justify-content-center align-items-center">
+                        <img src="{{profile.profile.profile_passport.url}}" alt="{{profile.username}}" class="rounded-circle" style="width: 8em; height: 8em;">
+                      </div>
+                    {% else %}
+                    <div>
+                        <img src="{% static '/images\profile_icon.png' %}" alt="{{profile.username}}" style="width: 8em; height: 8em;">
+                    </div>
+                    {% endif %}
+                    <!-- <div class="text-end mb-1" style="margin-left: -1em;">
+                      <a href="{% url 'edit_profile' profile.id %}" class="text-decoration-none fw-bold">
+                          <i class="fa fa-pencil fs-3 text-primary"></i>
+                          Edit
+                      </a>
+                    </div> -->
+                    </div>
+                </div>
+                
+                <span class="fw-bold fs-4 text-center">
+                  {{profile.first_name}} {{profile.last_name}}
+                 </span><hr>
+
+               <div class="d-flex gap-2 flex-column my-2">
+  
+                 <div>
+                  <strong>Email:</strong> {{profile.email}}
+                 </div>
+  
+                {% if profile.profile.staff == 1 %}
+                <div>
+                  <strong>Staff ID:</strong> {{profile.profile.matric_no}}
+                 </div>
+                {% else %}
+                <div>
+                  <strong>Matric Number:</strong> {{matric_no}}
+                 </div>
+                {% endif %}
+                 
+                 <div>
+                  <strong>Level:</strong> {{profile.profile.level}}
+                 </div>
+  
+                 <div>
+                  <strong>Department:</strong> {{profile.profile.department}}
+                 </div>
+  
+                </div>
+               </div>
+               <hr>
+
+               {% if request.user.is_superuser %}
+               <div class="field">
+                 <div class="control d-flex gap-3">
+                   <a href="{% url 'edit_profile' profile.id %}">
+                     <button type="submit" class="btn btn-primary rounded-0">Edit Profile</button>
+                    </a>
+                    
+                    <a href="{% url 'deactivate_profile' profile.id %}" class="text-decoration-none">
+                      {% if profile.is_active == 1 %}   
+                        <button type="submit" class="btn btn-danger rounded-0">
+                          Deactivate
+                        </button>
+                      {% else %}
+                        <button type="submit" class="btn btn-success rounded-0">
+                          Activate
+                        </button>
+                      {% endif %}
+                    </a>
+                    
+                  </div>
+                </div>
+                {% endif %}     
+        </div>
+
+
+        <!-- OTHER INFORMATION -->
+
+        <!-- personal infomation -->
+
+        <div class="col-sm-10 col-md-8 col-lg-6 card py-3 p">
+          <p class="text-uppercase fw-bold fs-5">Other Information</p>
+
+
+          <h6 class="fw-bold" style="text-decoration: underline;">Personal Information</h6>
+          <div class="d-flex row justify-content-between g-2">
+            <div class="col-lg-5 col-md-6  col-sm-12">
+              {% if profile.profile.phone_no %}
+            
+                <strong>Phone No:</strong> {{profile.profile.phone_no}}
+          
+              {% else %}
+           
+              <strong>Phone Number:</strong> None
+            
+            {% endif %} 
+           </div>
+           
+           <div class="col-lg-5 col-md-6 col-sm-12">
+             {% if profile.profile.nationality %}
+             
+               <strong>Nationality:</strong> {{profile.profile.nationality}}
+        
+              {% else %}
+             
+                <strong>Nationality:</strong> None
+             
+              {% endif %}
+            </div>
+            
+            <div class="col-lg-5 col-md-6  col-sm-12">
+              {% if profile.profile.state %}
+              
+                <strong>State of Origin:</strong> {{profile.profile.state}}
+            
+              {% else %}
+             
+                <strong>State of Origin:</strong> None
+             
+             {% endif %}
+           </div>
+
+           <div class="col-lg-5 col-md-6 col-sm-12">
+            {% if profile.profile.d_o_b %}
+            
+              <strong>Date of Birth:</strong> {{profile.profile.d_o_b}}
+           
+            {% else %}
+            
+              <strong>Date of Birth:</strong> None
+           
+           {% endif %}
+           </div>
+
+           <div class="col-lg-5 col-md-6 col-sm-12">
+            {% if profile.profile.marital_status %}
+           
+              <strong>Marital Status:</strong> {{profile.profile.marital_status}}
+            
+             {% else %}
+            
+               <strong>Marital Status:</strong> None
+             
+             {% endif %}
+          
+          </div>
+
+           <div class="col-lg-5 col-md-6 col-sm-12">
+            {% if profile.email %}
+           
+              <strong>email:</strong> {{profile.email}}
+            
+             {% else %}
+            
+               <strong>email:</strong> None
+             
+             {% endif %}
+           </div>
+          <hr>
+
+          <!-- next of kin information -->
+          <div>
+
+            <h6 class="text-capitalize fw-bold" style="text-decoration: underline;">Next of kin information</h6>
+
+          <div class="d-flex row justify-content-between g-2">
+      
+           <div class="col-lg-5 col-md-6 col-sm-12">
+            {% if profile.profile.next_of_kin %}
+           
+              <strong>Next of kin:</strong> {{profile.profile.next_of_kin}}
+             
+             {% else %}
+             
+               <strong>Next of kin:</strong> None
+             
+             {% endif %}
+           </div>
+
+           <div class="col-lg-5 col-md-6 col-sm-12">
+            {% if profile.profile.next_of_kin_phone_no %}
+            
+              <strong>Phone no:</strong> {{profile.profile.next_of_kin_phone_no}}
+             
+             {% else %}
+             
+               <strong>Phone no:</strong> None
+             
+             {% endif %}
+             </div>
+
+           <div class="col-lg-5 col-md-6 col-sm-12">
+            {% if profile.profile.next_of_kin_relationship %}
+            
+              <strong>Relationship:</strong> {{profile.profile.next_of_kin_relationship}}
+             
+             {% else %}
+            
+               <strong>Relationship:</strong> None
+             
+             {% endif %}
+           </div>
+
+           <div class="col-lg-5 col-md-6 col-sm-12">
+            {% if profile.profile.next_of_kin_address %}
+            
+              <strong>Address:</strong> {{profile.profile.next_of_kin_address}}
+             
+             {% else %}
+            
+               <strong>Address:</strong> None
+             
+             {% endif %}
+           </div>
+
+           <div class="col-lg-5 col-md-6 col-sm-12">
+            {% if profile.profile.next_of_kin_email %}
+            
+              <strong>Email:</strong> {{profile.profile.next_of_kin_email}}
+             
+             {% else %}
+            
+               <strong>Email:</strong> None
+             
+             {% endif %}
+           </div>
+
+           
+          </div>
+          </div>
+            
+        </div>
+
+        
+        {% endfor %}
+        {% endif %}
+    </section>
+  </aside>
+
+
+
+{% endblock personal_page %}

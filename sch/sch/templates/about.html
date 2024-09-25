@@ -1,0 +1,138 @@
+{% extends "common.html" %}
+{% block title %}
+    <title>about</title>
+{% endblock title %}
+{% block page_content %}
+{% load static %}
+    
+  
+  <section id="about_section" class="py-5">
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+        <div id="about_quest" class="d-flex align-items-center justify-content-center p-1">
+            <h6 class="text-center text-white fw-bold">Why choose Grad School?</h6>
+        </div>
+
+        <!-- NAVIGATION -->
+
+        <div class="">
+         <ul class="d-flex justify-content-evenly gap-3">
+            <li>
+                <a href="" class="d-flex justify-content-center row text-decoration-none" id="about_nav_link">
+                    <p class="text-white text-uppercase fw-bold">best education<p>
+                    <i id="about_nav_btn" class="fa fa-square"></i></a>
+            </li>
+            <li>
+                <a href="" class="d-flex justify-content-center row text-decoration-none" id="about_nav_link">
+                    <p class="text-white text-uppercase fw-bold">top management</p>
+                    <i id="about_nav_btn" class="fa fa-square"></i></a>
+            </li>
+            <li>
+                <a href="" class="d-flex justify-content-center row text-decoration-none" id="about_nav_link">
+                    <p class="text-white text-uppercase fw-bold">quality meeting</p>
+                    <i id="about_nav_btn" class="fa fa-square"></i></a>
+            </li>
+         </ul>
+        </div>
+
+        <!-- INFO -->
+
+        <!-- INFO 1 -->
+        <div class="d-flex justify-content-center gap-5 align-items-center" style="min-height: 50vh;">
+            <div>
+               <img src="/images/choose-us-image-01.png" alt="" srcset="">
+            </div>
+            <div class="text-white p-2" style="width: 37%;">
+                <h3 class="text-start text-capitalize fw-bold">best education</h3>
+
+                <p class="mt-4">Grad School is free educational HTML template with Bootstrap 5.3.3 CSS layout. Feel free to use it for educational or commercial purposes. You may want to make <a id="about_info_link" href="" class="text-decoration-none"> a little donation</a> to TemplateMo. Please tell your friends about us. Thank you.</p>
+            </div>
+        </div>
+
+        <!-- INFO 2 -->
+        <div class="d-flex justify-content-center gap-5 align-items-center" style="min-height: 50vh;">
+            <div>
+               <img src="/images/choose-us-image-02.png" alt="" srcset="">
+            </div>
+            <div class="text-white p-2" style="width: 37%;">
+                <h3 class="text-start text-capitalize fw-bold">top level</h3>
+
+                <p class="mt-4">You can modify this HTML layout by editing contents and adding more pages as you needed. Since this template has o[tions to add dropdown menus, you can put many HTML pages. <br> <br>
+                
+                Suspendisse tincidunt, magna ut finibus rutrum, libero dolor euismod odio, nec interdum quam felis non ante.
+                </p>
+            </div>
+        </div>
+
+        <!-- INFO 3 -->
+        <div class="d-flex justify-content-center gap-5 align-items-center" style="min-height: 50vh;">
+            <div>
+               <img src="/images/choose-us-image-03.png" alt="" srcset="">
+            </div>
+            <div class="text-white p-2" style="width: 37%;">
+                <h3 class="text-start text-capitalize fw-bold">quality meeting</h3>
+
+                <p class="mt-4">You are NOT allowed to redistribute this template ZIP file on any template collection website. However, you can use this template to convert into specific theme for any kind of CMS platform such as WordPress. For more information, you shall <a id="about_info_link" href="" class="text-decoration-none"> contact TemplateMo</a> now.</p>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+<!-- ACCOUNT REGISTRAION -->
+
+<section id="abt_reg" class="d-flex justify-content-center align-items-center px-5">
+
+    <!-- CONTENT -->
+
+    <div class="text-white d-flex align-items-center" id="reg_content">
+       <div>
+        <h2 class="fw-bold">Take <em id="acc_em">any online course</em> and win $326 for your next class</h2>
+
+        <!-- BTN -->
+        <div class="d-flex gap-5" id="time">
+            <div id="time" class="bg-secondary bg-opacity-25 d-flex justify-content-center align-items-center pt-3 row">
+                <h1 class="fw-bold text-center">{{days}}</h1>
+                <h5 id="time_date" class="text-uppercase text-center">Days<h5>
+            </div>
+            <div id="time" class="bg-secondary bg-opacity-25 d-flex justify-content-center align-items-center pt-3 row">
+                <h1 class="fw-bold text-center">{{hrs}}</h1>
+                <h5 id="time_date" class="text-uppercase text-center">hours<h5>
+            </div>
+            <div id="time" class="bg-secondary bg-opacity-25 d-flex justify-content-center align-items-center pt-3 row">
+                <h1 class="fw-bold text-center">{{mins}}</h1>
+                <h5 id="time_date" class="text-uppercase text-center">minutes<h5>
+            </div>
+            <div id="time" class="bg-secondary bg-opacity-25 d-flex justify-content-center align-items-center pt-3 row">
+                <h1 class="fw-bold text-center">{{secs}}</h1>
+                <h5 id="time_date" class="text-uppercase text-center">seconds<h5>
+            </div>
+        </div>
+
+       </div>
+    </div>
+    <div id="form_div" class="text-white d-flex justify-content-center row py-5">
+       <div class="bg-secondary bg-opacity-50 py-5">
+        <p class="text-center">Register your free account and get immediate access to online courses</p>
+       </div>
+        <form action="" class="d-flex row gap-4 justify-content-center bg-secondary bg-opacity-25 py-5">
+            <input type="text" name="" id="form_input" placeholder="Your Name" class="form-control shadow-none border-0 bg-secondary bg-opacity-25 text-white rounded-0">
+            <input type="email" name="" id="form_input" placeholder="Your Email" class="form-control shadow-none border-0 bg-secondary bg-opacity-25 text-white rounded-0">
+            <input type="tel" name="" id="form_input" placeholder="Your Phone Number" class="form-control shadow-none border-0 bg-secondary bg-opacity-25 text-white rounded-0">
+            <button type="submit" id="abt_form_btn" class="btn text-uppercase text-white rounded-0">get it now</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    const time = document.getElementById('time');
+    function updateCountdown(){
+        fetch(window.location.pathname)
+        .then(response => response.text())
+    .then(html => {
+        document.body.innerHTML = html;
+    });
+    }
+    setInterval(updateCountdown, 1000);
+</script>
+
+  {% endblock page_content %}  

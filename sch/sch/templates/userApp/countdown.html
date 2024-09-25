@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/bootstrap-5.3.3-dist/css/bootstrap-utilities.css">
+</head>
+<body style="background-color: #162239;">
+
+    <section class="d-flex justify-content-center gap-3 align-items-center" style="height: 80vh;">
+        <div class="shadow-lg p-5 d-flex flex-column align-items-center justify-content-center gap-3 shadow-lg" style="width: 5em; height: 5em; background-color:  #162239;">
+            <span class="fw-bold text-white" style="font-size: 5em;">{{days}}</span>
+            <small class="fw-bold fs-4 text-white">Days</small>
+        </div>
+        <div class="shadow-lg p-5 d-flex flex-column align-items-center justify-content-center gap-3 shadow-lg" style="width: 5em; height: 5em; background-color:  #162239;">
+            <span class="fw-bold text-white" style="font-size: 5em;">{{hrs}}</span>
+            <small class="fw-bold fs-4 text-white">Hours</small>
+        </div>
+        <div class="shadow-lg p-5 d-flex flex-column align-items-center justify-content-center gap-3 shadow-lg" style="width: 5em; height: 5em; background-color:  #162239;">
+            <span class="fw-bold text-white" style="font-size: 5em;">{{mins}}</span>
+            <small class="fw-bold fs-4 text-white">Minutes</small>
+        </div>
+        <div class="shadow-lg p-5 d-flex flex-column align-items-center justify-content-center gap-3 shadow-lg" style="width: 5em; height: 5em; background-color:  #162239;">
+            <span class="fw-bold text-white" style="font-size: 5em;">{{secs}}</span>
+            <small class="fw-bold fs-4 text-white">Seconds</small>
+        </div>
+    </section>
+
+    <script>
+        function updateCountdown(){
+            fetch(window.location.pathname)
+            .then(response => response.text())
+        .then(html => {
+            document.body.innerHTML = html;
+        });
+        }
+        setInterval(updateCountdown, 1000);
+    </script>
+    <script src="/static/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+{% extends "side_nav.html" %}
+{% block personal_page %}
+{% load static %}
+
+<section class="mx-auto" style="width: fit-content;">
+    <form action="" method="post" class="card p-5 rounded-0 row d-flex" enctype="multipart/form-data">
+        {% csrf_token %}
+    
+        {{user_form.as_p}}
+        
+          <div class="my-2">
+            <label for="">{{profile_form.address.label}}:</label>
+            {{profile_form.address}}
+          </div>
+
+          
+          <div class="my-2">
+            <label for="">{{profile_form.phone_no.label}}:</label>
+            {{profile_form.phone_no}}
+          </div>
+
+          <div class="my-2">
+            <label for="">{{profile_form.d_o_b.label}}:</label>
+            {{profile_form.d_o_b}}
+          </div>
+
+          <div class="my-2">
+            <label for="">{{profile_form.marital_status.label}}:</label>
+            {{profile_form.marital_status}}
+          </div>
+
+          <div class="my-2">
+            <label for="">{{profile_form.nationality.label}}:</label>
+            {{profile_form.nationality}}
+          </div>
+           
+          <div class="my-2">
+            <label for="">{{profile_form.state.label}}:</label>
+            {{profile_form.state}}
+          </div>
+           
+          <div class="my-2">
+            <label for="">{{profile_form.gender.label}}:</label>
+            {{profile_form.gender}}
+          </div>
+           
+          <div class="my-2">
+            <label for="">{{profile_form.next_of_kin.label}}:</label>
+            {{profile_form.next_of_kin}}
+          </div>
+           
+          <div class="my-2">
+            <label for="">{{profile_form.next_of_kin_phone_no.label}}:</label>
+            {{profile_form.next_of_kin_phone_no}}
+          </div>
+           
+          <div class="my-2">
+            <label for="">{{profile_form.next_of_kin_relationship.label}}:</label>
+            {{profile_form.next_of_kin_relationship}}
+          </div>
+
+
+          <div class="my-2">
+            <label for="">{{profile_form.means_of_identity.label}}:</label>
+            {% if profile.profile.means_of_identity %}
+                <div class="my-4">
+                    <div class="mb-1">
+                        <img src="{{profile.profile.means_of_identity.url}}" alt="{{profile.username}}" class="" style="width: 12em; height: 12em;">&nbsp;
+                        {% if profile.profile.means_of_identity_approval == "Approved" %}
+                          <span class="text-success"><i class="fa fa-check-circle fs-3"></i>  {{profile.profile.means_of_identity_approval}}</span>
+                        {% else %}
+                        <span class="text-info"><i class="fa fa-hourglass-half fs-5"></i> Pending</span>
+                        {% endif %}
+                    </div>
+                    {% if request.user.is_superuser %}
+                      {{profile_form.means_of_identity}}
+                    {% endif %}
+                </div>
+            {% else %}
+                {{profile_form.means_of_identity}}
+            {% endif %}
+          </div>
+           
+           
+          <div class="my-2">
+            <label for="">{{profile_form.particulars.label}}:</label>
+            {% if profile.profile.particulars  %}
+            <div class="my-4">
+            <div class="mb-1">
+                <img src="{{profile.profile.particulars.url}}" alt="{{profile.username}}" style="width: 12em; height: 12em;">&nbsp;
+            {% if profile.profile.particulars_approval == "Approved" %}
+              <span class="text-success"><i class="fa fa-check-circle fs-3"></i>  {{profile.profile.particulars_approval}}</span>
+            {% else %}
+            <span class="text-info"><i class="fa fa-hourglass-half fs-5"></i> Pending</span>
+              {% endif %}
+            </div>
+            {% if request.user.is_superuser %}
+            <div>
+              {{profile_form.particulars}}
+          </div>
+            {% endif %}
+            </div>
+            {% else %}
+
+             {{profile_form.particulars}}
+              
+            {% endif %}
+          </div>
+
+
+          <div class="my-2">
+            <label for="">{{profile_form.profile_passport.label}}:</label>
+            
+            {% if profile.profile.profile_passport %}
+            <div class="d-flex justify-content-center align-items-center my-4">
+                <img src="{{profile.profile.profile_passport.url}}" alt="{{profile.username}}" class="rounded-circle" style="width: 8em; height: 8em;">
+            </div>
+            <input type="file" name="{{profile_form.profile_passport.name}}" id="" placeholder="Change" class="form-control">
+            {% else %}
+                {{profile_form.profile_passport}}
+            {% endif %}
+
+            {% if request.user.is_superuser %}
+              <div class="my-2">
+                 <label for="">Staff:</label>&nbsp;
+                {{profile_form.staff}}
+              </div>
+            {% endif %}
+
+            
+
+          </div>
+
+        
+        <button class="btn btn-primary rounded-0 my-2" type="submit" style="width: fit-content;">Update</button>
+    </form>
+
+    
+    
+</section>
+  
+{% endblock personal_page %}

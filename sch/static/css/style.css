@@ -1,0 +1,292 @@
+/* COMMON CSS*/
+
+@import url("https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.css");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900");
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    user-select: none;
+    overflow-x: hidden !important;
+}
+#nav-bar{
+    background-color: rgb(22, 34, 57);
+    min-height: 13vh;
+    z-index: 99;
+}
+#logo-container{
+    font-weight: 900;
+}
+#logo{
+    color: #f5a425;
+    font-style: normal;
+}
+#nav-link:focus{
+    border: 1px #f5a425 solid;
+}
+#nav-link{
+    border: 1px transparent solid;
+    /* min-height: 10vh; */
+}
+#sign-in{
+    font-size: large !important;
+}
+#sign-in:hover{
+    color: #f5a425 !important;
+}
+#contact_sect{
+    background-image: url('/static/images/contact-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    max-height: 100%;
+    width: 100%;
+}
+#contact_form{
+    width: 28rem;
+}
+#contact_inp::placeholder{
+    color: gray;
+}
+#footer{
+    margin-right: -10px;
+    margin-left: -10px;
+    background-color: #162239;
+    min-height: 13vh;
+    border-top: 3px solid #f5a425;
+}
+#footer-content{
+    min-height: 13vh;
+}
+#footer-em{
+    color: #f5a425;
+    font-style: normal;
+}
+
+
+/* HOME CSS */
+#home-sect{
+    position: relative;
+}
+#home-video{
+    min-width: 100%;
+    min-height: 100vh;
+    max-width: 100%;
+    max-height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+}
+#home-video::after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+}
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom right, rgba(22,34,57,0.85), rgba(22,34,57,0.85));
+    z-index: 2;
+}
+#vid-banner-h1{
+    font-size: 3.5em;
+    font-weight: 900;
+}
+#banner-em{
+    color: #f5a425;
+    font-style: normal;
+}
+#banner-btn{
+    background-color: #f5a425;
+    font-size: small;
+    font-weight: bold;
+    width: 12em ;
+    height: 3.4em;
+}
+#container{
+    transform: translate(0, -100%);
+    z-index: 10;
+}
+#banner-cards{
+    background-color: #0c1228;
+    height: 6rem;
+    width: 22rem;
+    cursor: pointer;
+}
+
+/* ABOUT US CSS */
+#about_section{
+    background-image: url('/static/images/courses-bg.jpg');
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    max-height: 100%;
+    width: 100%;
+    background-size: cover;
+}
+#top_after_nav{
+    margin-top: 7em;
+}
+#about_quest{
+    border: 1px solid #aaaa;
+    width: 16vw; 
+    min-height: 8vh;
+}
+#about_nav_link :hover{
+    color: #f5a425 !important;
+}
+#about_nav_btn{
+    width: 10px;
+    height: 1em;
+    cursor: pointer;
+    color: #ffffff;
+}
+#about_nav_btn:hover{
+    color: #f5a425 !important;
+}
+#about_info_link{
+    color: #2ba0cb;
+}
+#about_info_link:hover{
+    color: #f5a425;
+}
+#abt_reg{
+    background-image: url('/static/images/coming-soon-bg.jpg');
+    width: 100%;
+    min-height: 100vh;
+    max-width: 100%;
+    gap: 10em !important;
+}
+#reg_content{
+    width: 45%; 
+    min-height: 60vh;
+}
+#acc_em{
+    font-style: normal;
+    color: #f5a425;
+}
+#form_div{
+    width: 26rem !important;
+}
+#form_input::-webkit-input-placeholder, #contact_inp::-webkit-input-placeholder{
+    color: white !important;
+}
+#form_input::-moz-placeholder, #contact_inp::-moz-placeholder{
+    color: white !important;
+}
+#form_input:-ms-input-placeholder, #contact_inp::-ms-input-placeholder{
+    color: white !important;
+}
+#form_input::placeholder, #contact_inp::placeholder{
+    color: white !important;
+}
+#form_input{
+    height: 2.5em;
+    width: 22rem !important;
+}
+#abt_form_btn, #contact_btn{
+    background-color: #f5a425;
+    width: fit-content;
+}
+#time{
+    min-height: 8em;
+    width: 10em;
+}
+#time_date{
+    color: #f5a425;
+}
+
+@media (max-width: 1180px) {
+    #contact_form{
+        width: 27rem;
+    }
+    #comment_form{
+        width: 27rem;
+    }
+    #abt_reg{
+        gap: 5em !important;
+    }
+    #reg_content{
+        width: 50%; 
+        min-height: 60vh;
+    }
+    #form_div{
+        width: 16rem !important;
+    }
+    #time{
+        min-height: 8em;
+        width: fit-content;
+    }
+    #time_date{
+        font-size: smaller;
+    }
+    #card_container{
+        overflow-x: scroll;
+        width: fit-content;
+    }
+    #card{
+        width: 14rem;
+        height: 29rem;
+    }
+}
+
+
+/* COURSES CSS */
+#courses_quest{
+    border: 1px solid #aaaa;
+    width: 16vw; 
+    min-height: 8vh;
+}
+#card{
+    width: 18rem;
+    height: 29rem;
+    background-color: #ffffff;
+}
+#card_contents{
+    min-height: 10vh;
+}
+#author{
+    border: 2px solid #f5a425;
+    border-radius: 100%;
+}
+#card_link_pay{
+    color: #f5a425;
+}
+#btn_card{
+    color: #ffffff;
+    font-size: 10px;
+
+}
+#btn_card:hover{
+    color: #f5a425;
+    cursor: pointer;
+}
+#video_section{
+    background-image: url('/static/images/video-bg.jpg');
+    width: 100%;
+    min-height: 100vh;
+    max-height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#video_details em{
+    color: #f5a425;
+}
+#video_details{
+    font-weight: 800;
+    font-size: 2em;
+}
+#vid_para{
+    font-size: smaller;
+}
+#vid_link{
+    background-color: #f5a425;
+    font-size: small;
+}
+#watch_video{
+    width: 45vw;
+    height: 60vh;
+}
