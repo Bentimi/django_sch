@@ -102,6 +102,37 @@ class course_details(forms.ModelForm):
         ]
 
 class question_form(forms.ModelForm):
+    question = forms.CharField(widget=forms.Textarea(attrs={
+            'placeholder': 'Question',
+            'class':'form-control shadow-sm border-1',
+            'cols':'5',
+            'rows':'6',
+        }), label='Question')
+    first_option = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'First Option',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='First Option')
+    second_option = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Second Option',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='Second Option')
+    third_option = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Third Option',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='Third Option')
+    forth_option = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Forth Option',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='Forth Option')
+    answer = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Answer',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='Answer')
     class Meta:
         model = questions
         fields = [

@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
-from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details
+from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form
 from .models import User
-from recordApp.models import course_register, course_model, cbt, 
+from recordApp.models import course_register, course_model, cbt, questions
 
 
 # Create your views here.
@@ -127,8 +127,38 @@ def cbtDetails(request, user_id):
 
 @login_required
 def cbtQuestions(request, user_id):
+    cbt_id = get_object_or_404(cbt, course_id = user_id)
     if request.method == 'POST':
-        pass
+        quest_form = question_form(request.POST or None)
+        if quest_form.is_valid():
+            with transaction.atomic():
+                form = quest_form.save(commit=False)
+                form.cbt = cbt_id
+                form.save()
+            messages.success(request, ('Question Successfully Added!'))
+            return HttpResponsePermanentRedirect(reverse('test_questions', args=(user_id,)))
+        else:
+            messages.error(request, ('Internal Error!'))
+            return HttpResponsePermanentRedirect(reverse('test_questions', args=(user_id,)))
+       
     else:
-        pass
-    return render(request, 'recordApp/cbt_questions.html')
+        quest_form = question_form(request.POST or None)
+        quest_agg = questions.objects.all().filter(cbt_id=cbt_id).count
+        query = questions.objects.all().filter(cbt_id=cbt_id)
+        if query:
+            for x in query:
+                course_title = x.cbt.course_title
+                course_id = x.cbt.course_id
+                course_code = x.cbt.course_code
+    return render(request, 'recordApp/cbt_questions.html', {
+        'questions':quest_form,
+        'course_title':course_title,
+        'course_id':course_id, 
+        'quest_agg':quest_agg,
+        'course_code': course_code,
+    })
+
+@login_required
+def viewQuestions(request, user_id):
+    all_questions = questions.objects.filter(cbt_id=user_id).exists
+    return render(request, 'recordApp/view_questions.html', {'all_questions':all_questions})

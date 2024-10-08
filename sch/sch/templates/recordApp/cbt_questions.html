@@ -18,15 +18,32 @@
       {% endif %}
        <div class="d-flex row justify-content-center gap-2">
         {% csrf_token %}
+        
+        {% if course_title %}
+        <div>
+            <div><strong>Course Title:</strong>  {{course_title}}</div>
+            <div><strong>Course Code:</strong>  {{course_code}}</div>
+            <div>
+                <a href="{% url 'view_questions' course_id %}">View Questions</a>
+            </div>
+        </div>
 
+          
+        {% endif %}
 
         {{course_details_form.as_p}}
-        {{reg_form.as_p}}
+        {{questions.as_p}}
 
         
        
        <div class="d-flex justify-content-center">
-         <button type="submit" class="btn btn-primary rounded-0" style="width: 8rem; height: 2.8rem;">Save</button>
+         <button type="submit" class="btn btn-primary rounded-0" style="width: 8rem; height: 2.8rem;">
+            {% if quest_agg is not 0 %}
+              Add
+            {% else %}
+                Save
+            {% endif %}
+         </button>
         </div>
         
         

@@ -35,7 +35,7 @@ class cbt(models.Model):
 
 class questions(models.Model):
     id = models.AutoField(primary_key=True)
-    cbt = models.OneToOneField(cbt, on_delete=models.CASCADE, unique=False, null=True)
+    cbt = models.ForeignKey(cbt, on_delete=models.CASCADE, unique=False, null=True)
     question = models.CharField(max_length=500, unique=False, null=True)
     first_option = models.CharField(max_length=500, unique=False, null=True)
     second_option = models.CharField(max_length=500, unique=False, null=True)
