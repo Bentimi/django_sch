@@ -160,5 +160,16 @@ def cbtQuestions(request, user_id):
 
 @login_required
 def viewQuestions(request, user_id):
-    all_questions = questions.objects.filter(cbt_id=user_id).exists
-    return render(request, 'recordApp/view_questions.html', {'all_questions':all_questions})
+    user_info = cbt.objects.all().filter(course_id = user_id)
+    if user_info:
+        for user in user_info:
+            id = user.id
+            all_questions = questions.objects.filter(cbt_id=id)
+            cbt_query = cbt.objects.filter(id=id)
+            if cbt_query:
+                for query in cbt_query:
+                    x = query.course_id
+    return render(request, 'recordApp/view_questions.html', {
+        'all_questions':all_questions,
+        'id':x
+        })

@@ -4,9 +4,13 @@
 {% load static %}
     
   
-  <section>
+  <section class="d-flex row gap-2">
     
     {% if all_questions %}
+    <div class="ms-3 d-flex gap-3">
+        <a class="btn btn-secondary rounded-0" href="{% url 'test_questions' id %}">Add Question</a>
+        <a class="btn btn-warning rounded-0" href="{% url 'test_details' id %}">Question Settings</a>
+    </div>
     <div
     class="table-responsive"
     >
@@ -19,10 +23,7 @@
         </caption>
         <tr>
             <th>S/N</th>
-            <th>Course Title</th>
-            <th>Course Code</th>
-            <th>Unit</th>
-            <th>Lecturer Incharge</th>
+            <th>Question</th>
             <th>Date Added</th>
             <th>Action</th>
         </tr>
@@ -35,9 +36,6 @@
                     <td scope="row">{{info.id}}</td>
                     <td>{{info.question}}</td>
                     <td>{{info.date_added}}</td>
-                    <td></td>
-                    <td></a></td>
-                    <td></td>
                     <td><a href=""><i class="fa fa-edit"></i></a></td>
 
 

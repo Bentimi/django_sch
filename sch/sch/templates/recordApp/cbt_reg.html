@@ -36,7 +36,7 @@
                 <tr class="">
                     <td scope="row">{{profile.course}}</td>
                     <td scope="row">{{profile.course_code}}</td>
-                    <td><a href="{% url 'test_details' profile.reg_id %}">Edit</a> <a href="{% url 'test_questions' profile.reg_id %}">Questions</a></td>
+                    <td><a class="btn btn-info" href="{% url 'view_questions' profile.reg_id %}">Questions</a></td>
                 </tr>
         
                  {% endfor %}
