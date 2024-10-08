@@ -1,20 +1,178 @@
 from django import forms
+from .models import User
 from admissionApp.models import admission_approval, aspirants_profile
+from userApp.models import Profile, users_status
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
-class admissionForm(forms.ModelForm):
-     gender_options = [
-        ("--Gender--", "--Gender--"),
-        ("Male", "Male"),
-        ("Female", "Female"),
-    ]
-     next_of_kin_relationship_option = [
-        ("--Select an option--", "--Select an option--"),
+class registrationForm(UserCreationForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'First Name',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='First Name')
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Last Name',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='Last Name')
+    username = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Username',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='Username')
+    email = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Email',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'email'
+        }), label='Email')
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder' : 'Password',
+        'class':'form-control shadow-sm border-1',
+        'type' : 'password'
+        }), label='Password')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder' : 'Confirm password',
+        'class':'form-control shadow-sm',
+        'type' : 'password'
+        }), label='Confirm Password')
+    class Meta:
+        model = User
+        fields = [
+            'id','first_name', 'last_name', 'username', 'email', 'password1', 'password2'
+        ]
+
+class confirmationForm(forms.ModelForm):
+    aspirant = forms.BooleanField(widget=forms.CheckboxInput(attrs={
+        'class':'form-check-input shadow-sm',
+        'type':'checkbox'
+    }), label='I agreed with terms and conditions')
+    class Meta:
+        model = users_status
+        fields = ['aspirant']
+
+class edit_userForm(forms.ModelForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'First Name',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='First Name', disabled=True)
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Last Name',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'text'
+        }), label='Last Name', disabled=True)
+    email = forms.CharField(widget=forms.TextInput(attrs={
+            'placeholder': 'Email',
+            'class':'form-control shadow-sm border-1',
+            'type' : 'email'
+        }), label='Email', disabled=True)
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 'last_name', 'email'
+        ]
+
+class loginForm(AuthenticationForm):
+    username  = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder':'Username',
+        'class' : 'form-control shadow-sm border-1',
+        'type':'text'
+    }), label='Username')
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+         'placeholder':'Password',
+        'class':'form-control shadow-sm border-1',
+        'type':'password'
+    }))
+    class Meta:
+        model = User
+        fields = [
+            'username', 'password'
+        ]
+
+class reg_profileForm(forms.ModelForm):
+    marital_status_options = [
+         ("--Select an Option--", "--Select an Option--"),
+         ("Single", "Single"),
+         ("Married", "Married"),
+         ("Others", "Others"),
+     ]
+    gender_options = [
+         ("--Select an Option--", "--Select an Option--"),
+         ("Male", "Male"),
+         ("Female", "Female"),
+     ]
+    next_of_kin_relationship_option = [
+        ("--Select an Option--", "--Select an Option--"),
         ("Brother", "Brother"),
         ("Father", "Father"),
         ("Mother", "Mother"),
         ("Sister", "Sister"),
         ("Other", "Other"),
     ]
+    d_o_b = forms.DateField(widget=forms.DateInput(attrs={
+        'class' : 'form-control shadow-sm border-1',
+        'type':'date'
+    }))
+    other_name = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Other Name',
+        'class':'form-control shadow-sm border-1',
+        'type' : 'text'
+    }))
+    address = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Address',
+        'class':'form-control shadow-sm border-1',
+        'type' : 'text'
+    }))
+    phone_no = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Phone Number',
+        'class':'form-control shadow-sm border-1',
+        'type' : 'text'
+    }))
+    marital_status = forms.CharField(widget=forms.Select(choices=marital_status_options,attrs={
+            'class':'form-select shadow-sm border-1'
+        }))
+    gender = forms.CharField(widget=forms.Select(choices=gender_options,attrs={
+            'class':'form-select shadow-sm border-1'
+        }))
+    next_of_kin = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Next of kin',
+        'class':'form-control shadow-sm border-1',
+        'type' : 'text'
+    }))
+    next_of_kin_phone_no = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Next of kin phone number',
+        'class':'form-control shadow-sm border-1',
+        'type' : 'text'
+    }))
+    next_of_kin_relationship = forms.CharField(widget=forms.Select(choices=next_of_kin_relationship_option,attrs={
+            'class':'form-select shadow-sm border-1'
+        }))
+    class Meta:
+        model = Profile
+        fields = [
+             'other_name','address', 'phone_no', 'd_o_b','marital_status','gender', 'next_of_kin', 'next_of_kin_phone_no', 'next_of_kin_relationship'
+        ]
+
+class profile_registrationForm(forms.ModelForm):
+    d_o_b = forms.DateField(widget=forms.DateInput(attrs={
+        'class' : 'form-control shadow-sm border-1',
+        'type':'date'
+    }))
+    other_name = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Other Name',
+        'class':'form-control shadow-sm rounded-0',
+        'type' : 'text'
+    }))
+    class Meta:
+        model = Profile
+        fields = [
+            'other_name','address', 'phone_no', 'd_o_b','marital_status', 
+            'nationality', 'state', 'gender', 'next_of_kin', 'next_of_kin_phone_no', 
+            'next_of_kin_relationship',
+        ]
+
+class admissionForm(forms.ModelForm):
+     
      course_options = [
         ("--Select Course--", "--Select Course--"),
         ("Digital Marketing", "Digital Marketing"),
@@ -23,71 +181,32 @@ class admissionForm(forms.ModelForm):
         ("Communications", "Communications"),
         ("Business Ethics", "Business Ethics"),
     ]
+     sponsorhip_options = [
+         ("--Select an Option--", "--Select an Option--"),
+         ("Parents", "Parents"),
+         ("Guardian", "Guardian"),
+         ("Others", "Others"),
+     ]
 
-     first_name = forms.CharField(widget=forms.NumberInput(attrs={
-         'placeholder':'First Name',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'text'
-     }), required=False)
-     middle_name = forms.CharField(widget=forms.NumberInput(attrs={
-         'placeholder':'Middle Name',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'text'
-     }), required=False)
-     last_name = forms.CharField(widget=forms.NumberInput(attrs={
-         'placeholder':'Last Name',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'text'
-     }), required=False)
-     username = forms.CharField(widget=forms.NumberInput(attrs={
-         'placeholder':'Username',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'text'
-     }), required=False)
-     gender = forms.CharField(widget=forms.Select(choices=gender_options,attrs={
-            'placeholder':'Gender',
+     sponsorhip = forms.CharField(widget=forms.Select(choices=sponsorhip_options,attrs={
+            'placeholder':'Sponsor',
             'class':'form-select shadow-sm rounded-0'
-        }), required=False)
-     d_o_b = forms.DateField(widget=forms.DateInput(attrs={
-         'placeholder':'Date of Birth',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'date'
-     }), required=False)
-     phone_no = forms.CharField(widget=forms.NumberInput(attrs={
-         'placeholder':'Phone Number',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'text'
-     }), required=False)
-     email = forms.CharField(widget=forms.NumberInput(attrs={
-         'placeholder':'Email',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'text'
-     }), required=False)
-     address = forms.CharField(widget=forms.TextInput(attrs={
-         'placeholder':'Address',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'text'
-     }), required=False)
+        }))
      country = forms.CharField(widget=forms.TextInput(attrs={
             'placeholder':'Country',
             'class':'form-control shadow-sm rounded-0'
-        }), required=False)
+        }))
      state = forms.CharField(widget=forms.TextInput(attrs={
          'placeholder':'State',
          'class':'form-control shadow-sm rounded-0',
          'type':'text'
-     }), required=False)
+     }))
      course = forms.CharField(widget=forms.Select(choices=course_options,attrs={
             'placeholder':'Course',
             'class':'form-select shadow-sm rounded-0'
-        }), required=False)
-     next_of_kin = forms.CharField(widget=forms.TextInput(attrs={
-         'placeholder':'Next of kin',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'text'
-     }), required=False)
-     next_of_kin_number = forms.CharField(widget=forms.TextInput(attrs={
-         'placeholder':'Next of Kin Number',
+        }))
+     next_of_kin_address = forms.CharField(widget=forms.TextInput(attrs={
+         'placeholder':'Next of Kin Address',
          'class':'form-control shadow-sm rounded-0',
          'type':'text'
      }))
@@ -95,11 +214,7 @@ class admissionForm(forms.ModelForm):
          'placeholder':'Next of Kin Email',
          'class':'form-control shadow-sm rounded-0',
          'type':'text'
-     }), required=False)
-     next_of_kin_relationship = forms.CharField(widget=forms.Select(choices=next_of_kin_relationship_option,attrs={
-            'placeholder':'Next of Kin Relationship',
-            'class':'form-select shadow-sm rounded-0'
-        }), required=False)
+     }))
      passport = forms.ImageField( 
         label="Passport", 
         widget=forms.FileInput(
@@ -107,7 +222,7 @@ class admissionForm(forms.ModelForm):
                 'type' : 'file',
                 'class':"form-control shadow-sm rounded-0", 
                 'aria-describedby':"fileHelpId"
-                }), required=False)
+                }))
      o_levels = forms.ImageField( 
         label="O'Level Result", 
         widget=forms.FileInput(
@@ -115,7 +230,7 @@ class admissionForm(forms.ModelForm):
                 'type' : 'file',
                 'class':"form-control shadow-sm rounded-0", 
                 'aria-describedby':"fileHelpId"
-                }), required=False)
+                }))
      utme = forms.ImageField( 
         label="UTME Result", 
         widget=forms.FileInput(
@@ -123,7 +238,7 @@ class admissionForm(forms.ModelForm):
                 'type' : 'file',
                 'class':"form-control shadow-sm rounded-0", 
                 'aria-describedby':"fileHelpId"
-                }), required=False)
+                }))
      national_identity = forms.ImageField( 
         label="National Identity Card", 
         widget=forms.FileInput(
@@ -131,15 +246,10 @@ class admissionForm(forms.ModelForm):
                 'type' : 'file',
                 'class':"form-control shadow-sm rounded-0", 
                 'aria-describedby':"fileHelpId"
-                }), required=False)
-     password = forms.CharField(widget=forms.TextInput(attrs={
-         'placeholder':'Next of Kin Email',
-         'class':'form-control shadow-sm rounded-0',
-         'type':'password'
-     }), required=False)
+                }))
    
      class Meta:
         model = aspirants_profile
         fields = [
-            'first_name', 'middle_name', 'last_name', 'username', 'gender', 'd_o_b', 'phone_no', 'email', 'address', 'country', 'state', 'course', 'next_of_kin', 'next_of_kin_number', 'next_of_kin_email', 'next_of_kin_address', 'next_of_kin_relationship', 'passport', 'o_levels', 'utme', 'national_identity', 'password'
+            'sponsorhip', 'country', 'state', 'course', 'next_of_kin_email', 'next_of_kin_address', 'passport', 'o_levels', 'utme', 'national_identity'
         ]

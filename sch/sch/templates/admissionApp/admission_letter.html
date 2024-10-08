@@ -1,0 +1,44 @@
+{% extends "index.html" %}
+
+{% block title %}<title>Admission Reg Page</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section id="about_section" class="py-5">
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+    <div class="card w-50 p-3 border-0 rounded-0 " style="height: fit-content; background-color: #ccc;">
+            <div class="d-flex justify-content-center"><a class="navbar-brand text-white fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+            <h5 class="text-center text-capitalize fw-bold">admission letter</h5>
+            {% if all_profile %}
+              {% for profile in all_profile %}
+              {% for data in info %}
+              <div class="d-flex justify-content-between">
+                <div><p>Grad School, <br>Ogbomoso,<br>Nigeria. </p></div>
+                
+                <div>
+                    {% if data.passport %}
+                    <img src="{{data.passport.url}}" style="width: 5rem; height: 5rem;" alt="" srcset="">
+                    {% else %}
+                    <img src="{% static '/images\profile_icon.png' %}" style="width: 5rem; height: 5rem;" alt="" srcset="">
+                    {% endif %}
+                </div>
+            </div>
+
+            <div>
+                <p class="fw-bold">Dear {{profile.first_name}},</p>
+                <p>
+                    From the admission office of this great citadel, we are please to inform you that <strong>({{profile.last_name}} {{profile.first_name}} {{profile.profile.other_name}})</strong> has been offered an admission to study <strong>{{data.course}}</strong> for the period of four years(4 years).
+                </p>
+                <p>Yours Faithfully,</p>
+                <p class="fw-bold">Admission Office</p>
+            </div>
+
+            {% endfor %}
+              {% endfor %}
+            {% endif %}
+        </div>
+    </div>    
+       </section>
+
+  {% endblock personal_page %}  

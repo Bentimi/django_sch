@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from .forms import SignUpForm, User_update_form, Profile_update_form
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, users_status
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
@@ -50,9 +50,11 @@ def editProfile(request, user_id):
                 if profile_form.cleaned_data['staff']:
                     user.is_staff = True
                     user.save()
+                    users_status.objects.filter(user_id=user_id).update(staff=True)
                 else:
                     user.is_staff = False
                     user.save()
+                    users_status.objects.filter(user_id=user_id).update(staff=False)
             messages.success(request, ('Your profile was successfilly updated!'))
             return HttpResponsePermanentRedirect(reverse('profile', args=user_id))
         else:

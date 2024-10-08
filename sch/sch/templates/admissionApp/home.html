@@ -1,0 +1,28 @@
+<!-- your_app/templates/home.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h2>Welcome, {{ request.user.first_name }}!</h2>
+    <p>You are successfully logged in.</p>
+    <a href="{% url 'admission_logout' %}">Logout</a>
+
+    <!-- <div class="d-flex justify-content-evenly gap-3 row">
+
+        <div class="col-sm-10 col-md-5 col-lg-3"><strong>Surname:</strong> {{profile.last_name}}</div>
+
+        <div class="col-sm-10 col-md-5 col-lg-3"><strong>Other Names:</strong> {{profile.first_name}} {% if profile.profile.other_name %} {{profile.profile.other_name}} {% endif %}</div>
+
+        <div class="col-sm-10 col-md-5 col-lg-3"><strong>Email:</strong> {{profile.email}}</div>
+
+        <div class="col-sm-10 col-md-5 col-lg-3"><strong>Phone Number:</strong> {{profile.profile.phone_no}}</div>
+
+        <div class="col-sm-10 col-md-5 col-lg-3"><strong>Address:</strong> {{profile.profile.address}}</div>
+
+        <div class="col-sm-10 col-md-5 col-lg-3"><strong>Origin:</strong> {{reg.state}}, {{reg.country}}</div>
+    </div> -->
+    
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block title %}<title>Admission Reg Page</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section id="about_section" class="py-5">
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+       <form action="" method="post" class="d-flex row justify-content-center form-layout gap-3 card px-2 mx-auto w-75 rounded-0 py-5" enctype="multipart/form-data">
+        <h2 class="text-center">
+            Registration Form
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+       <div class="d-flex row justify-content-center">
+        {% csrf_token %}
+
+        
+        <p class="text-center  text-secondary fst-italic">Carefully fill the form below correctly...</p>
+        
+        {{form.as_p}}
+              
+       <div class="d-flex justify-content-center">
+         <button type="submit" class="btn btn-primary rounded-0" style="width: 10rem; height: 3rem;">Register</button>
+        </div>
+        
+        <!-- <div class="d-flex justify-content-evenly">
+          <p class="">Don't have an account?<a href="{% url 'signup' %}" class="text-decoration-none"> Signup</a></p>
+          <a href="{% url 'password_reset' %}" class="text-decoration-none">Forget Password?</a>
+        </div> -->
+
+       </form>
+    </div>
+</section>
+
+  {% endblock personal_page %}  

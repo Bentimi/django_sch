@@ -1,0 +1,57 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>cbt setup</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    <div class="d-flex row gap-5 justify-content-center">
+       <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5">
+        <h2 class="text-center">
+           CBT SETUP
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+       <div class="d-flex row justify-content-center gap-2 px-3">
+       
+       {% if all_profile %}
+       <div
+        class="table-responsive"
+       >
+        <table
+            class="table table-light"
+        >
+            <thead>
+                <tr>
+                    <th scope="col">Course Title</th>
+                    <th scope="col">Course Code</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in all_profile %}
+                <tr class="">
+                    <td scope="row">{{profile.course}}</td>
+                    <td scope="row">{{profile.course_code}}</td>
+                    <td><a href="{% url 'test_details' profile.reg_id %}">Edit</a> <a href="{% url 'test_questions' profile.reg_id %}">Questions</a></td>
+                </tr>
+        
+                 {% endfor %}
+            </tbody>
+        </table>
+       </div>
+       
+           
+         <!-- <div>
+            <div>{{profile.course_model.user.last_name}} {{profile.course_model.user.first_name}}</div>
+         </div> -->
+
+         
+       {% endif %}
+       </div>
+</section>
+
+  {% endblock personal_page %}  

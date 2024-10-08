@@ -7,7 +7,7 @@
   
   <section id="about_section" class="py-5">
     <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
-       <form action="" method="post" class="d-flex row justify-content-center form-layout gap-3 card px-2 mx-auto w-75 rounded-0 py-5" enctype="multipart/form-data">
+       <form action="" method="post" class="d-flex row justify-content-center form-layout gap-3 card px-5 mx-auto w-50 rounded-0 py-5" enctype="multipart/form-data">
         <h2 class="text-center">
             Registration Form
       </h2>
@@ -19,33 +19,96 @@
        <div class="d-flex row justify-content-center">
         {% csrf_token %}
 
-        <!-- {{form.as_p}} -->
-
+        
         <p class="text-center  text-secondary fst-italic">Carefully fill the form below correctly...</p>
+        
+        {{reg_form.as_p}}
+       
+        <!-- <div>
+            <label for="">I agree to the terms and conditions</label>
+            <input type="checkbox" name="is_registered" id="" class="form-check-input shadow-sm">
+        </div> -->
 
-        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
-            {{form.first_name}}
-            <label for="first_name" class="ms-3">First Name</label>
+        {{confirmation.as_p}}
+        <!-- {{profile_form.as_p}} -->
+        <!-- {{admission_form.as_p}} -->
+
+        
+        <!-- <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="first_name">First Name</label>
+            {{reg_form.first_name}}
+        </div>
+        
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="other_name">Middle</label>
+            {{profile_form.other_name}}
+        </div>
+        
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="last_name">Last Name:</label>
+            {{reg_form.last_name}}
         </div>
 
-        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
-            {{form.middle_name}}
-            <label for="middle_name" class="ms-3">Middle Name</label>
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="username">Username:</label>
+            {{reg_form.username}}
         </div>
 
-        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
-            {{form.last_name}}
-            <label for="last_name" class="ms-3">Last Name</label>
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="email">Email Address:</label>
+            {{reg_form.email}}
         </div>
 
-        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
-            {{form.username}}
-            <label for="username" class="ms-3">Username</label>
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="phone_no">Phone Number</label>
+            {{profile_form.phone_no}}
         </div>
 
         <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
             <label for="gender">Gender</label>
+            {{profile_form.gender}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="d_o_b">Date of Birth</label>
+            {{profile_form.d_o_b}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="marital_status">Marital Status</label>
+            {{profile_form.marital_status}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="address">Address</label>
+            {{profile_form.address}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="password1">Password</label>
+            {{reg_form.password1}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="password2">Confirm Password</label>
+            {{reg_form.password2}}
+        </div> -->
+
+        
+
+        <!-- <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="gender">Gender</label>
             {{form.gender}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="marital_status">Marital Status</label>
+            {{form.marital_status}}
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
+            <label for="sponsorhip">Sponsor</label>
+            {{form.sponsorhip}}
         </div>
 
         <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
@@ -98,6 +161,11 @@
             <label for="next_of_kin_email" class="ms-3">Next of Kin Email</label>
         </div>
 
+        <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
+            {{form.next_of_kin_address}}
+            <label for="next_of_kin_address" class="ms-3">Next of Kin Address</label>
+        </div>
+
         <div class="col-sm-12 col-md-5 col-lg-5 mb-3">
             <label for="next_of_kin_relationship">Next of Kin Relationship</label>
             {{form.next_of_kin_relationship}}
@@ -131,16 +199,16 @@
         <div class="form-floating col-sm-12 col-md-5 col-lg-5 mb-3">
             {{form.password}}
             <label for="password" class="ms-3">Confirm Password</label>
-        </div>
+        </div> -->
        
        <div class="d-flex justify-content-center">
-         <button type="submit" class="btn btn-primary rounded-0" style="width: 10rem; height: 3rem;">Register</button>
+         <button type="submit" class="btn btn-primary rounded-0" style="width: 10rem; height: 3rem;">Save</button>
         </div>
         
-        <!-- <div class="d-flex justify-content-evenly">
-          <p class="">Don't have an account?<a href="{% url 'signup' %}" class="text-decoration-none"> Signup</a></p>
-          <a href="{% url 'password_reset' %}" class="text-decoration-none">Forget Password?</a>
-        </div> -->
+        <div class="d-flex justify-content-evenly">
+          <p class="">Already have an account?<a href="{% url 'admission_login' %}" class="text-decoration-none">Login</a></p>
+          <!-- <a href="{% url 'password_reset' %}" class="text-decoration-none">Forget Password?</a> -->
+        </div>
 
        </form>
     </div>

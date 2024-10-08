@@ -37,12 +37,13 @@ class Profile(models.Model):
 
     profile_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    other_name = models.CharField(unique=False, max_length=50, null=True, blank=True)
     address = models.CharField(max_length=50, null=True, blank=True, unique=False)
     phone_no = models.CharField(max_length=11, null=True, blank=True, unique=True)
-    email = models.EmailField(max_length=30, null=True, blank=True, unique=True)
-    matric_no = models.CharField(max_length=30, null=True, blank=True, unique=True)
-    level = models.CharField(max_length=30, null=True, blank=True, unique=False)
-    department = models.CharField(max_length=30, null=True, blank=True, unique=False)
+    # email = models.EmailField(max_length=30, null=True, blank=True, unique=True)
+    # matric_no = models.CharField(max_length=30, null=True, blank=True, unique=True)
+    # level = models.CharField(max_length=30, null=True, blank=True, unique=False)
+    # department = models.CharField(max_length=30, null=True, blank=True, unique=False)
     nin = models.CharField(max_length=11, null=True, blank=True, unique=True)
     d_o_b = models.DateField(unique=False, max_length=11, null=True)
     gender = models.CharField(choices=gender_option, unique=False, max_length=11, null=True)
@@ -58,6 +59,7 @@ class Profile(models.Model):
     next_of_kin = models.CharField(unique=False, max_length=30, null=True)
     next_of_kin_phone_no = models.CharField(max_length=11, null=True, blank=True, unique=True)
     next_of_kin_relationship = models.CharField(choices=next_of_kin_relationship_option, null=True, unique=False, max_length=15)
+    category = models.CharField(max_length=20, null=True, blank=True, unique=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -67,3 +69,19 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+class users_status(models.Model):
+    status_id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    student = models.BooleanField(default=False, unique=False)
+    staff = models.BooleanField(default=False, unique=False)
+    aspirant = models.BooleanField(default=False, unique=False)
+
+@receiver(post_save, sender=User)
+def create_user_status(sender, instance, created, **kwargs):
+    if created:
+        users_status.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_status(sender, instance, **kwargs):
+    instance.users_status.save()

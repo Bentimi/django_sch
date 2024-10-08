@@ -262,7 +262,10 @@
                   <ul class="list-unstyled" id="nav-items">
                     {% if request.user.is_superuser %}
                       <li id="accordion_li">
-                        <a id="accordion_link" href="{% url 'profile' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-eye"></i> View Courses</a>
+                        <a id="accordion_link" href="{% url 'course_setup' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> Register Course <i class="fa fa-edit"></i></a>
+                      </li>
+                      <li id="accordion_li">
+                        <a id="accordion_link" href="{% url 'view_course' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> Registered Courses <i class="fa fa-edit"></i></a>
                       </li>
                     {% elif request.user.is_active and not request.user.is_staff %}
                       <li id="accordion_li">
@@ -313,6 +316,30 @@
               <div id="flush-collapsefour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="transition: 1s ease-in-out;">
                 <div class="accordion-body bg-secondary bg-opacity-25">
                   <ul class="list-unstyled" id="nav-items">
+                    {% if request.user.is_superuser %}
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="{% url 'cbt_reg' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i>CBT</a>
+                    </li>
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i> Result</a>
+                    </li>
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Exam Clearance</a>
+                    </li>
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Exam Card</a>
+                    </li>
+                    {% else %}
+                    <li id="accordion_li"></li>
+                      <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i> Result</a>
+                    </li>
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Exam Clearance</a>
+                    </li>
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Exam Card</a>
+                    </li>
+                    {% endif %}
                     <li id="accordion_li">
                       <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i> Result</a>
                     </li>

@@ -1,0 +1,166 @@
+{% extends "index.html" %}
+
+{% block title %}<title>Admission Reg Page</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section id="about_section" class="py-5">
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+        <div class="card w-75 p-3">
+       <div>
+        {% if my_profile  %}
+          {% for profile in my_profile  %}
+          {% if registration_profile %}
+            {% for reg in registration_profile %}
+            
+            <div class="d-flex justify-content-end">
+                <a class="text-decoration-none fw-bold fs-6" href="{% url 'admission_logout' %}">Logout</a>
+            </div>
+          <div class="d-flex justify-content-between align-items-center py-1">
+
+             
+          <div class="fs-3 fw-bold">{{profile.first_name|upper}} {{profile.last_name}}</div>
+          
+          <div>
+          {% if reg.passport %}
+            <img src="{{reg.passport.url}}" alt="" srcset="" class="rounded-circle" style="width: 5rem; height: 5rem;">
+            {% else %}
+            <img src="{% static '/images\profile_icon.png' %}" alt="" srcset="" class="rounded-circle" style="width: 5rem; height: 5rem;">
+            {% endif %}
+        </div>
+
+          </div>
+          
+       </div>
+        <div class="row gap-2 g-2 justify-content-evenly ">
+            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 text-center bg-info" style="height: 7rem;">
+                <h5 class="fw-bold text-white">Admission Status</h5>
+                {% if reg.registration_status == True and reg.admission_approval.status == False %}
+                <div><p class="">In progress... <i class="fa fa-hourglass-half"></i></p></div>
+                {% elif reg.registration_status == True and reg.admission_approval.status == True %}
+                <div><a href="{% url 'admission_letter' reg.user_id %}" class="text-decoration-none">print admission letter <i class="fa fa-print"></i></a></div>
+                {% else %}
+            <div><p class="">Not in process yet...</p></div>
+            {% endif %}
+                
+            </div>
+            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 text-center bg-warning" style="height: 7rem;">
+                <h5 class="fw-bold text-white">Registration Status</h5>
+               
+                    {% if reg.registration_status == True %}
+                    <p class="text-success">Completed <i class="fa fa-check-circle"></i></p>
+                    {% else %}
+                   <div class="d-flex justify-content-center gap-3">
+                    <p class="text-success">Incomplete <i class="fa fa-times-circle"></i></p>
+                    <a href="{% url 'dashboard_edit' profile.id %}" class="" style="width: fit-content;">click here</a>
+                   </div>
+                    {% endif %}
+               
+                
+            </div>
+            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 text-center bg-success" style="height: 7rem;">
+                <h5 class="fw-bold text-white">Transaction History</h5>
+            </div>
+        </div>
+        
+        <div class="my-4">
+                  
+
+                {% if reg.registration_status is True %}
+                    
+                <div class="d-flex gap-2">
+                    <a href="{% url 'aspirant_profile' profile.id %}" class="btn btn-primary rounded-0">Profile</a>
+                     <!-- Modal trigger button -->
+                    <button
+                    type="button"
+                    class="btn btn-primary btn-md rounded-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalId"
+                >
+                Admission Status
+                </button>
+                </div>
+
+                {% else %}
+                    <div class="d-flex justify-content-center gap-2 fs-4">
+                        <p>Registration Incomplete...</p> 
+                        <a href="{% url 'dashboard_edit' profile.id %}">click here</a>
+                    </div>
+                {% endif %}
+                
+                
+           
+            
+            <!-- Modal Body -->
+            <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+            <div
+                class="modal fade"
+                id="modalId"
+                tabindex="-1"
+                data-bs-backdrop="static"
+                data-bs-keyboard="false"
+                
+                role="dialog"
+                aria-labelledby="modalTitleId"
+                aria-hidden="true"
+            >
+                <div
+                    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+                    role="document"
+                >
+                    <div class="modal-content bg-info">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitleId">
+                                <div class="d-flex justify-content-center"><a class="navbar-brand text-white fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+                            </h5>
+                            <button
+                                type="button"
+                                class="btn-close shadow-none"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body">{% if reg.admission_approval.status == True %}
+                            <div>
+                              <p>Congratulations you have been offered admission into <strong>{{reg.course}}</strong></p>
+                            </div>
+                          {% else %}
+                          <div>
+                            <p>You haven't been offered admission yet!</p>
+                          </div>
+                          {% endif %}</div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn btn-dark rounded-0"
+                                data-bs-dismiss="modal"
+                            >
+                                Close
+                            </button>
+                            <!-- <button type="button" class="btn btn-primary">Close</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Optional: Place to the bottom of scripts -->
+            <script>
+                const myModal = new bootstrap.Modal(
+                    document.getElementById("modalId"),
+                    options,
+                );
+            </script>
+            
+         
+        </div>
+
+       </div>
+       {% endfor %}
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+    </div>
+</section>
+
+  {% endblock personal_page %}  

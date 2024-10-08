@@ -1,0 +1,26 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>Course Page</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    <div class="d-flex row gap-5 justify-content-center">
+       <form action="" method="post" class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5">
+        <h2 class="text-center">
+            Course Setup
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+       <div class="d-flex row justify-content-center gap-2 px-3">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary rounded-0" style="width: fit-content;">Save</button>
+    </div>
+       </form>
+</section>
+
+  {% endblock personal_page %}  

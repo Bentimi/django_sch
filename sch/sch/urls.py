@@ -32,6 +32,7 @@ urlpatterns = [
     re_path(r'^accounts/signup/$', SignUpView.as_view(), name='signup'),
     re_path(r'^userApp/', include("userApp.urls")),
     re_path(r'^admissionApp/', include("admissionApp.urls")),
+    re_path(r'^recordApp/', include("recordApp.urls")),
     path('nav/', TemplateView.as_view(template_name = 'side_nav.html'), name='nav'),
     
 ]

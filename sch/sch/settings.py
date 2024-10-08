@@ -30,6 +30,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# AUTHENTICATION_BACKENDS = [
+#     'admissionApp.backends.AdmissionBackend',  # Your custom backend
+#     'django.contrib.auth.backends.ModelBackend',  # Default backend
+# ]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -173,5 +178,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # login and logout
+LOGIN_URL = 'admission_login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
