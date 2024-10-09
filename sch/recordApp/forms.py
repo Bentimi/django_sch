@@ -138,3 +138,10 @@ class question_form(forms.ModelForm):
         fields = [
             'question', 'first_option', 'second_option', 'third_option', 'forth_option', 'answer'
         ]
+
+class test_form(forms.ModelForm):
+    class Meta:
+        model = questions
+        fields = [
+            'question', 'first_option', 'second_option', 'third_option', 'forth_option'
+        ]

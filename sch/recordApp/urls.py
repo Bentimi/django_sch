@@ -11,4 +11,6 @@ urlpatterns = [
     re_path(r'^test_details/(?P<user_id>\d+)/', views.cbtDetails, name='test_details'),
     re_path(r'^test_questions/(?P<user_id>\d+)/', views.cbtQuestions, name='test_questions'),
     re_path(r'^view_questions/(?P<user_id>\d+)/', views.viewQuestions, name='view_questions'),
+    re_path(r'^edit_questions/(?P<user_id>\d+)/', views.editQuestions, name='edit_questions'),
+    re_path(r'^cbt_test/(?P<user_id>\d+)/', views.cbtTest, name='cbt_test'),
 ]

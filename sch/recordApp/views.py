@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
-from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form
+from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form, test_form
 from .models import User
 from recordApp.models import course_register, course_model, cbt, questions
 
@@ -111,7 +111,7 @@ def cbtDetails(request, user_id):
             reg_form.save()
             course_details_form.save()
             messages.success(request, ('Successfully Updated!'))
-            return HttpResponsePermanentRedirect(reverse('test_details', args=(user_id,)))
+            return HttpResponsePermanentRedirect(reverse('view_questions', args=(cbt_id.course.reg_id,)))
         else:
             messages.error(request, ('Internal Error!'))
             return HttpResponsePermanentRedirect(reverse('test_details', args=(user_id,)))
@@ -119,10 +119,20 @@ def cbtDetails(request, user_id):
     else:
         reg_form = reg_cbt(instance=cbt_id)
         course_details_form = course_details(instance=course)
-
+        query = questions.objects.all().filter(cbt_id=cbt_id)
+        if query:
+            for x in query:
+                course_title = x.cbt.course_title
+                course_id = x.cbt.course_id
+                course_code = x.cbt.course_code
+                {
+                'course_title':course_title,
+                'course_id':course_id, 
+                'course_code': course_code,}
         return render(request, 'recordApp/cbt_form.html', {
             'reg_form':reg_form,
-            'course_details_form':course_details_form
+            'course_details_form':course_details_form,
+            'course_id':course_id, 
         })
 
 @login_required
@@ -157,19 +167,52 @@ def cbtQuestions(request, user_id):
         'quest_agg':quest_agg,
         'course_code': course_code,
     })
-
+id_user = ''
 @login_required
 def viewQuestions(request, user_id):
-    user_info = cbt.objects.all().filter(course_id = user_id)
+    user_info = cbt.objects.all().filter(course_id=user_id)
     if user_info:
         for user in user_info:
             id = user.id
+            global id_user
             all_questions = questions.objects.filter(cbt_id=id)
             cbt_query = cbt.objects.filter(id=id)
             if cbt_query:
                 for query in cbt_query:
-                    x = query.course_id
+                    course_id = query.course_id
+                    id_user = course_id
+                    print(course_id)
     return render(request, 'recordApp/view_questions.html', {
         'all_questions':all_questions,
-        'id':x
+        'id':course_id
         })
+
+@login_required
+def editQuestions(request, user_id):
+    cbt_id = get_object_or_404(questions, id=user_id)
+    if request.method == "POST":
+        quest_form = question_form(request.POST or None, instance=cbt_id)
+        if quest_form.is_valid():
+            with transaction.atomic():
+                quest_form.save()
+                id = cbt_id.cbt.course.reg_id
+                messages.success(request, ('Question Successfully Updated!'))
+                return viewQuestions(request, id)
+
+    else:
+        quest_form = question_form(instance=cbt_id)
+    return render(request, 'recordApp/edit_questions.html', {
+        'questions':quest_form,
+    })
+
+@login_required
+def cbtTest(request, user_id):
+     quest_id = questions.objects.filter(cbt_id=5)
+     if request.method == 'POST':
+         pass
+     else:
+         question_form = test_form(instance=quest_id)
+    #  question_form = questions.objects.all().filter(cbt_id=5)
+     return render(request, 'recordApp/cbt_test.html', {
+         'question_form':question_form
+     })

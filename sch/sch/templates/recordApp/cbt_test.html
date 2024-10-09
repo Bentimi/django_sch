@@ -1,0 +1,99 @@
+{% extends "side_nav.html" %}
+
+{% block title %}<title>cbt questions</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section id="about_section" class="py-5">
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+       <!-- <form action="" method="post" class="d-flex row justify-content-center form-layout gap-3 card px-2 mx-auto w-50 rounded-0 py-5">
+        <h2 class="text-center">
+           CBT Question
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+       <div class="d-flex row justify-content-center gap-2">
+        {% csrf_token %}
+        
+        {% if course_title %}
+        <div>
+            <div><strong>Course Title:</strong>  {{course_title}}</div>
+            <div><strong>Course Code:</strong>  {{course_code}}</div>
+            <div>
+                <a href="{% url 'view_questions' course_id %}">View Questions</a>
+            </div>
+        </div>
+
+          
+        {% endif %}
+
+        {% if question_form %}
+
+        {% for question in question_form %}
+          {{question}}
+        {% endfor %}
+          
+        {% endif %}
+
+        
+       
+       <div class="d-flex justify-content-center">
+         <button type="submit" class="btn btn-primary rounded-0" style="width: 8rem; height: 2.8rem;">
+            {% if quest_agg is not 0 %}
+              Add
+            {% else %}
+                Save
+            {% endif %}
+         </button>
+        </div>
+        
+        
+
+    </form> -->
+    <div class="card w-50">
+       
+       
+
+        {% if question_form %}
+        <form action="" method="post">
+            {% for quest in question_form %}
+            {{quest.id}}
+            {{quest.question}}
+         
+          <ol type="A" class="d-flex gap-3 justify-content-evenly">
+            <li>
+                <div class="mx-2">
+                    <input type="radio" name="options" class="form-check-input mx-2" value="{{quest.first_option}}" id="">{{quest.first_option}}
+                </div>
+            </li>
+            <li>
+                <div class="mx-2">
+                    <input type="radio" name="options" class="form-check-input mx-2" value="{{quest.second_option}}" id="">{{quest.second_option}}
+                </div>
+            </li>
+            <li>
+                <div class="mx-2">
+                    <input type="radio" name="options" class="form-check-input mx-2" value="{{quest.third_option}}" id="">{{quest.third_option}}
+                </div>
+            </li>
+            <li>
+                <div class="mx-2">
+                    <input type="radio" name="options" class="form-check-input mx-2" value="{{quest.forth_option}}" id="">{{quest.forth_option}}
+                </div>
+            </li>
+          </ol>
+          </form>
+        {% endfor %}
+          
+        {% endif %}
+      </div>
+
+
+    </div>
+</section>
+
+  {% endblock personal_page %}  
