@@ -269,11 +269,11 @@
                       </li>
                     {% elif request.user.is_active and not request.user.is_staff %}
                       <li id="accordion_li">
-                        <a id="accordion_link" href="{% url 'edit_profile' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-book"></i> Course Form</a>
+                        <a id="accordion_link" href="{% url 'course_reg' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-book"></i> Course Registration</a>
                       </li>
                       
                       <li id="accordion_li">
-                        <a id="accordion_link" href="{% url 'password_change' %}" class="text-decoration-none fw-bold primary text-dark"> <i class="fa fa-print"></i> Print Course Form</a>
+                        <a id="accordion_link" href="{% url 'course_form' request.user.id %}" class="text-decoration-none fw-bold primary text-dark"> <i class="fa fa-print"></i>View Course Form</a>
                       </li>  
                       {% endif %}
                    </ul>
@@ -321,7 +321,7 @@
                       <a id="accordion_link" href="{% url 'cbt_reg' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i>CBT Questions</a>
                     </li>
                     <li id="accordion_li">
-                      <a id="accordion_link" href="{% url 'cbt_test' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i>Computer Based Test</a>
+                      <a id="accordion_link" href="{% url 'cbt_test' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i>Computer Based Test</a>
                     </li>
                     <li id="accordion_li">
                       <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i> Result</a>

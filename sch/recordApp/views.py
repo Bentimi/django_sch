@@ -6,7 +6,7 @@ from django.db import transaction
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form, test_form
 from .models import User
-from recordApp.models import course_register, course_model, cbt, questions
+from recordApp.models import course_register, course_model, cbt, questions, course_form
 
 
 # Create your views here.
@@ -186,10 +186,16 @@ def viewQuestions(request, user_id):
         'all_questions':all_questions,
         'id':course_id
         })
-
+id_cbt = ''
 @login_required
 def editQuestions(request, user_id):
+    
     cbt_id = get_object_or_404(questions, id=user_id)
+    cbt_data = questions.objects.all().filter(id=user_id)
+    for id in cbt_data:
+        global id_cbt
+        id_cbt = id.cbt.id
+        print(id_cbt)
     if request.method == "POST":
         quest_form = question_form(request.POST or None, instance=cbt_id)
         if quest_form.is_valid():
@@ -206,13 +212,77 @@ def editQuestions(request, user_id):
     })
 
 @login_required
-def cbtTest(request, user_id):
+def cbtTest(request):
+     
+     print(f'Hey: {str(id_cbt)}')
+     print('hello')
      quest_id = questions.objects.filter(cbt_id=5)
      if request.method == 'POST':
-         pass
+         form = test_form(request.POST or None)
+         question_data = questions.objects.all().filter(cbt_id=5)
+        #  options = request.POST['options']
+         if form.is_valid():
+            user_answer = form.cleaned_data['answer']
+            if question_data:
+                for quest in question_data:
+                    answer = quest.answer
+                    if user_answer == answer:
+                        print(f'+1 {user_answer}')
+                    else:
+                        print(f'+0 {user_answer}')
+
      else:
-         question_form = test_form(instance=quest_id)
-    #  question_form = questions.objects.all().filter(cbt_id=5)
+         
+        form = test_form(request.POST)
+        question_data = questions.objects.all().filter(cbt_id=5)
+         
+       
      return render(request, 'recordApp/cbt_test.html', {
-         'question_form':question_form
-     })
+         'form':form,
+         'question_data':question_data,
+         'cbt_no':id_cbt
+         })
+
+@login_required
+def courseReg(request, user_id):
+    request.user.id = user_id
+    all_courses = course_register.objects.all()
+    registered_courses = course_form.objects.all().filter(user_id=user_id)
+    return render(request, 'recordApp/course_form_reg.html', {
+       'all_courses':all_courses,
+       'registered_courses':registered_courses
+   })
+
+@login_required
+def addCourses(request, course_id):
+    user_id = request.user.id
+    course_info = course_form.objects.filter(course_id=course_id, user_id=user_id)
+    if course_info.exists():
+        pass
+    else:
+        course_form.objects.create(course_id=course_id, user_id=user_id)
+
+    return courseReg(request, request.user.id)
+
+@login_required
+def removeCourses(request, course_id):
+    user_id = request.user.id
+    course_form.objects.filter(course_id=course_id, user_id=user_id).delete()
+    return courseReg(request, request.user.id)
+
+unit = 0
+@login_required
+def courseForm(request, user_id):
+    request.user.id = user_id
+    all_courses = course_register.objects.all()
+    registered_courses = course_form.objects.all().filter(user_id=user_id)
+    if registered_courses:
+        reg_course = registered_courses.values()
+        for reg in reg_course:
+            unit = reg.get("course")
+        total_unit = unit
+    return render(request, 'recordApp/course_form.html', {
+       'all_courses':all_courses,
+       'registered_courses':registered_courses,
+       'total_unit':total_unit
+   })

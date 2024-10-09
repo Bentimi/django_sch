@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from recordApp.models import course_register, cbt, questions
+from recordApp.models import course_register, cbt, questions, course_form
 
 class courseAddForm(forms.ModelForm):
     course = forms.CharField(widget=forms.TextInput(attrs={
@@ -139,9 +139,15 @@ class question_form(forms.ModelForm):
             'question', 'first_option', 'second_option', 'third_option', 'forth_option', 'answer'
         ]
 
-class test_form(forms.ModelForm):
-    class Meta:
-        model = questions
-        fields = [
-            'question', 'first_option', 'second_option', 'third_option', 'forth_option'
-        ]
+class test_form(forms.Form):
+     answer = forms.CharField(widget=forms.TextInput(attrs={
+            'type' : 'text'
+        }), label='Answer')
+     
+# class courseForm(forms.ModelForm):
+#     class Meta:
+#         model = course_form
+#         fields = [
+
+#         ]
+     

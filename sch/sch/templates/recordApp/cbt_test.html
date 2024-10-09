@@ -58,9 +58,13 @@
        
        
 
-        {% if question_form %}
+        {% if question_data %}
         <form action="" method="post">
-            {% for quest in question_form %}
+            {% csrf_token %}
+           <div>
+            {{cbt_no}}
+           </div>
+            {% for quest in question_data %}
             {{quest.id}}
             {{quest.question}}
          
@@ -86,9 +90,11 @@
                 </div>
             </li>
           </ol>
-          </form>
-        {% endfor %}
+          {{form.as_p}}
+          {% endfor %}
           
+          <button type="submit" class="btn btn-primary my-2">Submit</button>
+          </form>
         {% endif %}
       </div>
 

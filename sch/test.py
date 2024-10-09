@@ -52,14 +52,14 @@
 #     print('Error!')
 
 
-username = 'Bennie'
-first_name = 'Benjamin'
-last_name = 'Ogunkunle'
-cont = (username, first_name, last_name)
-if username!='' and first_name!='' and last_name!='':
-    print(cont)
-else:
-    print('Invalid!')
+# username = 'Bennie'
+# first_name = 'Benjamin'
+# last_name = 'Ogunkunle'
+# cont = (username, first_name, last_name)
+# if username!='' and first_name!='' and last_name!='':
+#     print(cont)
+# else:
+#     print('Invalid!')
 
 
 """
@@ -101,3 +101,14 @@ def admissionReg(request):
         }
         return render(request, 'admissionApp/registration.html', context=context)
 """
+
+var = ''
+def hello():
+    global var
+    val = 5
+    var=val
+hello()
+
+def bro():
+    print(f'Bro: {var}')
+bro()
