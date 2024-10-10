@@ -6,10 +6,31 @@
   
   <section>
     <div class="d-flex row gap-5 justify-content-center">
-       <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5" style="min-height: 80vh;">
+       <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5 bg-inf" style="min-height: 80vh;">
+
+        <div class="d-flex justify-content-center"><a class="navbar-brand text-secondary text-opacity-50 fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div> 
+
         <h2 class="text-center">
            Course Form
       </h2>
+      {% if user_info %}
+      {% for user in user_info %}
+        
+      <div class="d-flex justify-content-between">
+        <div>
+            <div><strong>Name:</strong> {{user.last_name}} {{user.first_name}} {% if user.profile.other_name %} {{user.profile.other_name}} {% endif %}</div>
+    
+            <div><strong>Level:</strong> None</div>
+            <div><strong>Department:</strong> None</div>
+            <div><strong>Matric Number:</strong> None</div>
+          </div>
+          
+        <div>
+            <img src="{% static '/images\profile_icon.png' %}" style="width: 5rem; height: 5rem;" alt="" srcset="">
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
        <div class="d-flex row justify-content-center gap-2 px-3">
        
        {% if registered_courses %}
@@ -33,18 +54,22 @@
                     <td scope="row">{{reg_course.course.course_code}}</td>
                     <td scope="row">{{reg_course.course.unit}} </td>
                 </tr>
-        
-                 {% endfor %}
+                
+                {% endfor %}
+                <tr>
+                    <td>Total Units</td>
+                    <td></td>
+                    <td>{{total_unit}}</td>
             </tbody>
         </table>
-        {{total_unit}}
+        
        
        </div>
        
-           
-         {% else %}
-
-         <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5">No course(s) registered yet</p>
+           <div class="d-flex justify-content-between">
+            <div class="text-center">________________ <br> Level Advisor</div>
+            <div class="text-center">________________ <br> Student</div>
+           </div>
          
        {% endif %}
 

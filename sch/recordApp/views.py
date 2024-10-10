@@ -258,9 +258,20 @@ def addCourses(request, course_id):
     user_id = request.user.id
     course_info = course_form.objects.filter(course_id=course_id, user_id=user_id)
     if course_info.exists():
-        pass
+        course_info = course_register.objects.filter(reg_id=course_id)
+        if course_info:
+            for course in course_info:
+                print(course.reg_id)
+                course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(units=course.unit)
+        # pass
+                
     else:
         course_form.objects.create(course_id=course_id, user_id=user_id)
+        course_info = course_register.objects.filter(reg_id=course_id)
+        if course_info:
+            for course in course_info:
+                print(course)
+                course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(units=course.unit)
 
     return courseReg(request, request.user.id)
 
@@ -274,15 +285,19 @@ unit = 0
 @login_required
 def courseForm(request, user_id):
     request.user.id = user_id
+    id = request.user.id
+    user = User.objects.all().filter(id=id)
     all_courses = course_register.objects.all()
     registered_courses = course_form.objects.all().filter(user_id=user_id)
     if registered_courses:
         reg_course = registered_courses.values()
         for reg in reg_course:
-            unit = reg.get("course")
+            global unit
+            unit += int(reg.get("units"))
         total_unit = unit
     return render(request, 'recordApp/course_form.html', {
        'all_courses':all_courses,
        'registered_courses':registered_courses,
-       'total_unit':total_unit
+       'total_unit':total_unit,
+       'user_info':user
    })
