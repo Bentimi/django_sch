@@ -212,36 +212,39 @@ def editQuestions(request, user_id):
     })
 
 @login_required
-def cbtTest(request):
-     
-     print(f'Hey: {str(id_cbt)}')
-     print('hello')
-     quest_id = questions.objects.filter(cbt_id=5)
-     if request.method == 'POST':
-         form = test_form(request.POST or None)
-         question_data = questions.objects.all().filter(cbt_id=5)
-        #  options = request.POST['options']
-         if form.is_valid():
-            user_answer = form.cleaned_data['answer']
-            if question_data:
-                for quest in question_data:
-                    answer = quest.answer
-                    if user_answer == answer:
-                        print(f'+1 {user_answer}')
-                    else:
-                        print(f'+0 {user_answer}')
+def cbtTest(request, test_id):
+    print(f'Test ID: {test_id}')
+    score = 0
+    course_info =  course_form.objects.all().filter(course_id=test_id)
+    if course_info:
+        for course in course_info:
+            print(course.cbt.id)
+            cbt_id = course.cbt.id
+            course_form_details = course_form.objects.all().filter(cbt_id=cbt_id)
+            if course_form_details:
+                for details in course_form_details:
+                    print(details.cbt_id)
+                    if details.cbt_id:
+                        listing = 0
+                        question_data = questions.objects.filter(cbt_id=details.cbt_id)
+                        listing +=1
+                        if request.method == 'POST':
+                            for question in question_data:
+                                selected_option = request.POST.get(str(question.id))
+                                if selected_option:
+                                    option = questions.objects.filter(answer=selected_option)
+                                    if option:
+                                        score +=1
 
-     else:
-         
-        form = test_form(request.POST)
-        question_data = questions.objects.all().filter(cbt_id=5)
-         
-       
-     return render(request, 'recordApp/cbt_test.html', {
-         'form':form,
-         'question_data':question_data,
-         'cbt_no':id_cbt
-         })
+
+                        return render(request, 'recordApp/cbt_test.html',
+                                    {
+                                        'question_data':question_data,
+                                        'score':score,
+                                        'listing':listing
+                                    })
+                    
+                    
 
 @login_required
 def courseReg(request, user_id):
@@ -263,6 +266,10 @@ def addCourses(request, course_id):
             for course in course_info:
                 print(course.reg_id)
                 course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(units=course.unit)
+                cbt_info = cbt.objects.filter(course_id=course_id)
+                if cbt_info:
+                    for cbt_id in cbt_info:
+                        course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(cbt_id=cbt_id)
         # pass
                 
     else:
@@ -272,6 +279,10 @@ def addCourses(request, course_id):
             for course in course_info:
                 print(course)
                 course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(units=course.unit)
+                cbt_info = cbt.objects.filter(course_id=course_id)
+                if cbt_info:
+                    for cbt_id in cbt_info:
+                        course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(cbt_id=cbt_id)
 
     return courseReg(request, request.user.id)
 
@@ -281,23 +292,33 @@ def removeCourses(request, course_id):
     course_form.objects.filter(course_id=course_id, user_id=user_id).delete()
     return courseReg(request, request.user.id)
 
-unit = 0
 @login_required
 def courseForm(request, user_id):
+    unit = 0
+    request.user.id = user_id
+    id = request.user.id
+    user = User.objects.all().filter(id=id)
+    registered_courses = course_form.objects.all().filter(user_id=user_id)
+    if registered_courses:
+        reg_course = registered_courses.values()
+        for reg in reg_course:
+            unit += int(reg.get("units"))
+        total_unit = unit
+    return render(request, 'recordApp/course_form.html', {
+       'registered_courses':registered_courses,
+       'total_unit':total_unit,
+       'user_info':user
+   })
+
+@login_required
+def avaliableTest(request, user_id):
     request.user.id = user_id
     id = request.user.id
     user = User.objects.all().filter(id=id)
     all_courses = course_register.objects.all()
     registered_courses = course_form.objects.all().filter(user_id=user_id)
-    if registered_courses:
-        reg_course = registered_courses.values()
-        for reg in reg_course:
-            global unit
-            unit += int(reg.get("units"))
-        total_unit = unit
-    return render(request, 'recordApp/course_form.html', {
-       'all_courses':all_courses,
+
+    return render(request, 'recordApp/available_test.html', {
+        'all_courses':all_courses,
        'registered_courses':registered_courses,
-       'total_unit':total_unit,
-       'user_info':user
-   })
+    })

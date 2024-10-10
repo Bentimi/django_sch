@@ -1,0 +1,62 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>Course form reg</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    <div class="d-flex row gap-5 justify-content-center">
+       <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5" style="min-height: 80vh;">
+        <h2 class="text-center">
+           Avaliable Test
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+       <div class="d-flex row justify-content-center gap-2 px-3">
+       
+      
+       {% if registered_courses %}
+       <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5 text-decoration-underline">Registered Course(s)</p>
+       <div
+        class="table-responsive"
+       >
+        <table
+            class="table table-light"
+        >
+            <thead>
+                <tr>
+                    <th scope="col">Course Title</th>
+                    <th scope="col">Course Code</th>
+                    <th scope="col">Course Unit</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reg_course in registered_courses %}
+                <tr class="">
+                    <td scope="row">{{reg_course.course.course}}</td>
+                    <td scope="row">{{reg_course.course.course_code}}</td>
+                    <td scope="row">{{reg_course.course.unit}}</td>
+                    <td><a href="{% url 'cbt_test' reg_course.course_id %}" class="btn btn-primary">Take Test</a></td>
+                </tr>
+        
+                 {% endfor %}
+            </tbody>
+        </table>
+       </div>
+       
+           
+         {% else %}
+
+         <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5">No course(s) registered yet</p>
+         
+       {% endif %}
+
+       
+       </div>
+</section>
+
+  {% endblock personal_page %}  

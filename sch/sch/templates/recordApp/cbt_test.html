@@ -56,13 +56,17 @@
     </form> -->
     <div class="card w-50">
        
-       
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
 
         {% if question_data %}
         <form action="" method="post">
             {% csrf_token %}
            <div>
-            {{cbt_no}}
+            Scores: {{score}}
            </div>
             {% for quest in question_data %}
             {{quest.id}}
@@ -71,22 +75,22 @@
           <ol type="A" class="d-flex gap-3 justify-content-evenly">
             <li>
                 <div class="mx-2">
-                    <input type="radio" name="options" class="form-check-input mx-2" value="{{quest.first_option}}" id="">{{quest.first_option}}
+                    <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.first_option}}" id="option{{quest.id}}" required>{{quest.first_option}}
                 </div>
             </li>
             <li>
                 <div class="mx-2">
-                    <input type="radio" name="options" class="form-check-input mx-2" value="{{quest.second_option}}" id="">{{quest.second_option}}
+                    <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.second_option}}" id="option{{quest.id}}" required>{{quest.second_option}}
                 </div>
             </li>
             <li>
                 <div class="mx-2">
-                    <input type="radio" name="options" class="form-check-input mx-2" value="{{quest.third_option}}" id="">{{quest.third_option}}
+                    <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.third_option}}" id="option{{quest.id}}" required>{{quest.third_option}}
                 </div>
             </li>
             <li>
                 <div class="mx-2">
-                    <input type="radio" name="options" class="form-check-input mx-2" value="{{quest.forth_option}}" id="">{{quest.forth_option}}
+                    <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.forth_option}}" id="option{{quest.id}}" required>{{quest.forth_option}}
                 </div>
             </li>
           </ol>
@@ -97,6 +101,7 @@
           </form>
         {% endif %}
       </div>
+
 
 
     </div>
