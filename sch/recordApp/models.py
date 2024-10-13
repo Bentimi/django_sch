@@ -7,7 +7,7 @@ from django.utils import timezone
 class course_model(models.Model):
     course_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False, null=True)
-    no_of_courses = models.CharField(max_length=10, unique=False)
+    course = models.CharField(max_length=100, unique=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True, unique=False)
 
 class course_register(models.Model):

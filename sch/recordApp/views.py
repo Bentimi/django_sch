@@ -23,19 +23,32 @@ def courseSetup(request):
                 code = form.cleaned_data['course_code']
                 user = User.objects.all().filter(username=instructor)
                 if user:
-                    for profile in user:
-                        user_id = profile.id
-                        course_model.objects.create(user_id=user_id).DoesNotExist
-                        form_save.course_model_id = user_id
-                        form_save.save()
-                        cbt.objects.create(course_title=title, course_code=code).DoesNotExist
-                        reg_id = course_register.objects.all().filter(course_code=code)
-                        if reg_id:
-                            for reg in reg_id:
-                                cbt.objects.all().filter(course_title=title, course_code=code).update(course=reg.reg_id, examiner=user_id)
+                    try:
+                        for profile in user:
+                            user_id = profile.id
+                            course_model.objects.create(user_id=user_id, course=code).DoesNotExist
+                            form_save.save()
+
+                            courseModel = course_model.objects.all().filter(course=code)
+                            if courseModel:
+                                for model_course in courseModel:
+                                    course_register.objects.all().filter(course_code=code, course=title).update(course_model_id=model_course.course_id)
+                            
+
+                            
+                                    cbt.objects.create(course_title=title, course_code=code).DoesNotExist
+                                    reg_id = course_register.objects.all().filter(course_code=code)
+                                    if reg_id:
+                                        for reg in reg_id:
+                                            cbt.objects.all().filter(course_title=title, course_code=code).update(course=reg.reg_id, examiner=user_id)
+                            messages.success(request, ('Course Added successfully!'))
+                            return redirect('course_setup')
+                    except:
+                          messages.error(request, ('Entry errror, carefully check the inputs!'))
+                          return redirect('course_setup')
+                               
                         
-            messages.success(request, ('Course Added successfully!'))
-            return redirect('course_setup')
+           
         else:
             messages.error(request, ('Course fails to be added!'))
             return redirect('course_setup')
@@ -83,7 +96,12 @@ def courseDetails(request, course_id):
 
 @login_required
 def deleteCourse(request, course_id):
-    course_register.objects.all().filter(reg_id=course_id).delete()
+    reg_course=course_register.objects.all().filter(reg_id=course_id)
+    if reg_course:
+        for course in reg_course:
+            id = course.course
+            # course_Model = course_model.
+    
     if request.user.is_superuser:
         messages.success(request, ('Course successfully deleted!'))
         return redirect('view_course')
@@ -93,12 +111,15 @@ def deleteCourse(request, course_id):
 
 @login_required
 def cbtReg(request, user_id):
-    info = course_register.objects.all().filter(course_model_id=user_id)
-    # user = course_model.objects.all().filter(course_id=user)
-    context = {
-        'all_profile':info
-    }
-    return render(request, 'recordApp/cbt_reg.html', context=context)
+    course_info = course_model.objects.filter(user_id=user_id)
+    if course_info:
+        for courses in course_info: 
+            info = course_register.objects.filter(instructor=courses.user.username)
+            # user = course_model.objects.all().filter(course_id=user)
+            context = {
+                'all_profile':info
+            }
+            return render(request, 'recordApp/cbt_reg.html', context=context)
 
 @login_required
 def cbtDetails(request, user_id):
@@ -167,6 +188,7 @@ def cbtQuestions(request, user_id):
         'quest_agg':quest_agg,
         'course_code': course_code,
     })
+
 id_user = ''
 @login_required
 def viewQuestions(request, user_id):
@@ -186,6 +208,7 @@ def viewQuestions(request, user_id):
         'all_questions':all_questions,
         'id':course_id
         })
+
 id_cbt = ''
 @login_required
 def editQuestions(request, user_id):

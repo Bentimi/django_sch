@@ -36,7 +36,7 @@
                     <td>{{course.course}}</td>
                     <td>{{course.course_code}}</td>
                     <td>{{course.unit}}</td>
-                    <td><a href="{% url 'profile' course.course_model.user_id %}">{{course.course_model.user.username}}</a></td>
+                    <td><a href="{% url 'profile' request.user.id %}">{{course.course_model.user.username}}</a></td>
                     <td>{{course.date_added}}</td>
                     <td><a href="{% url 'course_details' course.reg_id %}"><i class="fa fa-edit"></i></a></td>
 
