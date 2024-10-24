@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'admissionApp',
 
     'django_countries',
+
 ]
 
 MIDDLEWARE = [

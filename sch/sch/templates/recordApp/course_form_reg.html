@@ -35,10 +35,14 @@
             <tbody>
                 {% for course in all_courses %}
                 <tr class="">
-                    <td scope="row">{{course.course}}</td>
-                    <td scope="row">{{course.course_code}}</td>
-                    <td scope="row">{{course.unit}}</td>
-                    <td><a href="{% url 'add_course' course.reg_id %}" class="btn btn-primary">Add Course</a></td>
+                    
+                   
+                   <td scope="row">{{course.course}}</td>
+                   <td scope="row">{{course.course_code}}</td>
+                   <td scope="row">{{course.unit}}</td>
+                   <td><a href="{% url 'add_course' course.reg_id %}" class="btn btn-primary">Add Course</a></td>
+                  
+                    
                 </tr>
         
                  {% endfor %}
@@ -62,6 +66,7 @@
                     <th scope="col">Course Code</th>
                     <th scope="col">Course Unit</th>
                     <th scope="col">Action</th>
+                    <!-- <th scope="col">Action</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -70,7 +75,12 @@
                     <td scope="row">{{reg_course.course.course}}</td>
                     <td scope="row">{{reg_course.course.course_code}}</td>
                     <td scope="row">{{reg_course.course.unit}}</td>
-                    <td><a href="{% url 'remove_course' reg_course.course_id %}" class="btn btn-danger">Delete Course</a></td>
+                    <td><a href="{% url 'remove_course' reg_course.course_id %}" class="btn btn-danger">Delete Course</a> {{reg_status}}</td>
+                    <!-- <td>
+                        {% if reg_course %}
+                          {{reg_course.status}}
+                        {% endif %}
+                    </td> -->
                 </tr>
         
                  {% endfor %}

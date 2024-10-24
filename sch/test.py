@@ -102,13 +102,17 @@ def admissionReg(request):
         return render(request, 'admissionApp/registration.html', context=context)
 """
 
-var = ''
-def hello():
-    global var
-    val = 5
-    var=val
-hello()
+# var = ''
+# def hello():
+#     global var
+#     val = 5
+#     var=val
+# hello()
 
-def bro():
-    print(f'Bro: {var}')
-bro()
+# def bro():
+#     print(f'Bro: {var}')
+# bro()
+
+import uuid
+
+print(uuid.uuid5)

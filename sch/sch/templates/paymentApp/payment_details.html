@@ -1,0 +1,110 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>Course form reg</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    <div class="d-flex row gap-5 justify-content-center">
+       <div class="gap-3 card  mx-auto w-50 px-2 rounded-0 py-5">
+        <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+        <h2 class="text-center">
+          {% if status == 'tuition' %}
+            Tuition Fee
+          {% elif status == 'late_reg' %}
+            Late Registration Fee
+          {% elif status == 'reg_form' %}
+            Registration Form Fee
+          {% endif %}
+      </h2>
+      
+
+      <div class="mx-auto">
+      <div class="gap-2">
+
+        {% if user_profile %}
+      {% for user in user_profile %}
+      
+
+        <div class="col-12 d-flex gap-2 row" style="margin-bottom: -0.3rem;">
+            <div>
+                <strong>Name:</strong> {{user.last_name}} {{user.first_name}} {% if user.profile.other_name %}
+            {{user.profile.other_name}}
+            {% endif %}
+            </div>
+        
+            <div class="d-flex gap-2">
+                <strong>Payment Description:</strong> <p class="text-capitalize"> {% if status == 'tuition' %}
+                    Tuition Fee
+                  {% elif status == 'late_reg' %}
+                    Late Registration Fee
+                  {% elif status == 'reg_form' %}
+                    Registration Form Fee
+                  {% endif %}</p>
+            </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+
+      {% if fee %}
+        {% for fees in fee %}
+          
+        <div class="col-12 d-flex gap-2 row">
+            {% if status == 'tuition' %}
+            
+            <div>
+                <strong>Full payment:</strong> {{fees.Full_tuition_fee}} Naira Only
+            </div>
+            <div>
+                <strong>Part payment:</strong> {{fees.part_tuition_fee}} Naira Only
+            </div>
+
+            {% elif status == 'late_reg' %}
+            <div>
+                <strong>Amount:</strong> {{fees.late_reg_fee}} Naira Only
+            </div>
+                  {% elif status == 'reg_form' %}
+                  <div>
+                    <strong>Amount:</strong> {{fees.admission_form_fee}} Naira Only
+                </div>
+
+            {% endif %}
+        </div>
+        
+        {% endfor %}
+        {% endif %}
+
+        {% if status == 'tuition' %}
+          <div class="col-12 my-2">
+            <form action="" method="post" style="width: fit-content;">
+                {% csrf_token %}
+                
+                <label for=""><strong>Payment Category</strong></label>
+                {{tuition_form.transaction_type}}
+                
+               <div class="my-2">
+                <button type="submit" class="btn btn-primary rounded-0">Submit</button>
+               </div>
+              </form>
+          </div>
+        {% else %}
+          <a href="" class="btn btn-primary rounded-0 my-3" style="width: fit-content;">Proceed</a>
+        {% endif %}
+
+
+        {% if inv %}
+          
+            {{inv.date}} {{inv.invoice_id}}
+         
+        {% endif %}
+
+
+    </div>
+    </div>
+      
+    
+       </div>
+    </div>
+</section>
+
+  {% endblock personal_page %}  

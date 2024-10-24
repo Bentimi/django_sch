@@ -1,0 +1,66 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>Course form reg</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    <div class="d-flex row gap-5 justify-content-center">
+       <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5" style="min-height: 80vh;">
+
+        <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+        
+       <div class="d-flex row justify-content-center gap-2 px-3">
+       {% if all_fees %}
+       <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5 text-decoration-underline">Available Fees</p>
+       <div
+        class="table-responsive"
+       >
+        <table
+            class="table table-light"
+        >
+            <thead>
+                <tr>
+                    <th scope="col">S/N</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Tuition</th>
+                    <th scope="col">Late Registration</th>
+                    <th scope="col">Admission</th>
+                    <th scope="col">Date Added</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fees in all_fees %}
+                <tr class="">
+                    <td scope="row">{{fees.id}}</td>
+                    <td scope="row">{{fees.user}}</td>
+                    <td scope="row">
+                        <a href="{% url 'view_fees' fees.id 'tuition' %}">Tuition Fee</a>
+                    </td>
+                    <td scope="row">
+                        <a href="{% url 'view_fees' fees.id 'late_reg' %}">Late Registration</a>
+                    </td>
+                    <td scope="row">
+                        <a href="{% url 'view_fees' fees.id 'admission' %}">Admission Fee</a>
+                    </td>
+                    <td scope="row">{{fees.date_added}}</td>
+                    
+                </tr>
+        
+                 {% endfor %}
+            </tbody>
+        </table>
+       </div>
+       
+           
+         {% else %}
+
+         <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5">No course(s) registered yet</p>
+         
+       {% endif %}
+
+       
+       </div>
+</section>
+
+  {% endblock personal_page %}  

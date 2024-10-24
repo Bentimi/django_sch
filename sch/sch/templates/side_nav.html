@@ -294,10 +294,19 @@
                 <div class="accordion-body bg-secondary bg-opacity-25">
                   <ul class="list-unstyled" id="nav-items">
                     <li id="accordion_li">
-                      <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Tuition Fee</a>
+                      <a id="accordion_link" href="{% url 'fees_form' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Fee Form</a>
                     </li>
                     <li id="accordion_li">
-                      <a id="accordion_link" href="{% url 'profile' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Late Registration</a>
+                      <a id="accordion_link" href="{% url 'display_fees' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> View Fees</a>
+                    </li>
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="{% url 'payment_details' request.user.id 'reg_form' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Form Fee</a>
+                    </li>
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="{% url 'payment_details' request.user.id 'tuition' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Tuition Fee</a>
+                    </li>
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="{% url 'payment_details' request.user.id 'late_reg' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Late Registration</a>
                     </li>
                    </ul>
                 </div>

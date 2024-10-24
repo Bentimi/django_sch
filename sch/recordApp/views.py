@@ -3,10 +3,14 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
-from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponse
 from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form, test_form
 from .models import User
 from recordApp.models import course_register, course_model, cbt, questions, course_form
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.template.loader import get_template
+
 
 
 # Create your views here.
@@ -22,38 +26,36 @@ def courseSetup(request):
                 title = form.cleaned_data['course']
                 code = form.cleaned_data['course_code']
                 user = User.objects.all().filter(username=instructor)
+
                 if user:
-                    try:
-                        for profile in user:
-                            user_id = profile.id
-                            course_model.objects.create(user_id=user_id, course=code).DoesNotExist
-                            form_save.save()
+                    for profile in user:
+                        user_id = profile.id
+                        course_model.objects.create(user_id=user_id, course=code).DoesNotExist
+                        cbt.objects.create(course_title=title, course_code=code).DoesNotExist
+                        form_save.save()
 
-                            courseModel = course_model.objects.all().filter(course=code)
-                            if courseModel:
-                                for model_course in courseModel:
-                                    course_register.objects.all().filter(course_code=code, course=title).update(course_model_id=model_course.course_id)
-                            
+                    Course_Model = course_model.objects.all().filter(course=code)
 
-                            
-                                    cbt.objects.create(course_title=title, course_code=code).DoesNotExist
-                                    reg_id = course_register.objects.all().filter(course_code=code)
-                                    if reg_id:
-                                        for reg in reg_id:
-                                            cbt.objects.all().filter(course_title=title, course_code=code).update(course=reg.reg_id, examiner=user_id)
-                            messages.success(request, ('Course Added successfully!'))
-                            return redirect('course_setup')
-                    except:
-                          messages.error(request, ('Entry errror, carefully check the inputs!'))
-                          return redirect('course_setup')
-                               
-                        
-           
+                    if Course_Model:
+                        for model_course in Course_Model:
+                            course_register.objects.all().filter(course_code=code, course=title).update(course_model_id=model_course.course_id)
+                    
+                    reg_id = course_register.objects.all().filter(course_code=code)
+
+                    if reg_id:
+                        for reg in reg_id:
+                            cbt.objects.filter(course_title=title, course_code=code).update(course=reg.reg_id, examiner=user_id)
+                    cbt_info = cbt.objects.all().filter(course_title=title, course_code=code)
+                    if cbt_info:
+                        for cbt_ in cbt_info:
+                            questions.objects.create(cbt_id=cbt_.id).DoesNotExist
+
+            messages.success(request, ('Course Added successfully!'))
+            return redirect('course_setup')
         else:
             messages.error(request, ('Course fails to be added!'))
             return redirect('course_setup')
 
-            # return HttpResponsePermanentRedirect(reverse('product_details', args=(prod_id,)))
     else:
         form = courseAddForm()
         context = {
@@ -115,7 +117,6 @@ def cbtReg(request, user_id):
     if course_info:
         for courses in course_info: 
             info = course_register.objects.filter(instructor=courses.user.username)
-            # user = course_model.objects.all().filter(course_id=user)
             context = {
                 'all_profile':info
             }
@@ -189,36 +190,36 @@ def cbtQuestions(request, user_id):
         'course_code': course_code,
     })
 
-id_user = ''
+# id_user = ''
 @login_required
 def viewQuestions(request, user_id):
     user_info = cbt.objects.all().filter(course_id=user_id)
     if user_info:
         for user in user_info:
             id = user.id
-            global id_user
+            # global id_user
             all_questions = questions.objects.filter(cbt_id=id)
             cbt_query = cbt.objects.filter(id=id)
             if cbt_query:
                 for query in cbt_query:
                     course_id = query.course_id
-                    id_user = course_id
+                    # user = course_id
                     print(course_id)
     return render(request, 'recordApp/view_questions.html', {
         'all_questions':all_questions,
         'id':course_id
         })
 
-id_cbt = ''
+# id_cbt = ''
 @login_required
 def editQuestions(request, user_id):
     
     cbt_id = get_object_or_404(questions, id=user_id)
     cbt_data = questions.objects.all().filter(id=user_id)
-    for id in cbt_data:
-        global id_cbt
-        id_cbt = id.cbt.id
-        print(id_cbt)
+    # for id in cbt_data:
+    #     global id_cbt
+    #     id_cbt = id.cbt.id
+    #     print(id_cbt)
     if request.method == "POST":
         quest_form = question_form(request.POST or None, instance=cbt_id)
         if quest_form.is_valid():
@@ -288,7 +289,7 @@ def addCourses(request, course_id):
         if course_info:
             for course in course_info:
                 print(course.reg_id)
-                course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(units=course.unit)
+                course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(units=course.unit, status=True)
                 cbt_info = cbt.objects.filter(course_id=course_id)
                 if cbt_info:
                     for cbt_id in cbt_info:
@@ -301,7 +302,7 @@ def addCourses(request, course_id):
         if course_info:
             for course in course_info:
                 print(course)
-                course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(units=course.unit)
+                course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(units=course.unit, status=True)
                 cbt_info = cbt.objects.filter(course_id=course_id)
                 if cbt_info:
                     for cbt_id in cbt_info:
@@ -314,6 +315,15 @@ def removeCourses(request, course_id):
     user_id = request.user.id
     course_form.objects.filter(course_id=course_id, user_id=user_id).delete()
     return courseReg(request, request.user.id)
+
+# def render_to_pdf(template_src, context_dict={}):
+#     template = get_template(template_src)
+#     html = template.render(context_dict)
+#     response = HttpResponse(content_type='application/pdf')
+#     pisa_status = pisa.CreatePDF(html, dest=response)
+#     if pisa_status.err:
+#         return HttpResponse('Error rendering PDF', status=500)
+#     return response
 
 @login_required
 def courseForm(request, user_id):
@@ -332,6 +342,8 @@ def courseForm(request, user_id):
        'total_unit':total_unit,
        'user_info':user
    })
+
+
 
 @login_required
 def avaliableTest(request, user_id):

@@ -1,0 +1,36 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>Course form reg</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    <div class="d-flex row gap-5 justify-content-center">
+       <div class="gap-3 card  mx-auto w-50 px-2 rounded-0 py-5">
+        <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+        <h2 class="text-center">
+           Form Fee
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+
+      <form action="" class="">
+        <div>
+            {{form.as_p}}
+            <div class="d-flex justify-content-center">
+
+                <button type="submit" class="btn btn-primary rounded-0">Pay</button>
+            </div>
+
+           
+        </div>
+      </form>
+
+       </div>
+    </div>
+</section>
+
+  {% endblock personal_page %}  

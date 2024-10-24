@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ title }}</title>
+        <!-- <style>
+            body { font-family: Arial, sans-serif; }
+            h1 { color: #333; text-align: center; }
+            p { font-size: 14px; }
+            .signature_container{
+                display: flex !important;
+                justify-content: space-between !important;
+            }
+            #signature_text{
+                text-align: center;
+            }
+        </style> -->
+    </head>
+    <body>
+        <div class="d-flex justify-content-center"><a class="navbar-brand text-secondary text-opacity-50 fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div> 
+
+        <h2 class="text-center">
+           Course Form
+      </h2>
+      {% if user_info %}
+      {% for user in user_info %}
+        
+      <div class="d-flex justify-content-between">
+        <div>
+            <div><strong>Name:</strong> {{user.last_name}} {{user.first_name}} {% if user.profile.other_name %} {{user.profile.other_name}} {% endif %}</div>
+    
+            <div><strong>Level:</strong> None</div>
+            <div><strong>Department:</strong> None</div>
+            <div><strong>Matric Number:</strong> None</div>
+          </div>
+          
+        <div>
+            {% if user.profile.profile_passport %}
+            <img src="{{user.profile.profile_passport.url}}" alt="" srcset="" style="width: 5rem; height: 5rem;" class="rounded-circle">
+            {% else %}
+            <img src="{% static '/images\profile_icon.png' %}" style="width: 5rem; height: 5rem;" alt="" srcset="">
+            {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+       <div class="d-flex row justify-content-center gap-2 px-3">
+       
+       {% if registered_courses %}
+       <div
+        class="table-responsive"
+       >
+        <table
+            class="table table-light"
+        >
+            <thead>
+                <tr>
+                    <th scope="col">Course Title</th>
+                    <th scope="col">Course Code</th>
+                    <th scope="col">Course Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reg_course in registered_courses %}
+                <tr class="">
+                    <td scope="row">{{reg_course.course.course}}</td>
+                    <td scope="row">{{reg_course.course.course_code}}</td>
+                    <td scope="row">{{reg_course.course.unit}} </td>
+                </tr>
+                
+                {% endfor %}
+                <tr>
+                    <td>Total Units</td>
+                    <td></td>
+                    <td>{{total_unit}}</td>
+            </tbody>
+        </table>
+        
+       
+      
+       
+           <div class="signature_container">
+            <div id="signature_text">________________ <br> Level Advisor</div>
+            <div id="signature_text">________________ <br> Student</div>
+            <div>
+           </div>
+
+           <div class="signature_container">
+            <p id="signature_text">__________</p>
+            <p id="signature_text">__________</p>
+           </div>
+         
+           
+           <div style="width: 50%; float: left;">
+            Left Column Content
+        </div>
+        <div style="width: 50%; float: right;">
+            Right Column Content
+        </div>
+           
+
+       {% endif %}
+
+        
+    </body>
+</body>
+</html>
+

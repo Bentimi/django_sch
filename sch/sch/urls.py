@@ -33,6 +33,8 @@ urlpatterns = [
     re_path(r'^userApp/', include("userApp.urls")),
     re_path(r'^admissionApp/', include("admissionApp.urls")),
     re_path(r'^recordApp/', include("recordApp.urls")),
+    re_path(r'^paymentApp/', include("paymentApp.urls")),
+    re_path(r'^adminApp/', include("adminApp.urls")),
     path('nav/', TemplateView.as_view(template_name = 'side_nav.html'), name='nav'),
     
 ]

@@ -1,0 +1,45 @@
+{% extends "side_nav.html" %}
+
+{% block title %}<title>Question Details</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section id="about_section" class="py-5">
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+       <form action="" method="post" class="d-flex row justify-content-center form-layout gap-3 card px-2 mx-auto w-50 rounded-0 py-5">
+        <h2 class="text-center">
+           Fees Details
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+      
+       <div class="d-flex row justify-content-center gap-2">
+        {% csrf_token %}
+
+
+       {% if status == 'tuition' %}
+         {{tuition}}
+       {% elif status == 'admission' %}
+        {{admission_fee}}
+       {% elif status == 'late_reg' %}
+        {{late_reg}}
+       {% endif %}
+       
+
+        
+       
+       <div class="d-flex justify-content-center">
+         <button type="submit" class="btn btn-primary rounded-0" style="width: 8rem; height: 2.8rem;">Save</button>
+        </div>
+        
+        
+
+       </form>
+    </div>
+</section>
+
+  {% endblock personal_page %}  

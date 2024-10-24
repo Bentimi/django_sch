@@ -26,7 +26,11 @@
           </div>
           
         <div>
+            {% if user.profile.profile_passport %}
+            <img src="{{user.profile.profile_passport.url}}" alt="" srcset="" style="width: 5rem; height: 5rem;" class="rounded-circle">
+            {% else %}
             <img src="{% static '/images\profile_icon.png' %}" style="width: 5rem; height: 5rem;" alt="" srcset="">
+            {% endif %}
         </div>
       </div>
       {% endfor %}

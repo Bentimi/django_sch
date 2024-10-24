@@ -59,4 +59,5 @@ class course_form(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False, null=True)
     units = models.CharField(max_length=10, unique=False, null=True)
     level = models.CharField(max_length=10, unique=False, null=True)
+    status = models.BooleanField(default=False, unique=False)
     date_added = models.DateTimeField(auto_now_add=True)

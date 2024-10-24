@@ -1,0 +1,97 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>Course form reg</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    <div class="d-flex row gap-5 justify-content-center">
+       <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5" style="min-height: 40vh;">
+        
+        <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+       <div class="d-flex row justify-content-center gap-2 px-3">
+       {% if all_fees %}
+       <!-- <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5 text-decoration-underline">Available Fees</p> -->
+       
+                {% for fees in all_fees %}
+                <div>
+                    <p class="fs-3 text-center fw-bold bg-secondary bg-opacity-25 p-3">
+                    {% if status == 'tuition' %}
+                      Tuition Fee
+                    {% elif status == 'admission' %}
+                        Admission Fee
+                    {% elif status == 'late_reg' %}
+                        Late Registration Fee
+                    {% endif %}
+                    </p>
+                    <p>
+                
+                    {% if status == 'tuition' %}
+                     <div>
+                       <div>
+                        <p class="fs-4">
+                            <strong>Full Payment:</strong> {{fees.Full_tuition_fee}} Naira Only
+                        </p>
+                       </div>
+                        <div>
+                           <p class="fs-4">
+                            <strong>Part Payment:</strong> {{fees.part_tuition_fee}} Naira Only
+                           </p>
+                        </div>
+                     </div>
+                    {% elif status == 'admission' %}
+                       <div>
+                        <p class="fs-4">
+                            <strong>Addmission Form:</strong>
+                            {{fees.admission_form_fee}} Naira Only
+                       </div>
+                       <div>
+                        <p class="fs-4">
+                            <strong>Acceptance Fee:</strong>
+                            {{fees.acceptance_fee}} Naira Only
+                       </div>
+                        </p>
+                    {% elif status == 'late_reg' %}
+                        <div>
+                               <div>
+                                <p class="fs-4">
+                                    <strong>Amount:</strong>
+                                    {{fees.late_reg_fee}} Naira Only
+                                </p>
+                               </div>
+                                <div>
+                                    <p class="fs-4">
+                                        <strong>Status: </strong>
+                                        {% if fees.late_reg_approval is True %}
+                                        Active <i class="fa fa-check-circle text-success"></i>
+                                        {% else %}
+                                        Inactive <i class="fa fa-times-circle text-danger"></i>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                           
+                        </div>
+                    {% endif %}
+                    </p>
+
+                    <a href="{% url 'edit_fees' fees.id status %}" class="btn btn-danger btn-outline-primary text-white border-0 rounded-0 d-flex align-items-center justify-content-center fs-5 gap-2" style="width: 5rem; height: 3rem;">Edit<i class="fa fa-pencil"></i></a>
+
+                </div>
+        
+                 {% endfor %}
+            </tbody>
+        </table>
+       </div>
+       
+           
+         {% else %}
+
+         <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5">No course(s) registered yet</p>
+         
+       {% endif %}
+
+       
+       </div>
+</section>
+
+  {% endblock personal_page %}  

@@ -30,16 +30,20 @@
     </thead>
     <tbody class="table-group-divider">
                 {% for info in all_questions %}
-                <tr
+                    <tr
                     class="table-primary"
                 >
                     <td scope="row">{{info.id}}</td>
-                    <td>{{info.question}}</td>
+                    <td>
+                        {% if info.question  %}
+                        {{info.question}}
+                        {% else %}
+                        
+                        No Question found <a class="btn btn-light" href="{% url 'edit_questions' info.id %}">Add Question</a>
+                        {% endif %}
+                    </td>
                     <td>{{info.date_added}}</td>
                     <td><a href="{% url 'edit_questions' info.id %}"><i class="fa fa-edit"></i></a></td>
-
-
-                    
                 </tr>
                 {% endfor %}
             </tbody>
@@ -50,7 +54,11 @@
       </div>
       
     {% else %}
-        <p class="text-warning">No record found <a href="">Refresh</a></p>
+    <div class="ms-3 d-flex gap-3">
+        <a class="btn btn-secondary rounded-0" href="{% url 'test_questions' id %}">Add Question</a>
+        <a class="btn btn-warning rounded-0" href="{% url 'test_details' id %}">Question Settings</a>
+    </div>
+        <p class="text-warning text-center">No record found <a href="{% url 'test_questions' id %}">Start CBT Question</a></p>
     {% endif %}
       
 </section>

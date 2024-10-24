@@ -7,53 +7,6 @@
   
   <section id="about_section" class="py-5">
     <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
-       <!-- <form action="" method="post" class="d-flex row justify-content-center form-layout gap-3 card px-2 mx-auto w-50 rounded-0 py-5">
-        <h2 class="text-center">
-           CBT Question
-      </h2>
-      {% if messages %}
-      {% for message in messages  %}
-        {{message}}
-      {% endfor %}
-      {% endif %}
-       <div class="d-flex row justify-content-center gap-2">
-        {% csrf_token %}
-        
-        {% if course_title %}
-        <div>
-            <div><strong>Course Title:</strong>  {{course_title}}</div>
-            <div><strong>Course Code:</strong>  {{course_code}}</div>
-            <div>
-                <a href="{% url 'view_questions' course_id %}">View Questions</a>
-            </div>
-        </div>
-
-          
-        {% endif %}
-
-        {% if question_form %}
-
-        {% for question in question_form %}
-          {{question}}
-        {% endfor %}
-          
-        {% endif %}
-
-        
-       
-       <div class="d-flex justify-content-center">
-         <button type="submit" class="btn btn-primary rounded-0" style="width: 8rem; height: 2.8rem;">
-            {% if quest_agg is not 0 %}
-              Add
-            {% else %}
-                Save
-            {% endif %}
-         </button>
-        </div>
-        
-        
-
-    </form> -->
     <div class="card w-50">
        
       {% if messages %}
@@ -99,6 +52,10 @@
           
           <button type="submit" class="btn btn-primary my-2">Submit</button>
           </form>
+        {% else %}
+        
+          <p class="fs-4 fw-bold d-flex align-items-center justify-content-center gap-2" style="height: 3em;">Test not available for the selected course! <a href="{% url 'available_test' request.user.id %}">Return</a></p>
+
         {% endif %}
       </div>
 
