@@ -17,16 +17,17 @@ from paymentApp.models import invoice_table, admission_invoice_table, tuition_in
 def paymentDetails(request, user_id, status):
     user_info = User.objects.all().filter(id=user_id)
     fees_ = fees_table.objects.all()
-    if status == 'tuition':
-        if request.method == "POST":
-            tuition_form = tuitionForm(request.POST)
-            if tuition_form.is_valid():
-                tuition_trans = tuition_form.cleaned_data['transaction_type']
-                print(tuition_trans)
-                
-                invoice_table.objects.create(user_id=request.user.id)
-                if fees_:
-                    for fee in fees_:
+    if fees_:
+        for fee in fees_:
+            if status == 'tuition':
+                if request.method == "POST":
+                    tuition_form = tuitionForm(request.POST)
+                    if tuition_form.is_valid():
+                        tuition_trans = tuition_form.cleaned_data['transaction_type']
+                        print(tuition_trans)
+                        
+                        invoice_table.objects.create(user_id=request.user.id)
+
                         inv = invoice_table.objects.filter(user_id=user_id, status='unsuccessful').order_by('-invoice_id').first()
                         if inv:
                             inv_info = invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id)
@@ -35,10 +36,10 @@ def paymentDetails(request, user_id, status):
                                 for invoice in inv_info:
                                     if tuition_trans == 'Full Payment':
                                     
-                                        invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(tran)
+                                        invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Full Payment', amount=fee.Full_tuition_fee)
 
                                     elif tuition_trans == 'Part Payment':
-                                        print(fee.part_tuition_fee)
+                                        invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Part Payment', amount=fee.part_tuition_fee)
                         return render(request, 'paymentApp/payment_details.html',{
                                 'user_profile':user_info,
                                 'status':status,
@@ -46,21 +47,37 @@ def paymentDetails(request, user_id, status):
                                 'tuition_form':tuition_form,
                                 'inv':inv
                             })
-        else:
-            tuition_form = tuitionForm()
-        return render(request, 'paymentApp/payment_details.html',{
-            'user_profile':user_info,
-            'status':status,
-            'fee':fees_,
-            'tuition_form':tuition_form
-        })
-    
-
-    return render(request, 'paymentApp/payment_details.html',{
-        'user_profile':user_info,
-        'status':status,
-        'fee':fees_,
-    })
+                else:
+                    tuition_form = tuitionForm()
+                return render(request, 'paymentApp/payment_details.html',{
+                    'user_profile':user_info,
+                    'status':status,
+                    'fee':fees_,
+                    'tuition_form':tuition_form
+                })
+            
+            else:
+                invoice_table.objects.create(user_id=request.user.id)
+                inv = invoice_table.objects.filter(user_id=user_id, status='unsuccessful').order_by('-invoice_id').first()
+                if inv:
+                    inv_info = invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id)
+                    if inv_info:
+                        for invoice in inv_info:
+                            if status == 'late_reg':
+                                 invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Late Registration', amount=fee.late_reg_fee)
+                            elif status == 'reg_form':
+                                 invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Admission Form Fee', amount=fee.admission_form_fee)
+                    return render(request, 'paymentApp/payment_details.html',{
+                                'user_profile':user_info,
+                                'status':status,
+                                'fee':fees_,
+                                'inv':inv
+                            })
+            return render(request, 'paymentApp/payment_details.html',{
+                'user_profile':user_info,
+                'status':status,
+                'fee':fees_,
+            })
 
 def makePayment(request, inv_id):
     form = Payment_form()
