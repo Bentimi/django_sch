@@ -17,8 +17,9 @@
       {% endfor %}
       {% endif %}
 
-      <form action="" class="">
+      <form action="" class="" method="post">
         <div>
+          {% csrf_token %}
             {{form.as_p}}
             <div class="d-flex justify-content-center">
 

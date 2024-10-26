@@ -1,5 +1,5 @@
 {% extends "side_nav.html" %}
-{% block title %}<title>Payment Details</title>{% endblock title %}
+{% block title %}<title>Invoice</title>{% endblock title %}
 {% block personal_page %}
 {% load static %}
     
@@ -83,15 +83,22 @@
                 {{tuition_form.transaction_type}}
                 
                <div class="my-2">
-                <a href="{% url 'payment_confirm' request.user.id status %}" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
+                <a href="" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
                </div>
               </form>
           </div>
         {% else %}
-          <a href="{% url 'payment_confirm' request.user.id status %}" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
+          <a href="" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
         {% endif %}
 
 
+        {% if inv %}
+          
+            {{inv.date}} {{inv.invoice_id}}
+         
+        {% endif %}
+
+        {{invoice.invoice_id}}
 
     </div>
     </div>

@@ -78,9 +78,40 @@ def paymentDetails(request, user_id, status):
                 'status':status,
                 'fee':fees_,
             })
+        
+def paymentConfirm(request, user_id, status):
+    print(f'''
+            User ID: {user_id}
+            Status: {status}
+        ''')
+
+    invoice = invoice_table.objects.all().filter(user_id=user_id, status='unsuccessful').order_by('invoice_id').last() 
+    if invoice:
+        print(f'{invoice.invoice_id} {invoice.transaction_type}')    
+
+    return render(request, 'paymentApp/invoice.html',{
+            'invoice':invoice
+    })
 
 def makePayment(request, inv_id):
-    form = Payment_form()
+    if request.method == "POST":
+      
+       user = User.objects.get(id=request.user.id)
+       form = Payment_form(request.POST or None)
+       if form.is_valid():
+           card_num = form.cleaned_data['card_number']
+           cvv = form.cleaned_data['cvv']
+           exp_date = form.cleaned_data['esxpire_date']
+
+           print(f'''
+                     Card Num: {card_num} 
+                     CVV: {cvv} 
+                     Exp Date: {exp_date} 
+            ''')
+           
+
+    else:
+        form = Payment_form()
     return render(request, 'paymentApp/flutter_pay.html', {'form':form})
 
 
