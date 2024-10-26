@@ -10,6 +10,7 @@ class invoice_table(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, unique=False)
     amount = models.CharField(max_length=50, unique=False)
     transaction_type = models.CharField(max_length=50, unique=False, null=True)
+    category = models.CharField(max_length=50, unique=False, null=True)
     status = models.CharField(max_length=50, unique=False, default='unsuccessful')
     completed = models.BooleanField(default=False, unique=False)
     date = models.DateTimeField(auto_now=True, unique=False)

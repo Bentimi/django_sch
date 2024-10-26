@@ -74,22 +74,12 @@
         {% endfor %}
         {% endif %}
 
-        {% if status == 'tuition' %}
-          <div class="col-12 my-2">
-            <form action="" method="post" style="width: fit-content;">
-                {% csrf_token %}
-                
-                <label for=""><strong>Payment Category</strong></label>
-                {{tuition_form.transaction_type}}
-                
-               <div class="my-2">
-                <a href="" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
-               </div>
-              </form>
-          </div>
-        {% else %}
-          <a href="" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
-        {% endif %}
+
+          {% if invoice %}
+          <a href="{% url 'cancel_payment' invoice.invoice_id status %}" class="btn btn-secondary rounded-0 my-3" type="submit" style="width: fit-content;"> << Cancel</a>
+          <a href="{% url 'make_payment' invoice.invoice_id %}" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
+          {% endif %}
+       
 
 
         {% if inv %}
@@ -99,6 +89,8 @@
         {% endif %}
 
         {{invoice.invoice_id}}
+        {{invoice.transaction_type}}
+        {{invoice.amount}}
 
     </div>
     </div>
