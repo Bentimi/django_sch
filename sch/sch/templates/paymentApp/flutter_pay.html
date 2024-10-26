@@ -13,7 +13,7 @@
       </h2>
       {% if messages %}
       {% for message in messages  %}
-        {{message}}
+        {{message}} 
       {% endfor %}
       {% endif %}
 
@@ -23,6 +23,8 @@
             {{form.as_p}}
             <div class="d-flex justify-content-center">
 
+              {{amount}}
+             
                 <button type="submit" class="btn btn-primary rounded-0">Pay</button>
             </div>
 

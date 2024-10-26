@@ -13,7 +13,7 @@ class Payment_form(forms.Form):
             'class':'form-control shadow-sm border-1',
             'type' : 'text'
         }), label='CVV', required=True)
-    expire_date = forms.DateField(widget=forms.DateInput(attrs={
+    expire_date = forms.CharField(widget=forms.TextInput(attrs={
              'placeholder': 'mm/yy',
             'class':'form-control shadow-sm border-1',
             # 'type' : 'datetime'

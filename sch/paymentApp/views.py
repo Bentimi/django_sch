@@ -11,9 +11,14 @@ from django.template.loader import get_template
 from django.contrib.auth.models import User
 from adminApp.models import fees_table
 from paymentApp.models import invoice_table, admission_invoice_table, tuition_invoice_table, lateReg_invoice_table
+from rave_python import Rave, RaveExceptions, Misc
+from django.urls import reverse
+from django.core.mail import send_mail
+
 
 # Create your views here.
 
+@login_required
 def paymentDetails(request, user_id, status):
     user_info = User.objects.all().filter(id=user_id)
     fees_ = fees_table.objects.all()
@@ -79,41 +84,142 @@ def paymentDetails(request, user_id, status):
                 'status':status,
                 'fee':fees_,
             })
-        
+
+amount_charged=0.0      
+@login_required
 def paymentConfirm(request, user_id, status):
-    invoice = invoice_table.objects.all().filter(user_id=user_id, status='unsuccessful', category=status).order_by('invoice_id').last()  
+    invoice = invoice_table.objects.all().filter(user_id=user_id, status='unsuccessful', category=status).order_by('invoice_id').last()
+    user  = User.objects.all().filter(id=user_id) 
+    global amount_charged
+    amount_charged =invoice.amount
 
     return render(request, 'paymentApp/invoice.html',{
             'invoice':invoice,
-            'status':status
+            'status':status,
+            'user_profile':user
     })
-        
+
+@login_required       
 def cancelPayment(request, inv_id, status):
     invoice_table.objects.filter(invoice_id=inv_id).delete()
     return redirect('payment_details', request.user.id, status)
 
-
+@login_required
 def makePayment(request, inv_id):
     if request.method == "POST":
       
        user = User.objects.get(id=request.user.id)
-       form = Payment_form(request.POST or None)
+       form = Payment_form(request.POST)
        if form.is_valid():
            card_num = form.cleaned_data['card_number']
            cvv = form.cleaned_data['cvv']
-           exp_date = form.cleaned_data['esxpire_date']
+           exp_date = form.cleaned_data['expire_date']
 
            print(f'''
                      Card Num: {card_num} 
                      CVV: {cvv} 
                      Exp Date: {exp_date} 
             ''')
-           
+           rave = Rave("FLWPUBK_TEST-d31102d086dd9cebe66f5f0b137e0112-X", "FLWSECK_TEST-cedf324409d9a2df2fd6bdd329150811-X", usingEnv = False)
+
+            # Payload with pin
+           payload = {
+            "cardno": str(card_num),
+            "cvv": str(cvv),
+            "expirymonth": str(exp_date).split("/")[0],
+            "expiryyear": str(exp_date).split("/")[1],
+            "amount": amount_charged,
+            "email": user.email,
+            "phonenumber": user.profile.phone_no,
+            "firstname": user.first_name,
+            "lastname": user.last_name,
+            "IP": "355426087298442",
+            }
+           try:
+                res = rave.Card.charge(payload)
+
+                if res["suggestedAuth"]:
+                    arg = Misc.getTypeOfArgsRequired(res["suggestedAuth"])
+
+                    if arg == "pin":
+                        Misc.updatePayload(res["suggestedAuth"], payload, pin="3310")
+                    if arg == "address":
+                        Misc.updatePayload(res["suggestedAuth"], payload, address= {"billingzip": "07205", "billingcity": "Hillside", "billingaddress": "470 Mundet PI", "billingstate": "NJ", "billingcountry": "US"})
+                    
+                    res = rave.Card.charge(payload)
+
+                if res["validationRequired"]:
+                    rave.Card.validate(res["flwRef"], "")
+
+                res = rave.Card.verify(res["txRef"])
+                messages.success(request, ('Payment Successful.'))
+                return HttpResponsePermanentRedirect(reverse('payment_success', args=(inv_id,)))
+
+           except RaveExceptions.CardChargeError as e:
+                messages.error(request, ('Charge Fails.'))
+                return HttpResponsePermanentRedirect(reverse('payment_fails', args=(inv_id,)))
+
+           except RaveExceptions.TransactionValidationError as e:
+                messages.error(request, ('TransactionFails.'))
+                return HttpResponsePermanentRedirect(reverse('payment_fails', args=(inv_id,)))
+
+           except RaveExceptions.TransactionVerificationError as e:
+                messages.error(request, ('Validation Fails.'))
+                return HttpResponsePermanentRedirect(reverse('payment_fails', args=(inv_id,)))
+       else:
+            messages.error(request, ('Some fields are not correctly filled!'))
+            return HttpResponsePermanentRedirect(reverse('payment_fails', args=(inv_id)))
+
 
     else:
         form = Payment_form()
-    return render(request, 'paymentApp/flutter_pay.html', {'form':form})
+        inv=invoice_table.objects.filter(invoice_id=inv_id)
+        if inv:
+            for invoice in inv:
+                status = invoice.category
+    return render(request, 'paymentApp/flutter_pay.html', {
+        'form':form,
+        'inv_id':inv_id,
+        'status':status,
+        'amount':amount_charged
+        })
 
+@login_required
+def paymentSuccess(request, inv_id):
+    inv=invoice_table.objects.all().filter(invoice_id=inv_id)
+    if inv:
+        for invoice in inv:
+            status = invoice.transaction_type
+            invoice_table.objects.filter(invoice_id=inv_id).update(completed=True, status='successful')
+    # Send Mail to user
+            send_mail(
+                f'{status} Fee', # Subject of the mail
+                'Payment successfully made!', # Body of the mail
+                'gradschool@gmail.com', # From email (sender)
+                [request.user.email],  # To email (Receiver)
+                fail_silently = False, # Handle any error
+            )
+    messages.success(request, ('Your payment was successful!'))
+    return render(request, 'paymentApp/successful_payment.html', {
+        'inv':inv
+    })
+
+@login_required
+def paymentFail(request, inv_id):
+    inv=invoice_table.objects.filter(invoice_id=inv_id)
+    if inv:
+        for invoice in inv:
+            status = invoice.transaction_type
+    # Send Mail to user
+            send_mail(
+                f'{status} Fee', # Subject of the mail
+                'Payment Fails!', # Body of the mail
+                'gradschoo@gmail.com', # From email (sender)
+                [request.user.email],  # To email (Receiver)
+                fail_silently = False, # Handle any error
+            )
+    messages.error(request, ('Transaction Fails!'))
+    return makePayment(request, inv_id)
 
 
 def render_to_pdf(template_src, context_dict={}):

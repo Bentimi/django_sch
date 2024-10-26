@@ -107,19 +107,23 @@ DATABASES = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
+
+# # """
+
+# # Gmail
+
+# EMAIL_BACKEND = 'django.core.mail.backends.stmp.EmailBackend' # Replace with your preference
+# EMAIL_PORT = 587 # Replace with your email port
+# EMAIL_USE_TLS = True # Set to False if your email doesn't use TLS
+# EMAIL_HOST = 'stmp.gmail.com' #Replace with your email host for gmail -> 'stmp.gmail.com'
+# EMAIL_HOST_USER = 'bentimi02@gmail.com' # Replace with your email username
+# EMAIL_HOST_PASSWORD = 'benjamin2002' # Replace with your email password
+# DEFAULT_FROM_EMAIl = 'bentimi02@gmail.com'
+
+# # """
+
+
 """
-
-# Gmail
-
-EMAIL_BACKEND = 'django.core.mail.backends.stmp.EmailBackend' # Replace with your preference
-EMAIL_PORT = 587 # Replace with your email port
-EMAIL_USE_TLS = True # Set to False if your email doesn't use TLS
-EMAIL_HOST = 'stmp.gmail.com' #Replace with your email host for gmail -> 'stmp.gmail.com'
-EMAIL_HOST_USER = 'shopping@gmail.com' # Replace with your email username
-EMAIL_HOST_PASSWORD = 'shop1234' # Replace with your email password
-DEFAULT_FROM_EMAIl = 'shopping@gmail.com'
-
-
 # mailtrap
 
 EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
@@ -179,6 +183,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # login and logout
-LOGIN_URL = 'admission_login'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'

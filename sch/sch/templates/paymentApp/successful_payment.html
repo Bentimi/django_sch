@@ -48,7 +48,9 @@
 
 
           
-        <div class="col-12 d-flex gap-2 row">
+       {% if inv %}
+         {% for invoice in inv %}
+         <div class="col-12 d-flex gap-2 row">
             
             
             <div>
@@ -57,11 +59,10 @@
         
         
 
+        <button type="submit" class="btn btn-success">Done</button>
+         {% endfor %}
+       {% endif %}
 
-          {% if invoice %}
-          <a href="{% url 'cancel_payment' invoice.invoice_id status %}" class="btn btn-secondary rounded-0 my-3" type="submit" style="width: fit-content;"> << Cancel</a>
-          <a href="{% url 'make_payment' invoice.invoice_id %}" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
-          {% endif %}
        
 
     </div>
