@@ -9,6 +9,7 @@ urlpatterns = [
     re_path(r'^aspirant_profile/(?P<user_id>\d+)/', views.viewProfile, name='aspirant_profile'),
     re_path(r'^dashboard/', views.profileDashboard, name='dashboard'),
     re_path(r'dashboard_edit/(?P<user_id>\d+)/', views.profileDashboardEdit, name='dashboard_edit'),
-    re_path(r'admission_status/(?P<user_id>\d+)/', views.admissionApproval, name='admission_status'),
+    re_path(r'admission_approved/(?P<user_id>\d+)/', views.admissionApproval, name='admission_approved'),
+    re_path(r'admission_deny/(?P<user_id>\d+)/', views.admissionDenied, name='admission_deny'),
     re_path(r'admission_letter/(?P<user_id>\d+)/', views.admissionLetter, name='admission_letter'),
 ]

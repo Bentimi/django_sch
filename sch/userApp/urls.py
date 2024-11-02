@@ -3,6 +3,7 @@ from userApp import views
 
 urlpatterns = [
     re_path(r'^nav_bar/(?P<user_id>\d+)/', views.navBar, name='nav_bar'),
+    re_path(r'^user_dashboard/', views.userDashboard, name='user_dashboard'),
     re_path(r'^profile/(?P<user_id>\d+)/', views.displayProfile, name='profile'),
     re_path(r'^edit_profile/(?P<user_id>\d+)/', views.editProfile, name='edit_profile'),
     re_path(r'^deactivate_profile/(?P<user_id>\d+)/', views.deactivateProfile, name='deactivate_profile'),

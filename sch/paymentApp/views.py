@@ -63,7 +63,7 @@ def paymentDetails(request, user_id, status):
                 })
             
             else:
-                invoice_table.objects.create(user_id=request.user.id)
+                # invoice_table.objects.create(user_id=request.user.id)
                 inv = invoice_table.objects.filter(user_id=user_id, status='unsuccessful').order_by('-invoice_id').first()
                 if inv:
                     inv_info = invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id)
@@ -72,7 +72,7 @@ def paymentDetails(request, user_id, status):
                             if status == 'late_reg':
                                  invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Late Registration', amount=fee.late_reg_fee, category=status  )
                             elif status == 'reg_form':
-                                 invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Admission Form Fee', amount=fee.admission_form_fee, category=status   )
+                                 invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Admission Form Fee', amount=fee.admission_form_fee, category=status)
                     return render(request, 'paymentApp/payment_details.html',{
                                 'user_profile':user_info,
                                 'status':status,
@@ -101,7 +101,7 @@ def paymentConfirm(request, user_id, status):
 
 @login_required       
 def cancelPayment(request, inv_id, status):
-    invoice_table.objects.filter(invoice_id=inv_id).delete()
+    invoice_table.objects.filter(invoice_id=inv_id, status='unsuccessful').delete()
     return redirect('payment_details', request.user.id, status)
 
 @login_required
@@ -191,15 +191,26 @@ def paymentSuccess(request, inv_id):
         for invoice in inv:
             status = invoice.transaction_type
             invoice_table.objects.filter(invoice_id=inv_id).update(completed=True, status='successful')
+            invoice_table.objects.filter(user_id=request.user.id,status='unsuccessful').delete()
+            if invoice.category == 'reg_form':
+                if admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).exists():
+                    admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id)
+                else:
+                    admission_invoice_table.objects.create(invoice_id=invoice.invoice_id,form_fee=invoice.transaction_type, paid=True).DoesNotExist()
+                    invoice_details=admission_invoice_table.objects.only('paid').get(invoice_id=invoice.invoice_id)
+                    if invoice_details.paid == True:
+                        admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id)
+                # if invoice_details.invoice_id == invoice.invoice_id:
+                #  admission_invoice_table.objects.filter(invoice_id=invoice.invoice_id, form_fee=invoice.transaction_type, paid=True).update(aspirant_id=invoice.user_id,)
     # Send Mail to user
             send_mail(
                 f'{status} Fee', # Subject of the mail
-                'Payment successfully made!', # Body of the mail
+                f'{status} Payment successfully made!', # Body of the mail
                 'gradschool@gmail.com', # From email (sender)
                 [request.user.email],  # To email (Receiver)
                 fail_silently = False, # Handle any error
             )
-    messages.success(request, ('Your payment was successful!'))
+    # messages.success(request, ('Your payment was successful!'))
     return render(request, 'paymentApp/successful_payment.html', {
         'inv':inv
     })

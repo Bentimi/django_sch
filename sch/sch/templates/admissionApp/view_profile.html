@@ -169,19 +169,17 @@
 
             </div>
 
-            <div>
+              <div>
               {% if request.user.is_superuser %}
               {% if reg.admission_approval.status is True %}
-              
-                <a href="{% url 'admission_status' reg.user_id %}" class="btn btn-primary">Admitted</a>
-                {% else %}
-                <a href="{% url 'admission_status' reg.user_id %}" class="btn btn-danger">Unapproved</a>
+              <a href="{% url 'admission_deny' reg.aspirant_id %}" class="btn btn-primary">Approved</a>
+            {% else %}
+              <a href="{% url 'admission_approved' reg.aspirant_id %}" class="btn btn-danger">Unapproved</a>
                 
-              
-            {% endif %}
               {% endif %}
-            </div>
-
+              {% endif %}
+              </div>
+            
        </div>
     </section>
   </aside>
@@ -191,6 +189,6 @@
   {% endif %}
   {% endfor %}
   {% endif %}
-
+  </div>
 
 {% endblock personal_page %}

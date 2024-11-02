@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
+from paymentApp.models import invoice_table, admission_invoice_table
+from userApp.models import users_status, Profile
 
 
 def admissionReg(request):
@@ -95,9 +97,11 @@ def viewProfile(request, user_id):
     pk = user_id
     profile = User.objects.all().filter(id=user_id)
     reg_profile = aspirants_profile.objects.all().filter(user_id=user_id)
+    admission_status = admission_approval.objects.all().filter(aspirant_id=user_id)
     context = {
         'my_profile':profile,
        'registration_profile':reg_profile,
+       'admission_status':admission_status,
         }
     return render(request, 'admissionApp/view_profile.html', context=context)
 
@@ -112,66 +116,77 @@ def profileDashboard(request):
         }
     return render(request, 'admissionApp/dashboard.html', context=context)
 
-@login_required
+@login_required(login_url=(admissionLogin))
 def profileDashboardEdit(request, user_id):
     user_info = get_object_or_404(User, id=user_id)
     user = get_object_or_404(aspirants_profile, user=user_id)
-    if request.method == "POST":
-        profile_form = reg_profileForm(request.POST or None, request.FILES or None, instance=user_info.profile)
-        admission_form = admissionForm(request.POST or None, request.FILES or None, instance=user)
-        
-        if profile_form.is_valid() and admission_form.is_valid():
-            with transaction.atomic():
-                profile_form.save()
-                admission_form.save()
-                aspirants_profile.objects.filter(user=user_id).update(registration_status=True)
-            return redirect('dashboard')
+    inv_id = invoice_table.objects.filter(user_id=user_info, category='reg_form', status='successful', completed=True).exists()
+    if inv_id:
+        if request.method == "POST":
+            profile_form = reg_profileForm(request.POST or None, request.FILES or None, instance=user_info.profile)
+            admission_form = admissionForm(request.POST or None, request.FILES or None, instance=user)
+            
+            if profile_form.is_valid() and admission_form.is_valid():
+                with transaction.atomic():
+                        profile_form.save()
+                        admission_form.save()
+                        aspirants_profile.objects.filter(user=user_id).update(registration_status=True)
+                        return redirect('dashboard')
+            else:
+                messages.error(request, ('please correct the error below.'))
+                return HttpResponsePermanentRedirect(reverse('dashboard_edit', args=(user_id,)))
         else:
-            messages.error(request, ('please correct the error below.'))
-            return HttpResponsePermanentRedirect(reverse('dashboard_edit', args=(user_id,)))
+            profile_form = reg_profileForm(instance=user_info.profile)
+            user_info = edit_userForm(instance=user_info)
+            admission_form = admissionForm(instance=user)
+            status = users_status.objects.all().filter(user_id=user_id)
+            profile = User.objects.all().filter(id=user_id)
+            reg_status = aspirants_profile.objects.all().filter(user_id=user_id)
+            context = {
+                'profile_form' : profile_form,
+                'user' : user_info,
+                'status' : status,
+                'my_profile' : profile,
+                'admission_form' : admission_form,
+                'reg_status' : reg_status,
+            }
+            return render(request, 'admissionApp/edit_profile.html', context=context)
     else:
-        profile_form = reg_profileForm(instance=user_info.profile)
-        user_info = edit_userForm(instance=user_info)
-        admission_form = admissionForm(instance=user)
-        status = users_status.objects.all().filter(user_id=user_id)
-        profile = User.objects.all().filter(id=user_id)
-        reg_status = aspirants_profile.objects.all().filter(user_id=user_id)
-        context = {
-            'profile_form' : profile_form,
-            'user' : user_info,
-            'status' : status,
-            'my_profile' : profile,
-            'admission_form' : admission_form,
-            'reg_status' : reg_status,
-        }
-        return render(request, 'admissionApp/edit_profile.html', context=context)
+        invoice_table.objects.create(user_id=request.user.id).DoesNotExist
+        #  return HttpResponsePermanentRedirect(reverse('payment_details', args=(,)))
+
+        return redirect('payment_details', request.user.id, 'reg_form')
+    return render(request, 'admissionApp/edit_profile.html')
 
 @login_required
 def admissionApproval(request, user_id):
-     profile = aspirants_profile.objects.all().filter(user_id=user_id)
-     if profile:
-        for user in profile:
-            aspirant = user.aspirant_id
-            approval_status = admission_approval.objects.all().filter(aspirant_id=aspirant)
-            if approval_status.exists():
-                admission_approval.objects.update( officer_incharge_id=request.user.id, status=True)
-            else:
-                admission_approval.objects.create(aspirant_id=aspirant)
-                admission_approval.objects.update( officer_incharge_id=request.user.id, status=True)
-                messages.success(request, ('Candidate admission secured!'))
+   user_status = admission_approval.objects.only("status").get(aspirant_id=user_id)
+   if user_status.status == False:
+       admission_approval.objects.update(officer_incharge_id=request.user.id, status=True)
+   profile_user = aspirants_profile.objects.all().filter(aspirant_id=user_id)
+   if profile_user:
+    for user in profile_user:
+        aspirant = user.aspirant_id
+        users_status.objects.filter(user_id=user.user_id).update(student=True)
 
+        # Profile.objects.filter(user_id=user.user_id).update()
 
-        # print(approval.)
-        # if request.user.is_superuser:
-        #     if approval.exists:
-        #         pass
-        #     else:
-        #         admission_approval.objects.update(aspirant_id=aspirant_id)
-                # messages.success(request, ('Candidate admission secured!'))
-        #         return HttpResponsePermanentRedirect(reverse('aspirant_profile', args=(user_id,)))
-     return viewProfile(request, user_id)
+    return viewProfile(request, user.user_id)
 
 @login_required
+def admissionDenied(request, user_id):
+   user_status = admission_approval.objects.only("status").get(aspirant_id=user_id)
+   if user_status.status == True:
+       admission_approval.objects.update(officer_incharge_id=request.user.id, status=False)
+
+   profile = aspirants_profile.objects.all().filter(aspirant_id=user_id)
+   if profile:
+    for user in profile:
+        aspirant = user.aspirant_id
+        users_status.objects.filter(user_id=user.user_id).update(student=False)
+    return viewProfile(request, user.user_id)
+
+@login_required(login_url=(admissionLogin))
 def admissionLetter(request, user_id):
     profile = User.objects.all().filter(id=user_id)
     other_info = aspirants_profile.objects.all().filter(user_id=user_id)

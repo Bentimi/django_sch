@@ -50,16 +50,16 @@
           
        {% if inv %}
          {% for invoice in inv %}
-         <div class="col-12 d-flex gap-2 row">
+         <div class="col-12">
             
-            
-            <div>
-                <strong>Amount:</strong> {{invoice.amount}} Naira Only {% if status == 'tuition' %}({{invoice.transaction_type}}) {% endif %}
-        </div>
+            <p class="fw-bold">Sum of <i class="fst-normal text-success">{{invoice.amount}}</i> Naira Only {% if status == 'tuition' %}({{invoice.transaction_type}}) {% endif %} was successfully made for <i class="fst-normal text-success">{{invoice.transaction_type}}</i></p>
         
         
 
-        <button type="submit" class="btn btn-success">Done</button>
+          {% if invoice.category == 'reg_form' %}
+            <a href="{% url 'dashboard_edit' invoice.user_id %}" class="btn btn-primary rounded-0 fw-bold" style="width: fit-content;">Continue</a>
+          {% endif %}
+       
          {% endfor %}
        {% endif %}
 

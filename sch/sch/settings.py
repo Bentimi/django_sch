@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # "django-stmp-backend"
 
     'userApp',
     'paymentApp',
@@ -112,12 +113,24 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # # Gmail
 
+# settings.py
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# EMAIL_HOST_USER = 'bogunkunletesting@gmail.com'
+# EMAIL_HOST_PASSWORD = 'testing_1234'
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 # EMAIL_BACKEND = 'django.core.mail.backends.stmp.EmailBackend' # Replace with your preference
 # EMAIL_PORT = 587 # Replace with your email port
 # EMAIL_USE_TLS = True # Set to False if your email doesn't use TLS
 # EMAIL_HOST = 'stmp.gmail.com' #Replace with your email host for gmail -> 'stmp.gmail.com'
-# EMAIL_HOST_USER = 'bentimi02@gmail.com' # Replace with your email username
-# EMAIL_HOST_PASSWORD = 'benjamin2002' # Replace with your email password
+# EMAIL_HOST_USER = 'bogunkunletesting@gmail.com' # Replace with your email username
+# EMAIL_HOST_PASSWORD = "testing_1234" # Replace with your email password
 # DEFAULT_FROM_EMAIl = 'bentimi02@gmail.com'
 
 # # """
@@ -133,6 +146,13 @@ EMAIL_PORT = '2525'
 
 
 """
+
+# # Looking to send emails in production? Check out our Email API/SMTP product!
+# EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+# EMAIL_HOST_USER = '4acb813ed535da'
+# EMAIL_HOST_PASSWORD = '4ec3724c6abae1'
+# EMAIL_PORT = '2525'
+
 
 
 # Password validation
@@ -184,5 +204,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # login and logout
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = 'user_dashboard'
 LOGOUT_REDIRECT_URL = 'login'

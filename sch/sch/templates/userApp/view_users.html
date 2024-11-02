@@ -35,10 +35,10 @@
                     <tr
                         class="table-light"
                     >
-                        <td scope="row" class="text-center">{{user.profile_id}}</td>
+                        <td scope="row" class="text-center">{{user.user.profile.profile_id}}</td>
                         <td scope="row" class="text-center">{{user.user.first_name}} {{user.user.last_name}}</td>
                         <td class="text-center">{{user.user.username}}</td>
-                        <td class="text-center">{{user.department}}</td>
+                        <td class="text-center">{{user.user.profile.department}}</td>
                         <td class="text-center">{{status}}</td>
                         <td class="text-center">
                             {% if user.user.is_active %}

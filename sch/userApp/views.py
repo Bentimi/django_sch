@@ -11,6 +11,7 @@ from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 import time
 import random
 from datetime import datetime, timedelta
+from django.core.mail import send_mail
 
 # Create your views here.
     
@@ -25,6 +26,22 @@ def navBar(request, user_id):
     return render(request=request,
                   template_name='userApp/nav_bar.html',
                   context={'my_profile' : profile,})
+
+@login_required
+def userDashboard(request):
+    user = User.objects.all().filter(id=request.user.id)
+    # if user:
+    #     for profile in user:
+    #         send_mail(
+    #                     'Testing', # Subject of the mail
+    #                     f'Hi {request.user.first_name} {request.user.last_name}!\nYou currently loggedin to your account {profile.last_login}', # Body of the mail
+    #                     'gradschool@gmail.com', # From email (sender)
+    #                     [request.user.email],  # To email (Receiver)
+    #                     fail_silently = False, # Handle any error
+    #                 )
+    return render(request, 'userApp/dashboard.html', {
+        'user_profile':user
+    })
 
 @login_required
 def displayProfile(request, user_id):
@@ -85,13 +102,14 @@ def viewUsers(request, user):
     global status
     status = user
     if status == 'staff':
-        users = Profile.objects.all().filter(staff=True)
+        users = users_status.objects.all().filter(staff=True, student=False)
     else:
-        users = Profile.objects.all().filter(staff=False)
+        users = users_status.objects.all().filter(staff=False, student=True)
+        # user_status = users_status.objects.all().filter(student=True)
     return render(request, 'userApp/view_users.html', 
                   {
                       "users" : users, 
-                      "status" : status
+                      "status" : status,
                       })
 
 @login_required
