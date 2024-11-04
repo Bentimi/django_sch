@@ -3,8 +3,16 @@
 {% load static %}
 
 <section>
-
-   
+   <div class="d-flex justify-content-center mb-4">
+    <div class="card col-sm-10 col-md-5 col-lg-3 d-flex justify-content-center align-items-center bg-primary" style="height: 7rem;">
+        <h5 class="text-white fw-bold"> Number of {% if status == 'staff' %}
+            Staff
+          {% else %}
+            Student
+          {% endif %}</h5>
+        <p class="fs-4 fw-bold">{{users_agg}}</p>
+    </div>
+   </div>
     
     <div
         class="table-responsive-sm px-3"
@@ -15,10 +23,10 @@
             <thead class="table-light">
                 <tr>
                     <th class="text-center">
-                        {% if status == staff %}
+                        {% if status == 'staff' %}
                           Staff Id
                         {% else %}
-                          User Id
+                          Student Id
                         {% endif %}
                     </th>
                     <th class="text-center">Full Name</th>

@@ -10,6 +10,7 @@
 
         <div class="d-flex justify-content-center"><a class="navbar-brand text-secondary text-opacity-50 fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div> 
 
+        {% if registered_courses %}
         <h2 class="text-center">
            Course Form
       </h2>
@@ -77,6 +78,10 @@
          
        {% endif %}
 
+
+       {% else %}
+       <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5">No course(s) registered <a href="{% url 'course_reg' request.user.id %}">Register     course</a></p>
+      {% endif %}
        
        </div>
 </section>

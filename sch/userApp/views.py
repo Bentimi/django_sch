@@ -12,6 +12,8 @@ import time
 import random
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
+from django.contrib.auth import logout
+from admissionApp.views import profileDashboard
 
 # Create your views here.
     
@@ -30,18 +32,14 @@ def navBar(request, user_id):
 @login_required
 def userDashboard(request):
     user = User.objects.all().filter(id=request.user.id)
-    # if user:
-    #     for profile in user:
-    #         send_mail(
-    #                     'Testing', # Subject of the mail
-    #                     f'Hi {request.user.first_name} {request.user.last_name}!\nYou currently loggedin to your account {profile.last_login}', # Body of the mail
-    #                     'gradschool@gmail.com', # From email (sender)
-    #                     [request.user.email],  # To email (Receiver)
-    #                     fail_silently = False, # Handle any error
-    #                 )
-    return render(request, 'userApp/dashboard.html', {
-        'user_profile':user
-    })
+    if user:
+     for profile in user:
+         if profile.users_status.aspirant is True and not profile.users_status.student is True:
+             return redirect('dashboard')
+         else:
+            return render(request, 'userApp/dashboard.html', {
+                    'user_profile':user
+                })
 
 @login_required
 def displayProfile(request, user_id):
@@ -103,13 +101,16 @@ def viewUsers(request, user):
     status = user
     if status == 'staff':
         users = users_status.objects.all().filter(staff=True, student=False)
+        users_agg = users_status.objects.all().filter(staff=True, student=False).count
     else:
         users = users_status.objects.all().filter(staff=False, student=True)
+        users_agg = users_status.objects.all().filter(staff=False, student=True).count
         # user_status = users_status.objects.all().filter(student=True)
     return render(request, 'userApp/view_users.html', 
                   {
                       "users" : users, 
                       "status" : status,
+                      "users_agg":users_agg
                       })
 
 @login_required

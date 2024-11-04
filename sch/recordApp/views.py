@@ -337,6 +337,8 @@ def courseForm(request, user_id):
         for reg in reg_course:
             unit += int(reg.get("units"))
         total_unit = unit
+    else:
+        total_unit=unit
     return render(request, 'recordApp/course_form.html', {
        'registered_courses':registered_courses,
        'total_unit':total_unit,

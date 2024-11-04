@@ -52,8 +52,7 @@ def admissionLogin(request):
                             aspirants_profile.objects.create(user_id=request.user.id)
                     return redirect('dashboard')
                 elif  request.user.is_authenticated and request.user.is_superuser:
-                    messages.success(request, ('superuser'))
-                    return redirect('admission_login')
+                    return redirect('user_dashboard')
                     
             
     
@@ -76,14 +75,6 @@ def registeredForms(request):
     registered_forms = aspirants_profile.objects.all().filter(registration_status=True)
     registered_forms_agg = aspirants_profile.objects.all().filter(registration_status=True).count
     admitted_agg = admission_approval.objects.all().filter(status=True).count
-    # if registered_forms:
-    #     for reg in registered_forms:
-    #         approval = reg.aspirant_id
-    # pk = 
-    # aspirants_id = aspirants_profile.objects.all().filter(user_id=pk)
-    # for aspirant in aspirants_id:
-    #      approval = admission_approval.objects.all().filter(aspirant_id=aspirant.aspirant_id)
-    
     return render(request, 'admissionApp/registered_users.html', {
         'all_reg':registered_forms,
         'agg':registered_forms_agg,
