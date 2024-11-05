@@ -10,7 +10,7 @@ from io import BytesIO
 from django.template.loader import get_template
 from django.contrib.auth.models import User
 from adminApp.models import fees_table
-from paymentApp.models import invoice_table, admission_invoice_table, tuition_invoice_table, lateReg_invoice_table
+from paymentApp.models import invoice_table, admission_invoice_table, tuition_invoice_table, lateReg_invoice_table, acceptance_invoice_table
 from rave_python import Rave, RaveExceptions, Misc
 from django.urls import reverse
 from django.core.mail import send_mail
@@ -63,16 +63,21 @@ def paymentDetails(request, user_id, status):
                 })
             
             else:
-                # invoice_table.objects.create(user_id=request.user.id)
                 inv = invoice_table.objects.filter(user_id=user_id, status='unsuccessful').order_by('-invoice_id').first()
-                if inv:
+                if not inv:
+                    invoice_table.objects.create(user_id=request.user.id)
+                else:
                     inv_info = invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id)
-                    if inv_info:
-                        for invoice in inv_info:
-                            if status == 'late_reg':
-                                 invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Late Registration', amount=fee.late_reg_fee, category=status  )
-                            elif status == 'reg_form':
-                                 invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Admission Form Fee', amount=fee.admission_form_fee, category=status)
+                    # if inv_info:
+                    #     for invoice in inv_info:
+                    if status == 'late_reg':
+                            # invoice_table.objects.update_or_create(user_id=user_id, transaction_type='Late Registration', amount=fee.late_reg_fee, category=status)
+                            invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Late Registration', amount=fee.late_reg_fee, category=status  )
+                    elif status == 'reg_form':
+                        # invoice_table.objects.update_or_create(user_id=user_id, transaction_type='Admission Form Fee', amount=fee.admission_form_fee, category=status)
+                            invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Admission Form Fee', amount=fee.admission_form_fee, category=status)
+                    elif status == 'acceptance_fee':
+                            invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id).update(transaction_type='Acceptance Fee', amount=fee.acceptance_fee, category=status)
                     return render(request, 'paymentApp/payment_details.html',{
                                 'user_profile':user_info,
                                 'status':status,
@@ -102,7 +107,13 @@ def paymentConfirm(request, user_id, status):
 @login_required       
 def cancelPayment(request, inv_id, status):
     invoice_table.objects.filter(invoice_id=inv_id, status='unsuccessful').delete()
-    return redirect('payment_details', request.user.id, status)
+    inv = invoice_table.objects.all().filter(user_id=request.user.id).order_by('invoice_id').last()
+    if inv:
+        if status == 'acceptance_fee':
+            return redirect('dashboard')
+        else:
+            return redirect('user_dashboard')
+    # return redirect('payment_details', request.user.id, status)
 
 @login_required
 def makePayment(request, inv_id):
@@ -200,8 +211,15 @@ def paymentSuccess(request, inv_id):
                     invoice_details=admission_invoice_table.objects.only('paid').get(invoice_id=invoice.invoice_id)
                     if invoice_details.paid == True:
                         admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id)
-                # if invoice_details.invoice_id == invoice.invoice_id:
-                #  admission_invoice_table.objects.filter(invoice_id=invoice.invoice_id, form_fee=invoice.transaction_type, paid=True).update(aspirant_id=invoice.user_id,)
+            elif invoice.category == 'acceptance_fee':
+                if admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).exists():
+                    admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id)
+                else:
+                    admission_invoice_table.objects.create(invoice_id=invoice.invoice_id,form_fee=invoice.transaction_type, paid=True).DoesNotExist()
+                    invoice_details=admission_invoice_table.objects.only('paid').get(invoice_id=invoice.invoice_id)
+                    if invoice_details.paid == True:
+                        admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id)
+                
     # Send Mail to user
             send_mail(
                 f'{status} Fee', # Subject of the mail

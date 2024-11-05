@@ -1,13 +1,11 @@
-{% extends "side_nav.html" %}
+{% extends "paymentApp/payment_details.html" %}
 {% block title %}<title>Invoice</title>{% endblock title %}
-{% block personal_page %}
+{% block payment %}
 {% load static %}
     
   
   <section>
-    <div class="d-flex row gap-5 justify-content-center">
-       <div class="gap-3 card  mx-auto w-50 px-2 rounded-0 py-5">
-        <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+    
         <h2 class="text-center">
           {% if status == 'tuition' %}
             Tuition Fee
@@ -15,6 +13,8 @@
             Late Registration Fee
           {% elif status == 'reg_form' %}
             Registration Form Fee
+          {% elif status == 'acceptance_fee' %}
+            Acceptance Fee
           {% endif %}
       </h2>
       
@@ -40,6 +40,8 @@
                     Late Registration Fee
                   {% elif status == 'reg_form' %}
                     Registration Form Fee
+                  {% elif status == 'acceptance_fee' %}
+                    Acceptance Fee
                   {% endif %}</p>
             </div>
         </div>
@@ -59,8 +61,10 @@
 
 
           {% if invoice %}
-          <a href="{% url 'cancel_payment' invoice.invoice_id status %}" class="btn btn-secondary rounded-0 my-3" type="submit" style="width: fit-content;"> << Cancel</a>
+          <div class="mx-auto">
+            <a href="{% url 'cancel_payment' invoice.invoice_id status %}" class="btn btn-secondary rounded-0 my-3" type="submit" style="width: fit-content;"> << Cancel</a>
           <a href="{% url 'make_payment' invoice.invoice_id %}" class="btn btn-primary rounded-0 my-3" type="submit" style="width: fit-content;">Proceed >></a>
+          </div>
           {% endif %}
        
 
@@ -68,8 +72,7 @@
     </div>
       
     
-       </div>
-    </div>
+      
 </section>
 
-  {% endblock personal_page %}  
+  {% endblock payment %}  

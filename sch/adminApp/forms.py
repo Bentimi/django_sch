@@ -18,10 +18,14 @@ class feesRegForm(forms.ModelForm):
         'placeholder':'Admission Form Fee',
         'class':'shadow-sm border-1 form-control'
     }), label='Admission Form Fee')
+    acceptance_fee = forms.CharField(widget=forms.NumberInput(attrs={
+        'placeholder':'Acceptance Fee',
+        'class':'shadow-sm border-1 form-control'
+    }), label='Acceptance Fee')
     class Meta:
         model = fees_table
         fields = [
-            'Full_tuition_fee', 'part_tuition_fee', 'late_reg_fee','admission_form_fee'
+            'Full_tuition_fee', 'part_tuition_fee', 'late_reg_fee','admission_form_fee', 'acceptance_fee'
         ]
 
 class edit_tuition(forms.ModelForm):

@@ -13,7 +13,7 @@ import random
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.contrib.auth import logout
-from admissionApp.views import profileDashboard
+from admissionApp.models import aspirants_profile
 
 # Create your views here.
     
@@ -25,9 +25,20 @@ class SignUpView(generic.CreateView):
 @login_required
 def navBar(request, user_id):
     profile = User.objects.all().filter(id=user_id)
+    aspirant = aspirants_profile.objects.all().filter(user_id=request.user.id)
     return render(request=request,
                   template_name='userApp/nav_bar.html',
-                  context={'my_profile' : profile,})
+                  context={'my_profile' : profile, 'aspirant':aspirant})
+
+# @login_required
+def sideBar(request):
+    profile = User.objects.all().filter(id=request.user.id)
+    aspirant = aspirants_profile.objects.all().filter(user_id=request.user.id)
+    return render(request, 'userApp.side_nav.html',
+                  context={
+                      'my_profile' : profile, 'aspirant':aspirant,
+                      'aa':'hello'
+                      })
 
 @login_required
 def userDashboard(request):
@@ -165,7 +176,7 @@ def deleteIdentity(request, user_id):
     return docApproval_paritculars(request, user_id)
 
 def countDown(request):
-    target_date = datetime(2024, 10, 30, 0, 0)
+    target_date = datetime(2024, 11, 30, 0, 0)
     date_now = datetime.now()
     time_remaining = target_date - date_now
 

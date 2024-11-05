@@ -29,7 +29,7 @@ class aspirants_profile(models.Model):
          ("Others", "Others"),
      ]
     aspirant_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=False, null=True)
     sponsorhip = models.CharField(choices=sponsorhip_options, unique=False, max_length=50, null=True, blank=True)
     country = models.CharField(unique=False, max_length=50, null=True, blank=True)
     state = models.CharField(unique=False, max_length=50, null=True, blank=True)
@@ -49,4 +49,5 @@ class admission_approval(models.Model):
     aspirant = models.OneToOneField(aspirants_profile, on_delete=models.CASCADE, null=True)
     officer_incharge = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     status = models.BooleanField(default=False)
+    acceptance_fee = models.BooleanField(default=False)
     approved_date = models.DateField(auto_now_add=True, unique=False, null=True)

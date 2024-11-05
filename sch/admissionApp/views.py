@@ -180,11 +180,19 @@ def admissionDenied(request, user_id):
 @login_required(login_url=(admissionLogin))
 def admissionLetter(request, user_id):
     profile = User.objects.all().filter(id=user_id)
-    other_info = aspirants_profile.objects.all().filter(user_id=user_id)
+    inv_id = invoice_table.objects.filter(user_id=user_id, category='acceptance_fee', status='successful', completed=True).exists()
+    if inv_id:
+        other_info = aspirants_profile.objects.all().filter(user_id=user_id)
 
-    context = {
-        'all_profile':profile,
-        'info' : other_info
-    }
+        context = {
+            'all_profile':profile,
+            'info' : other_info
+        }
+        # return render(request, 'admissionApp/admission_letter.html', context=context)
+    else:
+        invoice_table.objects.create(user_id=request.user.id).DoesNotExist
+        #  return HttpResponsePermanentRedirect(reverse('payment_details', args=(,)))
+
+        return redirect('payment_details', request.user.id, 'acceptance_fee')
     return render(request, 'admissionApp/admission_letter.html', context=context)
 
