@@ -144,8 +144,6 @@ def profileDashboardEdit(request, user_id):
             return render(request, 'admissionApp/edit_profile.html', context=context)
     else:
         invoice_table.objects.create(user_id=request.user.id).DoesNotExist
-        #  return HttpResponsePermanentRedirect(reverse('payment_details', args=(,)))
-
         return redirect('payment_details', request.user.id, 'reg_form')
     return render(request, 'admissionApp/edit_profile.html')
 

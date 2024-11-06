@@ -14,6 +14,7 @@ from paymentApp.models import invoice_table, admission_invoice_table, tuition_in
 from rave_python import Rave, RaveExceptions, Misc
 from django.urls import reverse
 from django.core.mail import send_mail
+from admissionApp.models import admission_approval
 
 
 # Create your views here.
@@ -212,13 +213,23 @@ def paymentSuccess(request, inv_id):
                     if invoice_details.paid == True:
                         admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id)
             elif invoice.category == 'acceptance_fee':
-                if admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).exists():
-                    admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id)
+                if acceptance_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).exists():
+                   acceptance_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, acceptance_fee='Acceptance Fee')
+                   admission_approval.objects.filter(aspirant=request.user.aspirants_profile.aspirant_id).update(acceptance_fee=True)
                 else:
-                    admission_invoice_table.objects.create(invoice_id=invoice.invoice_id,form_fee=invoice.transaction_type, paid=True).DoesNotExist()
-                    invoice_details=admission_invoice_table.objects.only('paid').get(invoice_id=invoice.invoice_id)
+                    acceptance_invoice_table.objects.create(invoice_id=invoice.invoice_id,form_fee=invoice.transaction_type, paid=True).DoesNotExist()
+                    invoice_details=acceptance_invoice_table.objects.only('paid').get(invoice_id=invoice.invoice_id)
                     if invoice_details.paid == True:
-                        admission_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id)
+                       acceptance_invoice_table.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, acceptance_fee='Acceptance Fee')
+                       admission_approval.objects.filter(aspirant=request.user.aspirants_profile.aspirant_id).update(acceptance_fee=True)
+            elif invoice.category == 'late_reg':
+                if lateReg_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).exists():
+                   lateReg_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, fee='Late Registration', paid=True)
+                else:
+                   lateReg_invoice_table.objects.create(invoice_id=invoice.invoice_id,form_fee=invoice.transaction_type, paid=True).DoesNotExist()
+                   invoice_details=lateReg_invoice_table.objects.only('paid').get(invoice_id=invoice.invoice_id)
+                   if invoice_details.paid == True:
+                       lateReg_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, fee='Late Registration', paid=True)
                 
     # Send Mail to user
             send_mail(

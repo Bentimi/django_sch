@@ -10,6 +10,8 @@ from recordApp.models import course_register, course_model, cbt, questions, cour
 from xhtml2pdf import pisa
 from io import BytesIO
 from django.template.loader import get_template
+from adminApp.models import fees_table
+from paymentApp.models import invoice_table
 
 
 
@@ -252,33 +254,57 @@ def cbtTest(request, test_id):
                         listing = 0
                         question_data = questions.objects.filter(cbt_id=details.cbt_id)
                         listing +=1
-                        if request.method == 'POST':
-                            for question in question_data:
-                                selected_option = request.POST.get(str(question.id))
-                                if selected_option:
-                                    option = questions.objects.filter(answer=selected_option)
-                                    if option:
-                                        score +=1
+                    if request.method == 'POST':
+                        for question in question_data:
+                            selected_option = request.POST.get(str(question.id))
+                            if selected_option:
+                                option = questions.objects.filter(answer=selected_option)
+                                if option:
+                                    score +=1
 
 
-                        return render(request, 'recordApp/cbt_test.html',
-                                    {
-                                        'question_data':question_data,
-                                        'score':score,
-                                        'listing':listing
-                                    })
+                                return render(request, 'recordApp/cbt_test.html',
+                                            {
+                                                'question_data':question_data,
+                                                'score':score,
+                                                'listing':listing
+                                            })
+    return render(request, 'recordApp/cbt_test.html',
+                {
+                    'question_data':question_data,
+                    'score':score,
+                    'listing':listing
+                })
                     
                     
 
 @login_required
 def courseReg(request, user_id):
-    request.user.id = user_id
-    all_courses = course_register.objects.all()
-    registered_courses = course_form.objects.all().filter(user_id=user_id)
-    return render(request, 'recordApp/course_form_reg.html', {
-       'all_courses':all_courses,
-       'registered_courses':registered_courses
-   })
+    late_reg = fees_table.objects.all()
+    if late_reg:
+        for reg in late_reg:
+            if reg.late_reg_approval is True:
+                inv_id = invoice_table.objects.filter(user_id=user_id, category='late_reg', status='successful', completed=True).exists()
+                if inv_id:
+                    request.user.id = user_id
+                    all_courses = course_register.objects.all()
+                    registered_courses = course_form.objects.all().filter(user_id=user_id)
+                    return render(request, 'recordApp/course_form_reg.html', {
+                    'all_courses':all_courses,
+                    'registered_courses':registered_courses
+                })
+                else:
+                    invoice_table.objects.create(user_id=request.user.id).DoesNotExist
+                    return redirect('payment_details', request.user.id, 'late_reg')
+               
+            else:
+                request.user.id = user_id
+                all_courses = course_register.objects.all()
+                registered_courses = course_form.objects.all().filter(user_id=user_id)
+                return render(request, 'recordApp/course_form_reg.html', {
+                'all_courses':all_courses,
+                'registered_courses':registered_courses
+            })
 
 @login_required
 def addCourses(request, course_id):
@@ -315,15 +341,6 @@ def removeCourses(request, course_id):
     user_id = request.user.id
     course_form.objects.filter(course_id=course_id, user_id=user_id).delete()
     return courseReg(request, request.user.id)
-
-# def render_to_pdf(template_src, context_dict={}):
-#     template = get_template(template_src)
-#     html = template.render(context_dict)
-#     response = HttpResponse(content_type='application/pdf')
-#     pisa_status = pisa.CreatePDF(html, dest=response)
-#     if pisa_status.err:
-#         return HttpResponse('Error rendering PDF', status=500)
-#     return response
 
 @login_required
 def courseForm(request, user_id):

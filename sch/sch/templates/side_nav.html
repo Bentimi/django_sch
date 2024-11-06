@@ -294,21 +294,28 @@
               <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="transition: 1s ease-in-out;">
                 <div class="accordion-body bg-secondary bg-opacity-25">
                   <ul class="list-unstyled" id="nav-items">
-                    <li id="accordion_li">
+                    {% if request.user.is_superuser %}
+                    
+                    <!-- <li id="accordion_li">
                       <a id="accordion_link" href="{% url 'fees_form' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Fee Form</a>
-                    </li>
+                    </li> -->
+                    
+                    
+                    
                     <li id="accordion_li">
                       <a id="accordion_link" href="{% url 'display_fees' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> View Fees</a>
                     </li>
-                    <li id="accordion_li">
+                    {% elif request.user.users_status.student is True %}
+                    <!-- <li id="accordion_li">
                       <a id="accordion_link" href="{% url 'payment_details' request.user.id 'reg_form' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Form Fee</a>
-                    </li>
+                    </li> -->
                     <li id="accordion_li">
                       <a id="accordion_link" href="{% url 'payment_details' request.user.id 'tuition' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Tuition Fee</a>
                     </li>
-                    <li id="accordion_li">
+                    {% endif %}
+                    <!-- <li id="accordion_li">
                       <a id="accordion_link" href="{% url 'payment_details' request.user.id 'late_reg' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Late Registration</a>
-                    </li>
+                    </li> -->
                    </ul>
                 </div>
               </div>
@@ -392,7 +399,7 @@
                   
                       
                     <li class="mb-4 list-unstyled">
-                       {% if request.user.profile.profile_passport %}
+                       {% if request.user.profile.profile_passport%}
                         <img src="{{request.user.profile.profile_passport.url}}" alt="" srcset="" class="rounded-circle" style="width: 10em; height: 10em;">
                        {% else %}
                          <img src="{% static '/images\profile_icon.png' %}" alt="" srcset="" class="rounded-circle" style="width: 10em; height: 10em;">
