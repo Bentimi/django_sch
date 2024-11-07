@@ -50,7 +50,8 @@ class grading(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False, null=True)
     score = models.CharField(max_length=20, unique=False, null=True)
     active = models.BooleanField(unique=False, default=False)
-    excuted_time = models.DateTimeField(auto_created=True, unique=False)
+    submitted = models.BooleanField(unique=False, default=False)
+    executed_time = models.DateTimeField(auto_now_add=True, unique=False)
     finished_time = models.CharField(max_length=100, unique=False, null=True, blank=True)
 
 class course_form(models.Model):
