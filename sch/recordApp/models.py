@@ -26,7 +26,7 @@ class cbt(models.Model):
     course = models.ForeignKey(course_register, on_delete=models.CASCADE, unique=False, null=True)
     course_title = models.CharField(unique=True, max_length=200, null=True)
     course_code = models.CharField(max_length=30, unique=True, null=True)
-    duration = models.CharField(max_length=50, unique=False, null=True)
+    duration = models.PositiveIntegerField(unique=False, null=True)
     # execution_time = models.TimeField(max_length=50, unique=False, null=True)
     execution_date = models.DateTimeField(max_length=50, unique=False, null=True)
     no_of_questions = models.CharField(max_length=500, unique=False, null=True)

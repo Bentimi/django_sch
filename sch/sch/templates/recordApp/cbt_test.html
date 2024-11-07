@@ -9,6 +9,8 @@
     <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
     <div class="card w-50">
        
+     
+      {% if target_time <= date_now %}
       {% if messages %}
       {% for message in messages  %}
         {{message}}
@@ -28,6 +30,9 @@
             </div>
             <div class="text-success">
               Execution Time: {{days}} : {{hrs}} : {{mins}} : {{secs}}
+            </div>
+            <div class="text-danger">
+              Remaining Time: {{remaining_time}} {{time_secs}}
             </div>
            </div>
             {% for quest in question_data %}
@@ -66,11 +71,41 @@
           <p class="fs-4 fw-bold d-flex align-items-center justify-content-center gap-2" style="height: 3em;">Test not available for the selected course! <a href="{% url 'available_test' request.user.id %}">Return</a></p>
 
         {% endif %}
+
+      {% else %}
+          <div class="p-4 d-flex justify-content-center">
+            Test would be available in  <span class="text-danger mx-2 fw-bold" style="width: 8rem;"> {{days}} : {{hrs}} : {{mins}} : {{secs}}</span>  <a href="{% url 'available_test' request.user.id %}" class="btn btn-info text-center fw-bold rounded-0">Return</a>
+          </div>
+           <script>
+          function updateCountdown(){
+              fetch(window.location.pathname)
+              .then(response => response.text())
+          .then(html => {
+              document.body.innerHTML = html;
+          });
+          }
+          setInterval(updateCountdown, 1000);
+        </script>
+
+      {% endif %}
+
+
       </div>
 
 
 
     </div>
 </section>
+
+<!-- <script>
+  function updateCountdown(){
+      fetch(window.location.pathname)
+      .then(response => response.text())
+  .then(html => {
+      document.body.innerHTML = html;
+  });
+  }
+  setInterval(updateCountdown, 1000);
+</script> -->
 
   {% endblock personal_page %}  

@@ -263,14 +263,16 @@ def cbtTest(request, test_id):
                         target_date_str = _date.strftime("%Y,%m,%d,%H,%M,%S")
                         year,month,day,hour,minute,second=target_date_str.split(',')
                         target_date = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
-                        import time
-                        date_now_str = time.strftime("%Y,%m,%d,%H,%M,%S")
-                        year,month,day,hour,minute,second=date_now_str.split(',')
-                        date_now = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
+                        date_now = datetime.now()
                         time_remaining = target_date - date_now
-                        t = str(40)
-                        print(f'{t.strftime("%M,")}')
-                    # if test_instruction.duration:
+                    
+                        
+                    if test_instruction.duration:
+                        
+                        time_delta = _date - timezone.now()
+                        # remaining_time = time_delta - timedelta(minutes=test_instruction.duration)
+                        remaining_time = time_delta - timedelta(minutes=test_instruction.duration)
+
                     #     print(test_instruction.duration,'mins')
                     #     # target_time = datetime()
                     #     # time_remainig = (int(test_instruction.duration)) - 1
@@ -302,6 +304,10 @@ def cbtTest(request, test_id):
                     'hrs' : f'{time_remaining.seconds // 3600:02}',
                     'mins' : f'{(time_remaining.seconds % 3600) // 60:02}',
                     'secs' : f'{time_remaining.seconds % 60:02}',
+                    'remaining_time':f'{(remaining_time.seconds % 3600) // 60:02}',
+                    'time_secs' : f'{remaining_time.seconds % 60:02}',
+                    'target_time':target_date,
+                    'date_now':date_now
                     })
                     
                     
