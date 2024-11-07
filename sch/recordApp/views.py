@@ -12,6 +12,8 @@ from io import BytesIO
 from django.template.loader import get_template
 from adminApp.models import fees_table
 from paymentApp.models import invoice_table
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 
 
@@ -239,13 +241,14 @@ def editQuestions(request, user_id):
 
 @login_required
 def cbtTest(request, test_id):
+   
     print(f'Test ID: {test_id}')
     score = 0
     course_info =  course_form.objects.all().filter(course_id=test_id)
     if course_info:
         for course in course_info:
             print(course.cbt.id)
-            cbt_id = course.cbt.id
+            cbt_id = course.cbt.id           
             course_form_details = course_form.objects.all().filter(cbt_id=cbt_id)
             if course_form_details:
                 for details in course_form_details:
@@ -254,6 +257,25 @@ def cbtTest(request, test_id):
                         listing = 0
                         question_data = questions.objects.filter(cbt_id=details.cbt_id)
                         listing +=1
+                    test_instruction = cbt.objects.only('course_code').get(id=cbt_id)
+                    if test_instruction.execution_date:
+                        _date = test_instruction.execution_date
+                        target_date_str = _date.strftime("%Y,%m,%d,%H,%M,%S")
+                        year,month,day,hour,minute,second=target_date_str.split(',')
+                        target_date = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
+                        import time
+                        date_now_str = time.strftime("%Y,%m,%d,%H,%M,%S")
+                        year,month,day,hour,minute,second=date_now_str.split(',')
+                        date_now = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
+                        time_remaining = target_date - date_now
+                        t = str(40)
+                        print(f'{t.strftime("%M,")}')
+                    # if test_instruction.duration:
+                    #     print(test_instruction.duration,'mins')
+                    #     # target_time = datetime()
+                    #     # time_remainig = (int(test_instruction.duration)) - 1
+                        
+                    #     time_remainig = timezone.now() - timezone.timedelta(seconds=int(test_instruction.duration))
                     if request.method == 'POST':
                         for question in question_data:
                             selected_option = request.POST.get(str(question.id))
@@ -263,18 +285,24 @@ def cbtTest(request, test_id):
                                     score +=1
 
 
-                                return render(request, 'recordApp/cbt_test.html',
-                                            {
-                                                'question_data':question_data,
-                                                'score':score,
-                                                'listing':listing
-                                            })
+                                # return render(request, 'recordApp/cbt_test.html',
+                                #             {
+                                #                 'question_data':question_data,
+                                #                 'score':score,
+                                #                 'listing':listing,
+                                #                 'duration':test_instruction.duration
+                                #             })
     return render(request, 'recordApp/cbt_test.html',
                 {
                     'question_data':question_data,
                     'score':score,
-                    'listing':listing
-                })
+                    'listing':listing,
+                    'duration':test_instruction.duration,
+                    'days' : f'{time_remaining.days:02}',
+                    'hrs' : f'{time_remaining.seconds // 3600:02}',
+                    'mins' : f'{(time_remaining.seconds % 3600) // 60:02}',
+                    'secs' : f'{time_remaining.seconds % 60:02}',
+                    })
                     
                     
 

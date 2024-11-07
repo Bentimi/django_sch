@@ -18,8 +18,17 @@
         {% if question_data %}
         <form action="" method="post">
             {% csrf_token %}
+           <div class="d-flex gap-3">
            <div>
             Scores: {{score}}
+           </div>
+
+            <div class="text-success">
+              Duration: {{duration}} Mins
+            </div>
+            <div class="text-success">
+              Execution Time: {{days}} : {{hrs}} : {{mins}} : {{secs}}
+            </div>
            </div>
             {% for quest in question_data %}
             {{quest.id}}

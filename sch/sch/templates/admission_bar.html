@@ -139,16 +139,34 @@
               {% if request.user.is_authenticated %}
 
             <div class="d-flex justify-content-between">
+              {% if request.user.is_superuser %}
+              
+              <a href="{% url 'user_dashboard' %}" class="text-decoration-none fw-bold primary text-dark d-flex align-items-center justify-content-center fs-5 shadow-sm p-2" style="width: fit-content;"> <i class="fa fa-university text-danger"></i> <em class="fs-6" style="font-style: normal;">Dashboard</em></a>
+              
+              {% else %}
 
               <a href="{% url 'dashboard' %}" class="text-decoration-none fw-bold primary text-dark d-flex align-items-center justify-content-center fs-5 shadow-sm p-2" style="width: fit-content;"> <i class="fa fa-university text-danger"></i> <em class="fs-6" style="font-style: normal;">Dashboard</em></a>
+              {% endif %}
 
+              {% if request.user.is_superuser %}
+              <a href="{% url 'logout' %}" class="text-decoration-none fw-bold primary text-dark d-flex align-items-center justify-content-center fs-5 shadow-sm p-2" style="width: fit-content;"> <i class="fa fa-sign-out text-danger"></i> <em class="fs-6" style="font-style: normal;">Logout</em></a>
+              {% else %}
               <a href="{% url 'admission_logout' %}" class="text-decoration-none fw-bold primary text-dark d-flex align-items-center justify-content-center fs-5 shadow-sm p-2" style="width: fit-content;"> <i class="fa fa-sign-out text-danger"></i> <em class="fs-6" style="font-style: normal;">Logout</em></a>
+              {% endif %}
             </div>
              <li class="mb-4 nav-item d-flex justify-content-center">
-              {% if request.user.aspirants_profile.passport %}
-                <img src="{{request.user.aspirants_profile.passport.url}}" alt="" srcset="" class="rounded-circle" style="width: 5em; height: 5em;">
-                {% else %}
+              {% if request.user.is_superuser %}
+              {% if request.user.profile.profile_passport %}
+               <img src="{{request.user.profile.profile_passport.url}}" alt="" srcset="" class="rounded-circle" style="width: 5em; height: 5em;">
+              {% else %}
                 <img src="{% static '/images\profile_icon.png' %}" alt="" srcset="" class="rounded-circle" style="width: 5em; height: 5em;">
+              {% endif %}
+              {% else %}
+              {% if request.user.aspirants_profile.passport %}
+              <img src="{{request.user.aspirants_profile.passport.url}}" alt="" srcset="" class="rounded-circle" style="width: 5em; height: 5em;">
+              {% else %}
+              <img src="{% static '/images\profile_icon.png' %}" alt="" srcset="" class="rounded-circle" style="width: 5em; height: 5em;">
+            {% endif %}
               {% endif %}
            </li>
            <li class="nav-item text-center">

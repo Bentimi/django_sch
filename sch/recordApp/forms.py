@@ -70,18 +70,19 @@ class reg_cbt(forms.ModelForm):
             'placeholder':'Number of Questions',
             'class':'form-control shadow-sm border-1',
         }), label='Number of Questions')
-    execution_time = forms.TimeField(widget=forms.TimeInput(attrs={
+    duration = forms.IntegerField(widget=forms.NumberInput(attrs={
+            'placeholder':'Duration',
             'class':'form-control shadow-sm border-1',
-            'type':'time'
-        }), label='Execution Time')
-    execution_date= forms.DateField(widget=forms.DateInput(attrs={
+            'type':'number'
+        }), label='Duration')
+    execution_date= forms.DateTimeField(widget=forms.DateTimeInput(attrs={
             'class':'form-control shadow-sm border-1',
-            'type':'date'
+            'type':'datetime-local'
         }), label='Execution Date')
     class Meta:
         model = cbt
         fields = [
-            'no_of_questions','execution_time', 'execution_date'
+            'no_of_questions','duration', 'execution_date'
         ]
 
 class course_details(forms.ModelForm):
