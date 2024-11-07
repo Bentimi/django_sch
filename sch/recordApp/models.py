@@ -46,8 +46,10 @@ class questions(models.Model):
 
 class grading(models.Model):
     grade_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(cbt, on_delete=models.CASCADE, unique=False, null=True)
+    cbt = models.ForeignKey(cbt, on_delete=models.CASCADE, unique=False, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False, null=True)
     score = models.CharField(max_length=20, unique=False, null=True)
+    active = models.BooleanField(unique=False, default=False)
     excuted_time = models.DateTimeField(auto_created=True, unique=False)
     finished_time = models.CharField(max_length=100, unique=False, null=True, blank=True)
 

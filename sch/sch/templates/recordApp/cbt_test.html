@@ -25,14 +25,11 @@
             Scores: {{score}}
            </div>
 
-            <div class="text-success">
+            <div class="text-danger fw-bold">
               Duration: {{duration}} Mins
             </div>
-            <div class="text-success">
-              Execution Time: {{days}} : {{hrs}} : {{mins}} : {{secs}}
-            </div>
-            <div class="text-danger">
-              Remaining Time: {{remaining_time}} {{time_secs}}
+            <div class="text-dark fw-bold">
+              Executed Time: {{executed_time}}
             </div>
            </div>
             {% for quest in question_data %}

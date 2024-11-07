@@ -6,7 +6,7 @@ from django.db import transaction
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponse
 from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form, test_form
 from .models import User
-from recordApp.models import course_register, course_model, cbt, questions, course_form
+from recordApp.models import course_register, course_model, cbt, questions, course_form, grading
 from xhtml2pdf import pisa
 from io import BytesIO
 from django.template.loader import get_template
@@ -14,6 +14,7 @@ from adminApp.models import fees_table
 from paymentApp.models import invoice_table
 from datetime import datetime, timedelta
 from django.utils import timezone
+import time
 
 
 
@@ -255,7 +256,9 @@ def cbtTest(request, test_id):
                     print(details.cbt_id)
                     if details.cbt_id:
                         listing = 0
+                        executed_time = time.strftime('%Y-%m-%d %H : %M : %S')
                         question_data = questions.objects.filter(cbt_id=details.cbt_id)
+                        grading.objects.create(active=True, cbt_id=details.cbt.id, user_id=request.user.id, executed_time=executed_time).DoesNotExist
                         listing +=1
                     test_instruction = cbt.objects.only('course_code').get(id=cbt_id)
                     if test_instruction.execution_date:
@@ -265,19 +268,14 @@ def cbtTest(request, test_id):
                         target_date = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
                         date_now = datetime.now()
                         time_remaining = target_date - date_now
-                    
+
+                        
                         
                     if test_instruction.duration:
                         
                         time_delta = _date - timezone.now()
-                        # remaining_time = time_delta - timedelta(minutes=test_instruction.duration)
                         remaining_time = time_delta - timedelta(minutes=test_instruction.duration)
 
-                    #     print(test_instruction.duration,'mins')
-                    #     # target_time = datetime()
-                    #     # time_remainig = (int(test_instruction.duration)) - 1
-                        
-                    #     time_remainig = timezone.now() - timezone.timedelta(seconds=int(test_instruction.duration))
                     if request.method == 'POST':
                         for question in question_data:
                             selected_option = request.POST.get(str(question.id))
@@ -307,7 +305,8 @@ def cbtTest(request, test_id):
                     'remaining_time':f'{(remaining_time.seconds % 3600) // 60:02}',
                     'time_secs' : f'{remaining_time.seconds % 60:02}',
                     'target_time':target_date,
-                    'date_now':date_now
+                    'date_now':date_now,
+                    'executed_time':executed_time
                     })
                     
                     
