@@ -278,12 +278,12 @@ def cbtTest(request, test_id):
                         option = questions.objects.filter(answer=selected_option)
                         if option:
                             score +=1
-                grading_ =  grading.objects.all().filter(active=True, submitted=False, cbt_id=details.cbt.id, user_id=request.user.id)
-                if grading_:
-                    finished_time = time.strftime('%Y-%m-%d %H:%M: %S')
-                    grading.objects.filter(active=True, cbt_id=details.cbt.id, user_id=request.user.id).update(score=score, active=False,finished_time=finished_time, submitted=True)
-                    grading_data =  grading.objects.all().filter(cbt_id=cbt_id, user_id=request.user.id, active=False, submitted=True)
-    
+                finished_time = time.strftime('%Y-%m-%d %H:%M: %S')
+                grading.objects.filter(active=True, cbt_id=cbt_id, user_id=request.user.id).update(score=score, active=False,finished_time=finished_time, submitted=True)
+            # grading_ =  grading.objects.all().filter(active=True, submitted=False, cbt_id=cbt_id, user_id=request.user.id)
+            # if grading_:
+            grading_data =  grading.objects.all().filter(cbt_id=cbt_id, user_id=request.user.id, active=False, submitted=True)
+
 
     return render(request, 'recordApp/cbt_test.html', {
         'question_data':question_data,
@@ -292,7 +292,11 @@ def cbtTest(request, test_id):
         'date_now':date_now,
         'duration':test_instruction.duration,
         'executed_time':executed_time,
-        'grading':grading_data
+        'grading':grading_data,
+        'days' : f'{time_remaining.days:02}',
+        'hrs' : f'{time_remaining.seconds // 3600:02}',
+        'mins' : f'{(time_remaining.seconds % 3600) // 60:02}',
+        'secs' : f'{time_remaining.seconds % 60:02}',
     })
             
 

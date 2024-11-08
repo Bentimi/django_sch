@@ -9,124 +9,146 @@
     <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
     <div class="card w-50">
        
-     
-      {% if grading %}
+    <!-- {% if target_time <= date_now %}
+    {% if question_data %}
+        
+            <form action="" method="post">
+              {% csrf_token %}
+            <div class="d-flex gap-3">
+            <div>
+              Scores: {{score}}
+            </div>
+
+              <div class="text-danger fw-bold">
+                Duration: {{duration}} Mins
+              </div>
+              <div class="text-dark fw-bold">
+                Executed Time: {{executed_time}}
+              </div>
+            </div>
+              {% for quest in question_data %}
+              {{quest.id}}
+              {{quest.question}}
+          
+            <ol type="A" class="d-flex gap-3 justify-content-evenly">
+              <li>
+                  <div class="mx-2">
+                      <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.first_option}}" id="option{{quest.id}}" required>{{quest.first_option}}
+                  </div>
+              </li>
+              <li>
+                  <div class="mx-2">
+                      <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.second_option}}" id="option{{quest.id}}" required>{{quest.second_option}}
+                  </div>
+              </li>
+              <li>
+                  <div class="mx-2">
+                      <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.third_option}}" id="option{{quest.id}}" required>{{quest.third_option}}
+                  </div>
+              </li>
+              <li>
+                  <div class="mx-2">
+                      <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.forth_option}}" id="option{{quest.id}}" required>{{quest.forth_option}}
+                  </div>
+              </li>
+            </ol>
+            {{form.as_p}}
+            {% endfor %}
+            
+            <button type="submit" class="btn btn-primary my-2">Submit</button>
+            </form>
+            {% endif %} -->
+     {% if grading %}
         {% for grad in grading %}
-          {{grad.active}}
-          {{grad.submitted}}
+         {% if grad.active is True and grad.submitted is False %}
+         
+         {% if question_data %}
+        
+            <form action="" method="post">
+              {% csrf_token %}
+            <div class="d-flex gap-3">
+            <div>
+              Scores: {{score}}
+            </div>
+
+              <div class="text-danger fw-bold">
+                Duration: {{duration}} Mins
+              </div>
+              <div class="text-dark fw-bold">
+                Executed Time: {{executed_time}}
+              </div>
+            </div>
+              {% for quest in question_data %}
+              {{quest.id}}
+              {{quest.question}}
+          
+            <ol type="A" class="d-flex gap-3 justify-content-evenly">
+              <li>
+                  <div class="mx-2">
+                      <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.first_option}}" id="option{{quest.id}}" required>{{quest.first_option}}
+                  </div>
+              </li>
+              <li>
+                  <div class="mx-2">
+                      <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.second_option}}" id="option{{quest.id}}" required>{{quest.second_option}}
+                  </div>
+              </li>
+              <li>
+                  <div class="mx-2">
+                      <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.third_option}}" id="option{{quest.id}}" required>{{quest.third_option}}
+                  </div>
+              </li>
+              <li>
+                  <div class="mx-2">
+                      <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.forth_option}}" id="option{{quest.id}}" required>{{quest.forth_option}}
+                  </div>
+              </li>
+            </ol>
+            {{form.as_p}}
+            {% endfor %}
+            
+            <button type="submit" class="btn btn-primary my-2">Submit</button>
+            </form>
+            {% else %}
+            <p class="fs-5 fw-bold d-flex align-items-center justify-content-center gap-2" style="height: 3em;">You have attempted your trial! <a href="{% url 'user_dashboard' %}" class="btn btn-danger">Home</a></p>
+            {% endif %}
+
+         {% endif %}
         {% endfor %}
       {% endif %}
-
-      {% comment %} <!-- {% if target_time <= date_now %} --> {% endcomment %}
-      {% if messages %}
-      {% for message in messages  %}
-        {{message}}
-      {% endfor %}
-      {% endif %}
-
-      {% if grading_data %}
-        {% for data in grading_data %}
-          {{data.submitted}}
-        {% endfor %}
-      {% endif %}
-
-      {% if active %}
-        {{active}}
-      {% endif %}
-
-        {% if question_data %}
-        {% comment %} <!-- {% if active == 'True' and submitted == 'False' %} --> {% endcomment %}
-        <form action="" method="post">
-          {% csrf_token %}
-         <div class="d-flex gap-3">
-         <div>
-          Scores: {{score}}
-         </div>
-
-          <div class="text-danger fw-bold">
-            Duration: {{duration}} Mins
-          </div>
-          <div class="text-dark fw-bold">
-            Executed Time: {{executed_time}}
-          </div>
-         </div>
-          {% for quest in question_data %}
-          {{quest.id}}
-          {{quest.question}}
-       
-        <ol type="A" class="d-flex gap-3 justify-content-evenly">
-          <li>
-              <div class="mx-2">
-                  <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.first_option}}" id="option{{quest.id}}" required>{{quest.first_option}}
-              </div>
-          </li>
-          <li>
-              <div class="mx-2">
-                  <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.second_option}}" id="option{{quest.id}}" required>{{quest.second_option}}
-              </div>
-          </li>
-          <li>
-              <div class="mx-2">
-                  <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.third_option}}" id="option{{quest.id}}" required>{{quest.third_option}}
-              </div>
-          </li>
-          <li>
-              <div class="mx-2">
-                  <input type="radio" name="{{quest.id}}" class="form-check-input shadow-sm border-1 mx-2" value="{{quest.forth_option}}" id="option{{quest.id}}" required>{{quest.forth_option}}
-              </div>
-          </li>
-        </ol>
-        {{form.as_p}}
-        {% endfor %}
-        
-        <button type="submit" class="btn btn-primary my-2">Submit</button>
-        </form>
-        
-        {% comment %} <!-- {% elif active == 'False' and submitted == 'True' %}
-        <p class="fs-5 fw-bold d-flex align-items-center justify-content-center gap-2" style="height: 3em;">You have attempted your trial! <a href="{% url 'user_dashboard' %}" class="btn btn-danger">Home</a></p>
-        
-        {% endif %} --> {% endcomment %}
-
-        {% else %}
-        
-          <p class="fs-4 fw-bold d-flex align-items-center justify-content-center gap-2" style="height: 3em;">Test not available for the selected course! <a href="{% url 'available_test' request.user.id %}">Return</a></p>
-
-        {% endif %}
-
-      {% comment %} <!-- {% else %}
-          <div class="p-4 d-flex justify-content-center">
-            Test would be available in  <span class="text-danger mx-2 fw-bold" style="width: 8rem;"> {{days}} : {{hrs}} : {{mins}} : {{secs}}</span>  <a href="{% url 'available_test' request.user.id %}" class="btn btn-info text-center fw-bold rounded-0">Return</a>
-          </div>
-           <script>
-          function updateCountdown(){
-              fetch(window.location.pathname)
-              .then(response => response.text())
-          .then(html => {
-              document.body.innerHTML = html;
-          });
-          }
-          setInterval(updateCountdown, 1000);
-        </script>
-
-      {% endif %} --> {% endcomment %}
-
-
+      
+     
+      
+     {% else %}
+      <div class="p-4 d-flex justify-content-center">
+        Test would be available in  <span class="text-danger mx-2 fw-bold" style="width: 8rem;"> {{days}} : {{hrs}} : {{mins}} : {{secs}}</span>  <a href="{% url 'available_test' request.user.id %}" class="btn btn-info text-center fw-bold rounded-0">Return</a>
       </div>
+        <script>
+      function updateCountdown(){
+          fetch(window.location.pathname)
+          .then(response => response.text())
+      .then(html => {
+          document.body.innerHTML = html;
+      });
+      }
+      setInterval(updateCountdown, 1000);
+    </script>
+     {% endif %}
+
+
+      <!-- {% if grading %}
+        {% for grad in grading %}
+        {% if grad.active is True and grad.submitted is False %}
+          Good
+        {% else %}
+          Blocked
+        {% endif %}
+        {% endfor %}
+      {% endif %}
+ -->
 
 
 
-    </div>
-</section>
-
-<!-- <script>
-  function updateCountdown(){
-      fetch(window.location.pathname)
-      .then(response => response.text())
-  .then(html => {
-      document.body.innerHTML = html;
-  });
-  }
-  setInterval(updateCountdown, 1000);
-</script> -->
+      
 
   {% endblock personal_page %}  
