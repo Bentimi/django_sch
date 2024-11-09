@@ -9,7 +9,7 @@
     <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
     <div class="card w-50">
        
-    <!-- {% if target_time <= date_now %}
+   
     {% if question_data %}
         
             <form action="" method="post">
@@ -55,9 +55,70 @@
             {{form.as_p}}
             {% endfor %}
             
-            <button type="submit" class="btn btn-primary my-2">Submit</button>
+            <!-- Modal trigger button -->
+            <button
+              type="button"
+              class="btn btn-primary btn-md"
+              data-bs-toggle="modal"
+              data-bs-target="#modalId"
+            >
+              Finish Test
+            </button>
+            
+            <!-- Modal Body -->
+            <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+            <div
+              class="modal fade"
+              id="modalId"
+              tabindex="-1"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              
+              role="dialog"
+              aria-labelledby="modalTitleId"
+              aria-hidden="true"
+            >
+              <div
+                class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+                role="document"
+              >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                      Modal title
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">Are you sure you want to submit</div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary my-2">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Optional: Place to the bottom of scripts -->
+            <script>
+              const myModal = new bootstrap.Modal(
+                document.getElementById("modalId"),
+                options,
+              );
+            </script>
+            
             </form>
-            {% endif %} -->
+            {% endif %}
      {% if grading %}
         {% for grad in grading %}
          {% if grad.active is True and grad.submitted is False %}
@@ -118,8 +179,8 @@
       {% endif %}
       
      
-      
-     {% else %}
+     {% comment %} <!-- {% if target_time <= date_now %} -->
+     <!-- {% else %}
       <div class="p-4 d-flex justify-content-center">
         Test would be available in  <span class="text-danger mx-2 fw-bold" style="width: 8rem;"> {{days}} : {{hrs}} : {{mins}} : {{secs}}</span>  <a href="{% url 'available_test' request.user.id %}" class="btn btn-info text-center fw-bold rounded-0">Return</a>
       </div>
@@ -133,7 +194,7 @@
       }
       setInterval(updateCountdown, 1000);
     </script>
-     {% endif %}
+     {% endif %} -->
 
 
       <!-- {% if grading %}
@@ -145,7 +206,8 @@
         {% endif %}
         {% endfor %}
       {% endif %}
- -->
+ --> 
+ {% endcomment %}
 
 
 

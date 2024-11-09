@@ -46,7 +46,7 @@
                       <i class="fa fa-user" style="font-style: normal;"></i> {{request.user.username|upper}}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item"  class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" href="{% url 'profile' request.user.id %}"><i class="fa fa-user"></i> Profile</a></li>
+                        <li><a class="dropdown-item"  class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" href="{% url 'user_dashboard' %}"><i class="fa fa-user"></i> Dashboard</a></li>
                         <li><a class="dropdown-item"  class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
                       </ul>
                   </li>

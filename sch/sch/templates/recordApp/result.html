@@ -1,0 +1,31 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>Course form reg</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    <div class="d-flex row gap-5 justify-content-center">
+       <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5" style="min-height: 80vh;">
+        <h2 class="text-center">
+           Avaliable Test
+      </h2>
+      {% if messages %}
+      {% for message in messages  %}
+        {{message}}
+      {% endfor %}
+      {% endif %}
+       <div class="d-flex row justify-content-center gap-2 px-3">
+       
+      {% if result_data %}
+        {% for result in result_data %}
+          {{result.cbt.course_code}}
+          {{result.score}}
+        {% endfor %}
+      {% endif %}
+      
+       
+       </div>
+</section>
+
+  {% endblock personal_page %}  

@@ -40,7 +40,7 @@
                     <td scope="row">{{reg_course.course.course}}</td>
                     <td scope="row">{{reg_course.course.course_code}}</td>
                     <td scope="row">{{reg_course.course.unit}}</td>
-                    <td><a href="{% url 'cbt_test' reg_course.course_id %}" class="btn btn-primary">Take Test</a></td>
+                    <td><a href="{% url 'confirm_test' reg_course.course_id %}" class="btn btn-primary">Take Test</a></td>
                 </tr>
         
                  {% endfor %}

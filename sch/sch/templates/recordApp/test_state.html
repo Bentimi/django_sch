@@ -1,0 +1,40 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>cbt questions</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+
+<section id="about_section" class="py-5">
+
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+        <div class="card w-50">
+            {{active}}
+            {{submitted}}
+           
+                {% if target_time <= date_now %}
+
+                  sasdfdgh
+                {% else %}
+    
+                <div class="p-4 d-flex justify-content-center">
+                    Test would be available in  <span class="text-danger mx-2 fw-bold" style="width: 8rem;"> {{days}} : {{hrs}} : {{mins}} : {{secs}}</span>  <a href="{% url 'available_test' request.user.id %}" class="btn btn-info text-center fw-bold rounded-0">Return</a>
+                  </div>
+                    <script>
+                  function updateCountdown(){
+                      fetch(window.location.pathname)
+                      .then(response => response.text())
+                  .then(html => {
+                      document.body.innerHTML = html;
+                  });
+                  }
+                  setInterval(updateCountdown, 1000);
+                </script>
+    
+                {% endif %}
+            
+            
+        </div>
+    </div>
+
+</section>
+  
+{% endblock personal_page %}
