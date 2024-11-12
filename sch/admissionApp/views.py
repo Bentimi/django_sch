@@ -188,7 +188,7 @@ def admissionLetter(request, user_id):
         }
         # return render(request, 'admissionApp/admission_letter.html', context=context)
     else:
-        invoice_table.objects.create(user_id=request.user.id).DoesNotExist
+        # invoice_table.objects.create(user_id=request.user.id).DoesNotExist
         #  return HttpResponsePermanentRedirect(reverse('payment_details', args=(,)))
 
         return redirect('payment_details', request.user.id, 'acceptance_fee')

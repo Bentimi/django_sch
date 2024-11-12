@@ -32,10 +32,11 @@ def paymentDetails(request, user_id, status):
                         tuition_trans = tuition_form.cleaned_data['transaction_type']
                         print(tuition_trans)
                         
-                        invoice_table.objects.create(user_id=request.user.id)
 
                         inv = invoice_table.objects.filter(user_id=user_id, status='unsuccessful').order_by('-invoice_id').first()
-                        if inv:
+                        if not inv:
+                            invoice_table.objects.create(user_id=request.user.id, category=status).DoesNotExist
+                        elif inv:
                             inv_info = invoice_table.objects.filter(user_id=user_id, status='unsuccessful', invoice_id=inv.invoice_id)
 
                             if inv_info:
@@ -247,7 +248,6 @@ def paymentSuccess(request, inv_id):
                 [request.user.email],  # To email (Receiver)
                 fail_silently = False, # Handle any error
             )
-    # messages.success(request, ('Your payment was successful!'))
     return render(request, 'paymentApp/successful_payment.html', {
         'inv':inv
     })

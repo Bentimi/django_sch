@@ -299,90 +299,7 @@ def cbtTest(request, test_id):
         'score':score
     })
 
-# quest_data=''
-# target_date = None
-# date_now = None
-# test_instruction_ = None
-# executed_time = None
-# time_remaining = None
-# @login_required
-# def cbtTest(request, test_id):
-#     score = 0
-#     course_info = course_form.objects.all().filter(course_id=test_id)
-#     if course_info:
-#         for course in course_info:
-#             cbt_id = course.cbt.id
 
-#             course_form_details = course_form.objects.all().filter(cbt_id=cbt_id)
-#             if course_form_details:
-#                 for details in course_form_details:
-#                     if details.cbt_id:
-#                         pass
-#             global quest_data
-#             question_data  = questions.objects.filter(cbt_id=cbt_id)
-#             quest_data = question_data
-#             if not grading.objects.filter(active=True, cbt_id=cbt_id, user_id=request.user.id):
-#                 grading.objects.create(active=True, cbt_id=cbt_id, user_id=request.user.id).DoesNotExist
-            
-#             grading_info = grading.objects.all().filter(active=True, cbt_id=cbt_id, user_id=request.user.id)
-#             if grading_info:
-#                 for grade in grading_info:
-#                     global executed_time
-#                     executed_time_ = grade.executed_time
-#                     executed_time = executed_time_
-#             global test_instruction_
-#             test_instruction = cbt.objects.only('course_code').get(id=cbt_id)
-#             test_instruction_ = test_instruction.duration
-#             if test_instruction.execution_date:
-#                 _date = test_instruction.execution_date
-#                 target_date_str = _date.strftime("%Y,%m,%d,%H,%M,%S")
-#                 year,month,day,hour,minute,second=target_date_str.split(',')
-#                 global target_date
-#                 target_date_ = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
-#                 target_date = target_date_
-#                 global date_now
-#                 date_now_ = datetime.now()
-#                 date_now = date_now_
-#                 global time_remaining
-#                 time_remaining_ = target_date_ - date_now_
-#                 time_remaining = time_remaining_
-            
-#             if request.method == 'POST':
-#                 for question in question_data:
-#                     selected_option = request.POST.get(str(question.id))
-#                     if selected_option:
-#                         option = questions.objects.filter(answer=selected_option)
-#                         if option:
-#                             score +=1
-#                 finished_time = time.strftime('%Y-%m-%d %H:%M: %S')
-#                 grading.objects.filter(active=True, cbt_id=cbt_id, user_id=request.user.id).update(score=score, active=False,finished_time=finished_time, submitted=True)
-
-#     return render(request, 'recordApp/cbt_test.html', {
-#         'question_data':quest_data,
-#         'score':score,
-#         'target_time':target_date,
-#         'date_now':date_now,
-#         'duration':test_instruction_,
-#         'executed_time':executed_time,
-#         # 'days' : f'{time_remaining.days:02}',
-#         # 'hrs' : f'{time_remaining.seconds // 3600:02}',
-#         # 'mins' : f'{(time_remaining.seconds % 3600) // 60:02}',
-#         # 'secs' : f'{time_remaining.seconds % 60:02}',
-#     })
-            
-# @login_required
-# def cbtTestsubmit(request, test_id):
-#      question_data = questions.objects.filter(cbt_id=cbt_id)
-#     if request.method == 'POST':
-#             for question in question_data:
-#                 selected_option = request.POST.get(str(question.id))
-#                 if selected_option:
-#                     option = questions.objects.filter(answer=selected_option)
-#                     if option:
-#                         score +=1
-#             finished_time = time.strftime('%Y-%m-%d %H:%M: %S')
-#             grading.objects.filter(active=True, cbt_id=cbt_id, user_id=request.user.id).update(score=score, active=False,finished_time=finished_time, submitted=True)
-#     return cbtTest(request, test_id)
 
 
 @login_required
@@ -405,7 +322,7 @@ def courseReg(request, user_id):
                         'registered_courses':registered_courses
                     })
                     else:
-                        invoice_table.objects.create(user_id=request.user.id).DoesNotExist
+                        # invoice_table.objects.create(user_id=request.user.id).DoesNotExist
                         return redirect('payment_details', request.user.id, 'late_reg')
                 
                 else:
@@ -417,7 +334,7 @@ def courseReg(request, user_id):
                     'registered_courses':registered_courses
                 })
     else:
-        invoice_table.objects.create(user_id=request.user.id).DoesNotExist
+        # invoice_table.objects.create(user_id=request.user.id, category='tuition').DoesNotExist
         return redirect('payment_details', request.user.id, 'tuition')
 
 @login_required
@@ -434,7 +351,6 @@ def addCourses(request, course_id):
                 if cbt_info:
                     for cbt_id in cbt_info:
                         course_form.objects.all().filter(course_id=course_id, user_id=user_id).update(cbt_id=cbt_id)
-        # pass
                 
     else:
         course_form.objects.create(course_id=course_id, user_id=user_id)
