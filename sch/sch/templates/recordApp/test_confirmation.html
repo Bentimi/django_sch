@@ -27,16 +27,6 @@
                 <div class="d-flex row justify-content-center gap-2 px-3">
                     
 
-                    <!-- {% if all_courses %}
-                      {% for course in all_courses %}
-                        <div class="d-flex justify-content-center row">
-                            <p><strong>Course Title</strong>: {{course.course.course}}</p>
-                            <p><strong>Course Code</strong>: {{course.course.course_code}}</p>
-                        
-                        </div>
-                      {% endfor %}
-                    {% endif %} -->
-
 
                     {% if grading %}
                       {% for grad in grading  %}
@@ -50,7 +40,7 @@
                               <div class="d-flex justify-content-center row">
                                 <p class="fs-5 fw-bold">You have attempted your trial in <br> <strong>Course TItle: {{course.course.course}}</strong> <br><strong>Course Code: {{course.course.course_code}}</strong> </p>
                             <div class="d-flex justify-content-center">
-                                <a href="{% url 'user_dashboard' %}" class="btn btn-danger">Home</a>
+                                <a href="{% url 'available_test' grad.user_id %}" class="btn btn-danger">Home</a>
                             </div>
                                   
                               
@@ -154,7 +144,7 @@
                             <div class="">
                                 <div class="d-flex row p-2">
                                     <p class="fw-bold d-flex justify-content-center fs-5">Test would be available in</p>
-                                    <div class="text-danger fw-bold d-flex justify-content-center"> {{days}} : {{hrs}} : {{mins}} : {{secs}}</div>  
+                                    <div class="text-danger fw-bold d-flex justify-content-center"> {{days}}d : {{hrs}}hr : {{mins}}min : {{secs}}s</div>  
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center">

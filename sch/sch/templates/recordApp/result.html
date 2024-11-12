@@ -7,8 +7,9 @@
   <section>
     <div class="d-flex row gap-5 justify-content-center">
        <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5" style="min-height: 80vh;">
+        <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
         <h2 class="text-center">
-           Avaliable Test
+           Test Result
       </h2>
       {% if messages %}
       {% for message in messages  %}
@@ -17,12 +18,79 @@
       {% endif %}
        <div class="d-flex row justify-content-center gap-2 px-3">
        
-      {% if result_data %}
-        {% for result in result_data %}
-          {{result.cbt.course_code}}
-          {{result.score}}
-        {% endfor %}
-      {% endif %}
+        {% if user_info %}
+      {% for user in user_info %}
+        <div class="d-flex justify-content-between">
+            <div>
+                <div><strong>Name:</strong> {{user.last_name}} {{user.first_name}} {% if user.profile.other_name %} {{user.profile.other_name}} {% endif %}</div>
+        
+                <div><strong>Level:</strong> None</div>
+                <div><strong>Department:</strong> None</div>
+                <div><strong>Matric Number:</strong> None</div>
+              </div>
+              
+            <div>
+                {% if user.profile.profile_passport %}
+                <img src="{{user.profile.profile_passport.url}}" alt="" srcset="" style="width: 5rem; height: 5rem;" class="rounded-circle">
+                {% else %}
+                <img src="{% static '/images\profile_icon.png' %}" style="width: 5rem; height: 5rem;" alt="" srcset="">
+                {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+           <div class="d-flex row justify-content-center gap-2 px-3">
+           
+           {% if result_data %}
+           <div
+            class="table-responsive"
+           >
+            <table
+                class="table table-light"
+            >
+                <thead>
+                    <tr>
+                        <th scope="col">Course Title</th>
+                        <th scope="col">Course Code</th>
+                        <th scope="col">Course Unit</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in result_data %}
+                    <tr class="">
+                        <td scope="row">{{result.cbt.course_title}}</td>
+                        <td scope="row">{{result.cbt.course_code}}</td>
+                        <td scope="row">{{result.unit}} </td>
+                        <td scope="row">{{result.total_score}} </td>
+                        <td scope="row">{{result.grade}}</td>
+                    </tr>
+                    
+                    {% endfor %}
+                    <tr>
+                        <td>Total Units</td>
+                        <td></td>
+                        <td>{{total_unit}}</td>
+                        <td></td>
+                        <td></td>
+                </tbody>
+            </table>
+            
+           
+           </div>
+           
+               <div class="d-flex justify-content-between">
+                <div class="text-center">________________ <br> Level Advisor</div>
+                <div class="text-center">________________ <br> Student</div>
+               </div>
+             
+            
+           {% else %}
+           <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5 fst-italic fw-bold">No Result Found</p>
+          {% endif %}
+           
+           </div>
       
        
        </div>
