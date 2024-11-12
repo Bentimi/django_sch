@@ -57,7 +57,7 @@ def displayProfile(request, user_id):
     profile = User.objects.all().filter(id=user_id)
     random_val = random.randint(1000, 9999)
     matric_year = time.strftime('%y',)
-    matric_no = (f'{matric_year}{random_val}')
+    matric_no = (f'GD/{matric_year}{random_val}')
     return render(request=request,
                   template_name='userApp/display_profile.html',
                   context={'my_profile' : profile, 'matric_no':matric_no})
@@ -89,11 +89,11 @@ def editProfile(request, user_id):
     else:
         user_form = User_update_form(instance=user)
         profile_form = Profile_update_form(instance=user.profile)
-        profile = User.objects.get(id=user_id)
+        profile = User.objects.filter(id=user_id)
         return render(request, 'userApp/edit_profile_form.html', {
             'user_form' : user_form,
             'profile_form' : profile_form,
-            'profile' : profile
+            'all_profile' : profile
         })
 
 @login_required
@@ -113,10 +113,12 @@ def viewUsers(request, user):
     if status == 'staff':
         users = users_status.objects.all().filter(staff=True, student=False)
         users_agg = users_status.objects.all().filter(staff=True, student=False).count
-    else:
+    elif status == 'students':
         users = users_status.objects.all().filter(staff=False, student=True)
         users_agg = users_status.objects.all().filter(staff=False, student=True).count
-        # user_status = users_status.objects.all().filter(student=True)
+    elif status == 'new_users':
+        users = users_status.objects.all().filter(staff=False, student=False, aspirant=False)
+        users_agg = users_status.objects.all().filter(staff=False, student=False, aspirant=False).count
     return render(request, 'userApp/view_users.html', 
                   {
                       "users" : users, 

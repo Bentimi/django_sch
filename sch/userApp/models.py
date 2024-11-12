@@ -58,8 +58,10 @@ class Profile(models.Model):
     staff = models.BooleanField(default=False, unique=False)
     next_of_kin = models.CharField(unique=False, max_length=30, null=True)
     next_of_kin_phone_no = models.CharField(max_length=11, null=True, blank=True, unique=True)
+    next_of_kin_email = models.CharField(max_length=50, null=True, blank=True, unique=False)
+    next_of_kin_address = models.CharField(max_length=250, null=True, blank=True, unique=False)
     next_of_kin_relationship = models.CharField(choices=next_of_kin_relationship_option, null=True, unique=False, max_length=15)
-    category = models.CharField(max_length=20, null=True, blank=True, unique=True)
+    status = models.CharField(max_length=20, null=True, blank=True, unique=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -85,3 +87,12 @@ def create_user_status(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_status(sender, instance, **kwargs):
     instance.users_status.save()
+
+
+class student_table(models.Model):
+    id = models.AutoField(primary_key=True)
+    matric_number = models.CharField(max_length=20, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    year = models.DateField(max_length=20, unique=False)
+    department = models.DateField(max_length=50, unique=False)
+    date_added = models.DateTimeField(max_length=50, unique=False)

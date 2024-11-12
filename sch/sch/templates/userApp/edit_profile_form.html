@@ -4,6 +4,15 @@
 
 <section class="mx-auto" style="width: fit-content;">
     <form action="" method="post" class="card p-5 rounded-0 row d-flex" enctype="multipart/form-data">
+
+      <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+      {% if all_profile %}
+          {% for profile in all_profile %}
+        <h2 class="text-center fst-italic" style="color: #aaa;">
+          Edit {% if profile.users_status.student == True %}
+          Student {% elif profile.users_status.staff == True %}Staff{% endif %} Profile
+      </h2>
+
         {% csrf_token %}
     
         {{user_form.as_p}}
@@ -53,12 +62,30 @@
             <label for="">{{profile_form.next_of_kin_phone_no.label}}:</label>
             {{profile_form.next_of_kin_phone_no}}
           </div>
+
+          <div class="my-2">
+            <label for="">{{profile_form.next_of_kin_email.label}}:</label>
+            {{profile_form.next_of_kin_email}}
+          </div>
+
+          <div class="my-2">
+            <label for="">{{profile_form.next_of_kin_address.label}}:</label>
+            {{profile_form.next_of_kin_address}}
+          </div>
            
           <div class="my-2">
             <label for="">{{profile_form.next_of_kin_relationship.label}}:</label>
             {{profile_form.next_of_kin_relationship}}
           </div>
 
+          
+            
+          
+         
+            {% if profile.users_status.aspirant == False or profile.users_status.student == False %}
+              
+            
+           
 
           <div class="my-2">
             <label for="">{{profile_form.means_of_identity.label}}:</label>
@@ -81,6 +108,8 @@
             {% endif %}
           </div>
            
+           
+             
            
           <div class="my-2">
             <label for="">{{profile_form.particulars.label}}:</label>
@@ -106,7 +135,7 @@
               
             {% endif %}
           </div>
-
+          {% endif %}
 
           <div class="my-2">
             <label for="">{{profile_form.profile_passport.label}}:</label>
@@ -121,11 +150,18 @@
             {% endif %}
 
             {% if request.user.is_superuser %}
-              <div class="my-2">
-                 <label for="">Staff:</label>&nbsp;
-                {{profile_form.staff}}
-              </div>
+            {% if profile.users_status.staff == True and not profile.users_status.stduent == True %}
+              
+            <div class="my-2">
+              <label for="">Staff:</label>&nbsp;
+              {{profile_form.staff}}
+            </div>
             {% endif %}
+            {% endif %}
+
+            {% endfor %}
+            
+          {% endif %}
 
             
 

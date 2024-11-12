@@ -94,7 +94,7 @@ class Profile_update_form(forms.ModelForm):
         model = Profile
         fields = [
                   'address', 'phone_no', 'd_o_b','marital_status', 
-                  'nationality', 'state', 'gender', 'next_of_kin', 'next_of_kin_phone_no', 
+                  'nationality', 'state', 'gender', 'next_of_kin', 'next_of_kin_phone_no', 'next_of_kin_email', 'next_of_kin_address',
                   'next_of_kin_relationship', 'means_of_identity', 'particulars', 'profile_passport', 'staff'
                   ] 
 
@@ -108,6 +108,8 @@ class Profile_update_form(forms.ModelForm):
             'gender' : forms.Select(attrs={'class':'form-select shadow-none border-1 rounded-0',}),
             'next_of_kin' : forms.TextInput(attrs={'type':'text', 'class':'form-control shadow-none border-1 rounded-0', 'placeholder':'Next of Kin'}),
             'next_of_kin_phone_no' : forms.NumberInput(attrs={'type':'tel', 'class':'form-control shadow-none border-1 rounded-0', 'placeholder':'Next of Kin Phone Number'}),
+            'next_of_kin_email' : forms.TextInput(attrs={'type':'text', 'class':'form-control shadow-none border-1 rounded-0', 'placeholder':'Next of Email'}),
+            'next_of_kin_address' : forms.TextInput(attrs={'type':'text', 'class':'form-control shadow-none border-1 rounded-0', 'placeholder':'Next of Kin Address'}),
             'next_of_kin_relationship' : forms.Select(attrs={'class':'form-select shadow-none border-1 rounded-0',}),
             'staff' : forms.CheckboxInput(attrs={'type' : 'checkbox', 'class' : 'form-check-input shadow-none border-none'}),
         }
