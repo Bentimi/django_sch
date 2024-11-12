@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
         
        <div class="d-flex row justify-content-center gap-2 px-3">
-        <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5"><a href="{% url 'fees_form' %}" class="text-decoration-none fw-bold text-dark p-3 btn btn-info" style="width: fit-content;"> <i class="fa fa-credit-card"></i> Fee Form</a></p>
+       
        {% if all_fees %}
        <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5 text-decoration-underline">Available Fees</p>
        <div
@@ -27,6 +27,7 @@
                     <th scope="col">Tuition</th>
                     <th scope="col">Late Registration</th>
                     <th scope="col">Admission</th>
+                    <th scope="col">Delete</th>
                     <th scope="col">Date Added</th>
                 </tr>
             </thead>
@@ -44,9 +45,70 @@
                     <td scope="row">
                         <a href="{% url 'view_fees' fees.id 'admission' %}">Admission Fee</a>
                     </td>
+                    <td scope="row">
+                       
+                <a href="" class="text-danger btn" data-bs-toggle="modal"
+                data-bs-target="#modalId"><i class="fa fa-trash"></i></a></td>
+                       </td>
                     <td scope="row">{{fees.date_added}}</td>
                     
                 </tr>
+
+                <!-- Modal trigger button -->
+                
+                
+                <!-- Modal Body -->
+                <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+                <div
+                    class="modal fade"
+                    id="modalId"
+                    tabindex="-1"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    
+                    role="dialog"
+                    aria-labelledby="modalTitleId"
+                    aria-hidden="true"
+                >
+                    <div
+                        class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+                        role="document"
+                    >
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitleId">
+                                    
+                                </h5>
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                            <div class="modal-body text-center">Do you want to delete the item?</div>
+                            <div class="modal-footer">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-primary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Cancel
+                                </button>
+                                <a type="button" href="{% url 'delete_fees' fees.id %}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Optional: Place to the bottom of scripts -->
+                <script>
+                    const myModal = new bootstrap.Modal(
+                        document.getElementById("modalId"),
+                        options,
+                    );
+                </script>
+                
         
                  {% endfor %}
             </tbody>
@@ -56,7 +118,7 @@
            
          {% else %}
 
-         <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5"><a href="{% url 'fees_form' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Fee Form</a></p>
+         <p class="bg-secondary bg-opacity-25 p-3 text-center fs-5"><a href="{% url 'fees_form' %}" class="text-decoration-none fw-bold text-dark p-3 btn btn-info" style="width: fit-content;"> <i class="fa fa-credit-card"></i> Fee Form</a></p>
          
        {% endif %}
 

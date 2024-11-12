@@ -70,7 +70,10 @@ def courseSetup(request):
 
 @login_required
 def displayCourses(request):
-    courses = course_register.objects.all()
+    if request.user.is_superuser:
+        courses = course_register.objects.all()
+    elif request.user.is_staff:
+        courses = course_register.objects.all().filter(instructor=request.user.username)
     return render(request, 'recordApp/view_courses.html', {'courses':courses})
 
 @login_required
@@ -99,15 +102,37 @@ def editCourse(request, course_id):
 @login_required
 def courseDetails(request, course_id):
     course_details = course_register.objects.all().filter(reg_id=course_id)
-    return render(request, 'recordApp/course_details.html',{'details':course_details})
-
+    if course_details:
+        for course in course_details:
+            if course.status is True:
+                return render(request, 'recordApp/course_details.html',{'details':course_details})
+            elif course.status is True and request.user.is_superuser:
+                return render(request, 'recordApp/course_details.html',{'details':course_details})
 @login_required
 def deleteCourse(request, course_id):
     reg_course=course_register.objects.all().filter(reg_id=course_id)
+    for reg in reg_course:
+            if reg.status == 'Active':
+                course_register.objects.filter(reg_id=course_id).update(status='Inactive')
+            if reg.status == 'Inactive':
+                course_register.objects.filter(reg_id=course_id).update(status='Active')
+    
+    if request.user.is_superuser:
+        messages.success(request, ('Course successfully deleted!'))
+        return redirect('view_course')
+    elif request.user.is_staff:
+        messages.success(request, ('Course successfully deleted!'))
+        return redirect('course_setup')
+    
+@login_required
+def courseStatus(request, course_id):
+    reg_course=course_register.objects.all().filter(reg_id=course_id)
     if reg_course:
-        for course in reg_course:
-            id = course.course
-            # course_Model = course_model.
+        for reg in reg_course:
+            if reg.status == 'Active':
+                course_register.objects.filter(reg_id=course_id).update(status='Inactive')
+            if reg.status == 'Inactive':
+                course_register.objects.filter(reg_id=course_id).update(status='Active')
     
     if request.user.is_superuser:
         messages.success(request, ('Course successfully deleted!'))

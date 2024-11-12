@@ -2,26 +2,26 @@
 {% block title %}<title>Course Page</title>{% endblock title %}
 {% block personal_page %}
 {% load static %}
-    
   
+        
+
   <section>
     
-    {% if courses %}
-    <div
-    class="table-responsive"
-    >
-    <table
-    class="table table-striped table-hover table-borderless table-primary align-middle"
-    >
-    <thead class="table-light">
-        <caption>
-            Table Name
-        </caption>
+      <div
+      class="table-responsive"
+      >
+      <table
+      class="table table-striped table-hover table-borderless table-primary align-middle"
+      >
+      {% if courses %}
+      <thead class="table-light">
+       
         <tr>
             <th>S/N</th>
             <th>Course Title</th>
             <th>Course Code</th>
             <th>Unit</th>
+            <th>Status</th>
             <th>Lecturer Incharge</th>
             <th>Date Added</th>
             <th>Action</th>
@@ -36,6 +36,8 @@
                     <td>{{course.course}}</td>
                     <td>{{course.course_code}}</td>
                     <td>{{course.unit}}</td>
+                    <td>{% if course.status == 'Inactive' %}<a href="{% url 'course_status' course.reg_id %}" class="text-center fw-bold btn btn-danger" style="width: 5rem;">{{course.status}}</a>{% elif course.status == 'Active' %}<a href="{% url 'course_status' course.reg_id %}" class="text-center fw-bold btn btn-success" style="width: 5rem;">{{course.status}}</a>
+                    {% endif %}</td>
                     <td><a href="{% url 'profile' request.user.id %}">{{course.course_model.user.username}}</a></td>
                     <td>{{course.date_added}}</td>
                     <td><a href="{% url 'course_details' course.reg_id %}"><i class="fa fa-edit"></i></a></td>
@@ -45,18 +47,15 @@
                 </tr>
                 {% endfor %}
             </tbody>
-            <tfoot>
-                
-            </tfoot>
+           
+            
+            {% else %}
+            <div class="d-flex align-items-center justify-content-center" style="height: 50vh;">
+                <p class="text-center text-white fs-5">No record found <a href="{% url 'course_setup' %}" class="text-decoration-none text-warning fst-italic">Register Course</a></p>
+            </div>
+            {% endif %}
         </table>
       </div>
       
-    {% else %}
-        <div class="d-flex justify-content-center">
-            <p class="text-warning">No record found</p> <a href="">Refresh</a>
-        </div>
-    {% endif %}
-      
 </section>
-
   {% endblock personal_page %}  

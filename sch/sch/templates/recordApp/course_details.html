@@ -23,6 +23,10 @@
            <div><strong>Course Code: </strong>{{detail.course_code}}</div>
            <div><strong>Course Unit: </strong>{{detail.unit}}</div>
            <div><strong>Level: </strong>{{detail.level}}</div>
+           <div><strong>Status: </strong><i class="fw-bold">{{detail.status}}</i> {% if detail.status == 'Active' %}
+            <i class="fa fa-check-circle text-success fs-5 fw-bold"></i>{% elif detail.status == 'Inactive' %}
+            <i class="fa fa-times-circle text-danger fs-5 fw-bold"></i>
+           {% endif %}</div>
            <div><strong>Lecturer Incharge: </strong>{{detail.user.first_name}} {{detail.user.last_name}} <a href="{% url 'profile' detail.course_model.user_id %}">View Profile</a></div><hr>
 
            <div class="d-flex gap-3">
@@ -74,12 +78,12 @@
                     <div class="modal-footer">
                         <button
                             type="button"
-                            class="btn btn-secondary"
+                            class="btn btn-outline-primary"
                             data-bs-dismiss="modal"
                         >
-                            No
+                            Cancel
                         </button>
-                        <a href="{% url 'delete_course' detail.reg_id %}" class="btn btn-danger">Yes</a>
+                        <a href="{% url 'delete_course' detail.reg_id %}" class="btn btn-outline-danger">Delete</a>
                     </div>
                 </div>
             </div>

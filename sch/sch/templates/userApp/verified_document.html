@@ -9,6 +9,7 @@
     <div
         class="table-responsive-sm px-3"
     >
+    {% if users %}
         <table
             class="table table-striped table-hover table-border table-light align-middle"
         >
@@ -30,7 +31,6 @@
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
-           {% if users %}
                 {% for user in users  %}
                 <tbody class="">
                     <tr
@@ -119,11 +119,13 @@
                    
                 </tbody>
                 {% endfor %}
-           {% endif %}
-            <tfoot>
                 
-            </tfoot>
-        </table>
+            </table>
+            {% else %}
+            <div class="d-flex align-items-center justify-content-center" style="height: 50vh;">
+                <p class="text-center text-white fs-5">No record found <a href="" class="text-decoration-none text-warning fst-italic">Refresh page</a></p>
+            </div>
+       {% endif %}
     </div>
     
 

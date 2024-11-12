@@ -19,7 +19,8 @@
     >
         <table
             class="table table-striped table-hover table-border table-light align-middle"
-        >
+            >
+            {% if users %}
             <thead class="table-light">
                 <tr>
                     <th class="text-center">
@@ -37,7 +38,6 @@
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
-           {% if users %}
                 {% for user in users  %}
                 <tbody class="">
                     <tr
@@ -73,11 +73,12 @@
                    
                 </tbody>
                 {% endfor %}
-           {% endif %}
-            <tfoot>
-                
-            </tfoot>
         </table>
+        {% else %}
+        <div class="d-flex align-items-center justify-content-center" style="height: 50vh;">
+                        <p class="text-center text-white fs-5">No record found <a href="{% url 'course_setup' %}" class="text-decoration-none text-warning fst-italic">Register Course</a></p>
+                    </div>
+           {% endif %}
     </div>
     
 

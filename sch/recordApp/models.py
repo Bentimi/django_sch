@@ -17,6 +17,7 @@ class course_register(models.Model):
     course = models.CharField(max_length=100, unique=True)
     course_code = models.CharField(max_length=30, unique=True, null=True)
     unit = models.CharField(max_length=10, unique=False) 
+    status = models.CharField(max_length=25, unique=False, default='Active')
     level = models.CharField(max_length=10, unique=False, null=True)
     date_added = models.DateTimeField(auto_now_add=True, unique=False)
     last_update = models.CharField(blank=True, unique=False, null=True, max_length=50)

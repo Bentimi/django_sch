@@ -16,8 +16,7 @@ def feesForm(request):
            fee = form.save(commit=False)
            fee.user_id = request.user.id
            fee.save()
-           messages.success(request, 'Saved')
-        return displayFees(request)
+        return redirect("display_fees")
     else:
         form = feesRegForm()
     return render(request, 'adminApp/fees_form.html', {'form':form})
@@ -57,3 +56,8 @@ def editFees(request, fees_id, fee):
                     'admission_fee':admission_fee
                     }
                         )
+
+@login_required
+def deleteFees(request, fees_id):
+    fees_table.objects.filter(id=fees_id).delete()
+    return redirect("display_fees")
