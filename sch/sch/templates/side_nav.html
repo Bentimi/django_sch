@@ -245,7 +245,8 @@
               </div>
             </div>
 
-            {% if request.user.is_authenticated and not request.user.users_status.staff is True %}
+            {% if request.user.is_authenticated%}
+            {% if request.user.is_superuser %}  
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed shadow-none border-0" style="background-color: #0c1228;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
@@ -257,20 +258,34 @@
               <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="transition: 1s ease-in-out;">
                 <div class="accordion-body bg-secondary bg-opacity-25">
                   <ul class="list-unstyled" id="nav-items">
-                    {% if request.user.is_superuser %}  
                     
                     <li id="accordion_li">
                       <a id="accordion_link" href="{% url 'display_fees' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> View Fees</a>
                     </li>
-                    {% elif request.user.users_status.student is True %}
-                    <li id="accordion_li">
-                      <a id="accordion_link" href="{% url 'payment_details' request.user.id 'tuition' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Tuition Fee</a>
-                    </li>
-                    {% endif %}
-                   </ul>
+                  </ul>
                 </div>
               </div>
             </div>
+            {% elif request.user.users_status.student is True %}
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed shadow-none border-0" style="background-color: #0c1228;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  <span class="text-white fs-5">
+                    <i class="fa fa-money"></i> Payments
+                  </span>
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="transition: 1s ease-in-out;">
+                <div class="accordion-body bg-secondary bg-opacity-25">
+                  <ul class="list-unstyled" id="nav-items">
+                    <li id="accordion_li">
+                      <a id="accordion_link" href="{% url 'payment_details' request.user.id 'tuition' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> Tuition Fee</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            {% endif %}
             {% endif %}
 
              <div class="accordion-item">

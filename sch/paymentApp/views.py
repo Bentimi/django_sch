@@ -218,10 +218,10 @@ def paymentSuccess(request, inv_id):
                    acceptance_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, acceptance_fee='Acceptance Fee')
                    admission_approval.objects.filter(aspirant=request.user.aspirants_profile.aspirant_id).update(acceptance_fee=True)
                 else:
-                    acceptance_invoice_table.objects.create(invoice_id=invoice.invoice_id,form_fee=invoice.transaction_type, paid=True).DoesNotExist()
+                    acceptance_invoice_table.objects.create(invoice_id=invoice.invoice_id,acceptance_fee=invoice.transaction_type, paid=True).DoesNotExist()
                     invoice_details=acceptance_invoice_table.objects.only('paid').get(invoice_id=invoice.invoice_id)
                     if invoice_details.paid == True:
-                       acceptance_invoice_table.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, acceptance_fee='Acceptance Fee')
+                       acceptance_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, acceptance_fee='Acceptance Fee')
                        admission_approval.objects.filter(aspirant=request.user.aspirants_profile.aspirant_id).update(acceptance_fee=True)
             elif invoice.category == 'late_reg':
                 if lateReg_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).exists():

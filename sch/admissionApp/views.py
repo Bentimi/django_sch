@@ -11,7 +11,8 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from paymentApp.models import invoice_table, admission_invoice_table
-from userApp.models import users_status, Profile
+from userApp.models import users_status, Profile, student_table
+import time
 
 
 def admissionReg(request):
@@ -149,31 +150,45 @@ def profileDashboardEdit(request, user_id):
 
 @login_required
 def admissionApproval(request, user_id):
-   user_status = admission_approval.objects.only("status").get(aspirant_id=user_id)
-   if user_status.status == False:
-       admission_approval.objects.update(officer_incharge_id=request.user.id, status=True)
-   profile_user = aspirants_profile.objects.all().filter(aspirant_id=user_id)
-   if profile_user:
-    for user in profile_user:
-        aspirant = user.aspirant_id
-        users_status.objects.filter(user_id=user.user_id).update(student=True)
+#    admission_approval.objects.create(aspirant_id=user_id,).DoesNotExist
+   user_status = admission_approval.objects.filter(aspirant_id=user_id)
+   matric_year = time.strftime('%Y',)
+   user_id_ = None
+   if not user_status:
+        admission_approval.objects.create(aspirant_id=user_id,).DoesNotExist
+   if user_status.exists:
+       for user_ in user_status:
+            if user_.status == False:
+                admission_approval.objects.update(officer_incharge_id=request.user.id, status=True)
+            profile_user = aspirants_profile.objects.all().filter(aspirant_id=user_id)
+            if profile_user:
+                for user in profile_user:
+                    aspirant = user.aspirant_id
+                    user_id_ = user.user.id
+                    users_status.objects.filter(user_id=user.user_id).update(student=True)
+                    student = student_table.objects.filter(user_id=user.user.id)
+                    if not student:
+                        student_table.objects.create(user_id=user.user.id, department=user.course, year=matric_year).DoesNotExist
+       return redirect('aspirant_profile', user_id_)
+#    else:
+#         admission_approval.objects.create(aspirant_id=user_id, status=False)
 
-        # Profile.objects.filter(user_id=user.user_id).update()
-
-    return viewProfile(request, user.user_id)
+#         viewProfile(request, user_id_)
+        
 
 @login_required
 def admissionDenied(request, user_id):
    user_status = admission_approval.objects.only("status").get(aspirant_id=user_id)
    if user_status.status == True:
        admission_approval.objects.update(officer_incharge_id=request.user.id, status=False)
-
    profile = aspirants_profile.objects.all().filter(aspirant_id=user_id)
    if profile:
     for user in profile:
         aspirant = user.aspirant_id
         users_status.objects.filter(user_id=user.user_id).update(student=False)
-    return viewProfile(request, user.user_id)
+        student_table.objects.filter(user_id=user.user.id).delete()
+       
+    return redirect('aspirant_profile', user.user.id)
 
 @login_required(login_url=(admissionLogin))
 def admissionLetter(request, user_id):

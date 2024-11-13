@@ -50,18 +50,26 @@
                 <div>
                   <strong>Staff ID:</strong> {{profile.profile.matric_no}}
                  </div>
-                {% else %}
+                {% elif profile.users_status.student == 1 %}
                 <div>
                   <strong>Matric Number:</strong> {{matric_no}}
                  </div>
+                {% else %}
+                <div>
+                  <strong>ID:</strong> {{profile.id}}
+                 </div>
                 {% endif %}
                  
-                 <div>
+                 <!-- <div>
                   <strong>Level:</strong> {{profile.profile.level}}
-                 </div>
+                 </div> -->
   
                  <div>
-                  <strong>Department:</strong> {{profile.profile.department}}
+                  <strong>Department:</strong>{% if  profile.users_status.staff is True %}
+                  {{profile.profile.department}}
+                  {% elif  profile.users_status.student is True %}
+                  {{profile.student_table.department}}
+                  {% endif %} 
                  </div>
   
                 </div>

@@ -101,21 +101,20 @@ def editCourse(request, course_id):
 
 @login_required
 def courseDetails(request, course_id):
-    course_details = course_register.objects.all().filter(reg_id=course_id)
-    if course_details:
-        for course in course_details:
-            if course.status is True:
-                return render(request, 'recordApp/course_details.html',{'details':course_details})
-            elif course.status is True and request.user.is_superuser:
-                return render(request, 'recordApp/course_details.html',{'details':course_details})
+    course_details = course_register.objects.filter(reg_id=course_id)
+    # if course_details:
+    #     for course in course_details:
+            # if course.status is True or (course.status is True and request.user.is_superuser):
+            #     return render(request, 'recordApp/course_details.html',{'details':course_details})
+    return render(request, 'recordApp/course_details.html', {'details':course_details})
 @login_required
 def deleteCourse(request, course_id):
     reg_course=course_register.objects.all().filter(reg_id=course_id)
     for reg in reg_course:
             if reg.status == 'Active':
                 course_register.objects.filter(reg_id=course_id).update(status='Inactive')
-            if reg.status == 'Inactive':
-                course_register.objects.filter(reg_id=course_id).update(status='Active')
+            # if reg.status == 'Inactive':
+            #     course_register.objects.filter(reg_id=course_id).update(status='Active')
     
     if request.user.is_superuser:
         messages.success(request, ('Course successfully deleted!'))
@@ -151,6 +150,8 @@ def cbtReg(request, user_id):
                 'all_profile':info
             }
             return render(request, 'recordApp/cbt_reg.html', context=context)
+    else:
+        return render(request, 'recordApp/cbt_reg.html')
 
 @login_required
 def cbtDetails(request, user_id):

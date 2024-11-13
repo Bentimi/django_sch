@@ -19,6 +19,7 @@
        
        {% if details %}
          {% for detail in details %}
+         
            <div><strong>Course Title: </strong>{{detail.course}}</div>
            <div><strong>Course Code: </strong>{{detail.course_code}}</div>
            <div><strong>Course Unit: </strong>{{detail.unit}}</div>
@@ -33,14 +34,25 @@
            <div><a href="{% url 'edit_course' detail.reg_id %}" class="btn btn-primary">Edit</a></div>
           
             <!-- Modal trigger button -->
+            {% if detail.status == 'Active' %}
             <button
             type="button"
             class="btn btn-danger"
             data-bs-toggle="modal"
             data-bs-target="#modalId"
            >
-            Delete
-           </button>
+           Deactivate
+          </button>
+          {% elif detail.status == 'Inactive' %}
+          <button
+            type="button"
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#modalId"
+           >
+           Activate
+          </button>
+          {% endif %}
         </div>
         
         
@@ -74,7 +86,7 @@
                             aria-label="Close"
                         ></button>
                     </div>
-                    <div class="modal-body">Are you sure you want to delete <br><strong>Course Title: {{detail.course}}</strong><br> <strong>Course Code: {{detail.course_code}}</strong></div>
+                    <div class="modal-body">Are you sure you want to {% if detail.status == 'Active' %}deactivate{% elif detail.status == 'Inactive'%}activate{% endif %}  <br><strong>Course Title: {{detail.course}}</strong><br> <strong>Course Code: {{detail.course_code}}</strong></div>
                     <div class="modal-footer">
                         <button
                             type="button"
@@ -83,7 +95,11 @@
                         >
                             Cancel
                         </button>
-                        <a href="{% url 'delete_course' detail.reg_id %}" class="btn btn-outline-danger">Delete</a>
+                        {% if detail.status == 'Active' %}
+                        <a href="{% url 'course_status' detail.reg_id %}" class="btn btn-outline-danger"> Deactivate</a>
+                        {% elif detail.status == 'Inactive' %}
+                        <a href="{% url 'course_status' detail.reg_id %}" class="btn btn-outline-success">Activate</a>
+                        {% endif %} 
                     </div>
                 </div>
             </div>

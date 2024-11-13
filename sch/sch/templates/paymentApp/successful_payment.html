@@ -9,13 +9,22 @@
        <div class="gap-3 card  mx-auto w-50 px-2 rounded-0 py-5">
         <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
         <h2 class="text-center">
-          {% if status == 'tuition' %}
+          {% if inv %}
+         {% for invoice in inv %}
+
+          {% if invoice.category == 'tuition' %}
             Tuition Fee
-          {% elif status == 'late_reg' %}
+          {% elif invoice.category == 'late_reg' %}
             Late Registration Fee
-          {% elif status == 'reg_form' %}
+          {% elif invoice.category == 'reg_form' %}
             Registration Form Fee
+          {% elif invoice.category == 'acceptance_fee' %}
+           Acceptance Fee
           {% endif %}
+
+          {% endfor %}
+          {% endif %}
+
       </h2>
       
 
@@ -58,6 +67,8 @@
 
           {% if invoice.category == 'reg_form' %}
             <a href="{% url 'dashboard_edit' invoice.user_id %}" class="btn btn-primary rounded-0 fw-bold" style="width: fit-content;">Continue</a>
+          {% elif invoice.category == 'acceptance_fee' %}
+            <a href="{% url 'dashboard' %}" class="btn btn-primary rounded-0 fw-bold" style="width: fit-content;">Continue</a>
           {% endif %}
        
          {% endfor %}

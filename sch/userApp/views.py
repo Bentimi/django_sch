@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from .forms import SignUpForm, User_update_form, Profile_update_form
 from django.contrib.auth.models import User
-from .models import Profile, users_status
+from .models import Profile, users_status, student_table
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
@@ -55,9 +55,26 @@ def userDashboard(request):
 @login_required
 def displayProfile(request, user_id):
     profile = User.objects.all().filter(id=user_id)
-    random_val = random.randint(1000, 9999)
+    # no = list(99999)
+    # for x in range(no):
+    # num = list(x)
+    # random_val = random.randrange(11111, 99999)
+    year = time.strftime('%Y',)
+    last_student = student_table.objects.filter(year=year).order_by('-id').first()
+    if last_student:
+        next_num = last_student.sequence + 1
+    else:
+        next_num = 1
+    # if student:
+    #     for all in student:
+    #         yy = int(all.year)
+    #         for x in range(yy):
+    #             print(x)
+    rand_list = [random.randint(11111, 99999) for num in range(1)]
+    random_val = sorted(rand_list,)
     matric_year = time.strftime('%y',)
     matric_no = (f'GD/{matric_year}{random_val}')
+
     return render(request=request,
                   template_name='userApp/display_profile.html',
                   context={'my_profile' : profile, 'matric_no':matric_no})

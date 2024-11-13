@@ -17,6 +17,8 @@
     {% if registration_profile %}
       {% for reg in registration_profile  %}
       
+    {% if reg.registration_status == True %}
+      
     
     <section class=" mx-auto">
        <div class="d-flex row justify-content-center gap-1 align-items-center" style="min-height: 70vh; max-height: 100%;">
@@ -184,7 +186,11 @@
     </section>
   </aside>
 
-    
+  {% else %}
+  <div class="d-flex align-items-center justify-content-center" style="height: 50vh;">
+    <p class="text-center text-white fs-5">Data not found <a href="{% url 'dashboard_edit' reg.user_id %}" class="text-warning">Profile Form</a></p>
+</div>
+  {% endif %}
   {% endfor %}
   {% endif %}
   {% endfor %}

@@ -92,7 +92,19 @@ def save_user_status(sender, instance, **kwargs):
 class student_table(models.Model):
     id = models.AutoField(primary_key=True)
     matric_number = models.CharField(max_length=20, unique=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    year = models.DateField(max_length=20, unique=False)
-    department = models.DateField(max_length=50, unique=False)
-    date_added = models.DateTimeField(max_length=50, unique=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    year = models.CharField(max_length=20, unique=False, null=True)
+    sequence = models.PositiveIntegerField(unique=True, editable=False, default=1)
+    department = models.CharField(max_length=50, unique=False, null=True)
+    status = models.CharField(max_length=15, unique=False, default='Active')
+    date_added = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.matric_number:
+            # Get the highest matric number so far and add 1
+            last_student = student_table.objects.all().order_by('sequence').last()
+            if last_student:
+                self.sequence = last_student.sequence + 1
+            else:
+                self.sequence = 1  # start from 1 if it's the first student
+        super().save(*args, **kwargs)

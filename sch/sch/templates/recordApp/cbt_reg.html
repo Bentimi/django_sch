@@ -6,11 +6,11 @@
   
   <section>
     <div class="d-flex row gap-5 justify-content-center">
+      {% if all_profile %}
       <div class="gap-3 card px-2 mx-auto w-50 rounded-0 py-5">
         <h2 class="text-center">
           CBT SETUP
         </h2>
-        {% if all_profile %}
         {% if messages %}
         {% for message in messages  %}
         {{message}}
@@ -44,6 +44,10 @@
         </table>
        </div>
 
+       {% else %}
+       <div class="d-flex align-items-center justify-content-center" style="height: 50vh;">
+        <p class="text-center text-white fs-5">No record found <a href="{% url 'course_setup' %}" class="text-decoration-none text-warning fst-italic">Register Course</a></p>
+    </div>
        {% endif %}
        
        
