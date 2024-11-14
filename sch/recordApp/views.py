@@ -72,9 +72,11 @@ def courseSetup(request):
 def displayCourses(request):
     if request.user.is_superuser:
         courses = course_register.objects.all()
+        agg = course_register.objects.all().count()
     elif request.user.is_staff:
         courses = course_register.objects.all().filter(instructor=request.user.username)
-    return render(request, 'recordApp/view_courses.html', {'courses':courses})
+        agg = course_register.objects.all().filter(instructor=request.user.username).count()
+    return render(request, 'recordApp/view_courses.html', {'courses':courses, 'agg':agg})
 
 @login_required
 def editCourse(request, course_id):

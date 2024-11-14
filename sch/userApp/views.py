@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
-from .forms import SignUpForm, User_update_form, Profile_update_form
+from .forms import SignUpForm, User_update_form, Profile_update_form, staffTable_form
 from django.contrib.auth.models import User
-from .models import Profile, users_status, student_table
+from .models import Profile, users_status, student_table, staff_table
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
@@ -85,19 +85,37 @@ def editProfile(request, user_id):
     if request.method == "POST":
         user_form = User_update_form(request.POST, instance=user)
         profile_form = Profile_update_form(request.POST or None, request.FILES or None, instance=user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
+        staffForm = staffTable_form(request.POST or None, instance=user.profile)
+        if user_form.is_valid() and (profile_form.is_valid() and staffForm.is_valid()):
             with transaction.atomic():
                 user_form.save()
                 profile_form.save()
+                staffForm.save()
+
+                department = staffForm.cleaned_data['department']
                 
                 if profile_form.cleaned_data['staff']:
                     user.is_staff = True
                     user.save()
                     users_status.objects.filter(user_id=user_id).update(staff=True)
+
+                    staffTable = staff_table.objects.filter(user_id=user_id)
+                    if not staffTable:
+                        staff_table.objects.create(user_id=user_id)
+
+                    if staffTable:
+                        for stff in staffTable:
+                            staff_table.objects.filter(user_id=user_id).update(status='Active', staff_id=f'GRA-00{stff.id}', admin_id=request.user.id, updated_user_id=request.user.id, last_updated=time.strftime('%Y-%m-%d %H:%M:%S'), department=department)
+
                 else:
                     user.is_staff = False
                     user.save()
                     users_status.objects.filter(user_id=user_id).update(staff=False)
+
+                    staffTable = staff_table.objects.filter(user_id=user_id)
+                    if staffTable:
+                        staff_table.objects.filter(user_id=user_id).update(status='Inactive')
+                    
             messages.success(request, ('Your profile was successfilly updated!'))
             return HttpResponsePermanentRedirect(reverse('profile', args=user_id))
         else:
@@ -106,10 +124,12 @@ def editProfile(request, user_id):
     else:
         user_form = User_update_form(instance=user)
         profile_form = Profile_update_form(instance=user.profile)
+        staffForm = staffTable_form(instance=user.profile)
         profile = User.objects.filter(id=user_id)
         return render(request, 'userApp/edit_profile_form.html', {
             'user_form' : user_form,
             'profile_form' : profile_form,
+            'staff_form':staffForm,
             'all_profile' : profile
         })
 
@@ -157,9 +177,11 @@ def userVerification(request, user):
     Verification = user
     if user == 'verified':
        user_info =  Profile.objects.all().filter(staff=True, means_of_identity_approval="Approved", particulars_approval="Approved")
+       user_agg =  Profile.objects.all().filter(staff=True, means_of_identity_approval="Approved", particulars_approval="Approved").count
     else:
          user_info =  Profile.objects.filter(staff=True).exclude(means_of_identity_approval="Approved", particulars_approval="Approved")
-    return render(request, 'userApp/doc_verify.html', {'users':user_info})
+         user_agg =  Profile.objects.filter(staff=True).exclude(means_of_identity_approval="Approved", particulars_approval="Approved").count
+    return render(request, 'userApp/doc_verify.html', {'users':user_info, 'agg':user_agg})
 
 @login_required
 def docApproval_identity(request, user_id):

@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from userApp.models import Profile
-
+from userApp.models import Profile, staff_table
 # from userApp.models import 
 
 class SignUpForm(UserCreationForm):
@@ -84,6 +83,11 @@ class Profile_update_form(forms.ModelForm):
         ('Others' , 'Others'),
     ]
 
+    other_name = forms.CharField(widget=forms.TextInput(attrs={
+         'placeholder':'Other Name',
+         'class':'form-control shadow-sm rounded-0',
+     }), required=False)
+
     profile_passport = forms.ImageField( 
         label="Profile Passport", 
         widget=forms.FileInput(
@@ -119,7 +123,7 @@ class Profile_update_form(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
-                  'address', 'phone_no', 'd_o_b','marital_status', 
+                  'other_name', 'address', 'phone_no', 'd_o_b','marital_status', 
                   'nationality', 'state', 'gender', 'next_of_kin', 'next_of_kin_phone_no', 'next_of_kin_email', 'next_of_kin_address',
                   'next_of_kin_relationship', 'means_of_identity', 'particulars', 'profile_passport', 'staff'
                   ] 
@@ -139,3 +143,20 @@ class Profile_update_form(forms.ModelForm):
             'next_of_kin_relationship' : forms.Select(attrs={'class':'form-select shadow-none border-1 rounded-0',}),
             'staff' : forms.CheckboxInput(attrs={'type' : 'checkbox', 'class' : 'form-check-input shadow-none border-none'}),
         }
+
+class staffTable_form(forms.ModelForm):
+    department_options = [
+        ("--Select Department--", "--Select Department--"),
+        ("Digital Marketing", "Digital Marketing"),
+        ("Business World", "Business World"),
+        ("Media Technology", "Media Technology"),
+        ("Communications", "Communications"),
+        ("Business Ethics", "Business Ethics"),
+    ]
+    department = forms.CharField(widget=forms.Select(choices=department_options,attrs={
+         'placeholder':'Department',
+         'class':'form-select shadow-sm rounded-0',
+     }))
+    class Meta:
+        model = Profile
+        fields = ['department']

@@ -7,13 +7,13 @@
     {% if all_reg %}
 
     <div class="d-flex row justify-content-center gap-5 g-3 mb-4">
-        <div class="card col-sm-10 col-md-5 col-lg-3 d-flex justify-content-center align-items-center bg-primary" style="height: 7rem;">
-            <h5 class="text-white fw-bold">Registered Aspirants</h5>
-            <p class="fs-4 fw-bold">{{agg}}</p>
+        <div class="card col-sm-10 col-md-5 col-lg-3 d-flex justify-content-center align-items-center" style="min-height: 8rem; max-height: 100%; background-color: #eee;">
+            <h5 class="fw-bold">Registered Aspirants</h5>
+            <p class="fs-4 fw-bold text-success">{{agg}}</p>
         </div>
-        <div class="card col-sm-10 col-md-5 col-lg-3 d-flex justify-content-center align-items-center bg-success" style="height: 7rem;">
-            <h5 class="text-white fw-bold">Admitted Aspirants</h5>
-            <p class="fs-4 fw-bold">{{admission}}</p>
+        <div class="card col-sm-10 col-md-5 col-lg-3 d-flex justify-content-center align-items-center" style="min-height: 7rem; max-height: 100%; background-color: #eee;">
+            <h5 class="fw-bold">Admitted Aspirants</h5>
+            <p class="fs-4 fw-bold text-success">{{admission}}</p>
         </div>
         
     </div>
@@ -24,7 +24,7 @@
         <table
             class="table table-striped-rows table-hover table-border table-primary align-middle"
         >
-            <thead class="table-light">
+            <thead class="table-dark">
                 <tr>
                     <th class="text-center">S/N</th>
                     <th class="text-center">Full Name</th>
@@ -37,7 +37,7 @@
             <tbody class="table-group-divider">
                 {% for reg in all_reg %}
                 <tr
-                class="table-primary"
+                class="table-light"
             >
                 <td scope="row" class="text-center">{{reg.aspirant_id}}</td>
                 <td class="text-center">{{reg.user.last_name}} {{reg.user.first_name}} {{reg.user.profile.other_name}}</td>

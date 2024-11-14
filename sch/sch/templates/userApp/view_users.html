@@ -3,16 +3,17 @@
 {% load static %}
 
 <section>
-   <div class="d-flex justify-content-center mb-4">
-    <div class="card col-sm-10 col-md-5 col-lg-3 d-flex justify-content-center align-items-center bg-warning" style="height: 7rem;">
-        <h5 class="text-white fw-bold"> Number of {% if status == 'staff' %}
+    <div class="d-flex justify-content-center mb-4">
+       {% if users %}
+    <div class="card col-sm-10 col-md-5 col-lg-3 d-flex justify-content-center align-items-center" style="min-height: 8rem; max-height: 100%; background-color: #eee;">
+        <h5 class="fw-bold"> Number of {% if status == 'staff' %}
             Staff
           {% elif status == 'students' %}
             Student
           {% elif status == 'new_users' %}
             New User
           {% endif %}</h5>
-        <p class="fs-4 fw-bold">{{users_agg}}</p>
+        <p class="fs-4 fw-bold text-danger">{{users_agg}}</p>
     </div>
    </div>
     
@@ -22,8 +23,7 @@
         <table
             class="table table-striped table-hover table-border table-light align-middle"
             >
-            {% if users %}
-            <thead class="table-light">
+            <thead class="table-dark">
                 <tr>
                     <th class="text-center">
                         {% if status == 'staff' %}

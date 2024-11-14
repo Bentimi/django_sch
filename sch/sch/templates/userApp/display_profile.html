@@ -19,6 +19,7 @@
 
         <!-- MAIN INFORMATION -->
         <div class="card p-3 col-sm-10 col-md-8 col-lg-6" style="min-height: fit-content; max-height: 70vh;">
+          <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
           <div class=" justify-content-center d-flex row">
                     <div class="d-flex justify-content-center">
 
@@ -37,7 +38,7 @@
                 </div>
                 
                 <span class="fw-bold fs-4 text-center">
-                  {{profile.first_name}} {{profile.last_name}}
+                  {{profile.first_name}} {% if profile.profile.other_name %}{{profile.profile.other_name}}{% endif %} {{profile.last_name}}
                  </span><hr>
 
                <div class="d-flex gap-2 flex-column my-2">
@@ -48,7 +49,7 @@
   
                 {% if profile.profile.staff == 1 %}
                 <div>
-                  <strong>Staff ID:</strong> {{profile.profile.matric_no}}
+                  <strong>Staff ID:</strong> {{profile.staff_table.staff_id}}
                  </div>
                 {% elif profile.users_status.student == 1 %}
                 <div>
@@ -65,7 +66,7 @@
                  </div> -->
   
                  <div>
-                  <strong>Department:</strong>{% if  profile.users_status.staff is True %}
+                  <strong>Department:</strong>{% if profile.users_status.student is False and profile.users_status.aspirant is False %}
                   {{profile.profile.department}}
                   {% elif  profile.users_status.student is True %}
                   {{profile.student_table.department}}

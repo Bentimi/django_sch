@@ -33,7 +33,13 @@ class Profile(models.Model):
         ('Approved', 'Approved'),
     ]
 
-
+    department_options = [
+        ("Digital Marketing", "Digital Marketing"),
+        ("Business World", "Business World"),
+        ("Media Technology", "Media Technology"),
+        ("Communications", "Communications"),
+        ("Business Ethics", "Business Ethics"),
+    ]
 
     profile_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -43,7 +49,7 @@ class Profile(models.Model):
     # email = models.EmailField(max_length=30, null=True, blank=True, unique=True)
     # matric_no = models.CharField(max_length=30, null=True, blank=True, unique=True)
     # level = models.CharField(max_length=30, null=True, blank=True, unique=False)
-    # department = models.CharField(max_length=30, null=True, blank=True, unique=False)
+    department = models.CharField(choices=department_options, max_length=50, unique=False, null=True)
     nin = models.CharField(max_length=11, null=True, blank=True, unique=True)
     d_o_b = models.DateField(unique=False, max_length=11, null=True)
     gender = models.CharField(choices=gender_option, unique=False, max_length=11, null=True)
@@ -108,3 +114,17 @@ class student_table(models.Model):
             else:
                 self.sequence = 1  # start from 1 if it's the first student
         super().save(*args, **kwargs)
+
+
+class staff_table(models.Model):
+
+    id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    admin = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    department = models.CharField(max_length=50, unique=False, null=True)
+    status = models.CharField(max_length=15, unique=False, default='Active')
+    updated_user = models.ForeignKey(users_status, on_delete=models.CASCADE, null=True)
+    last_updated = models.CharField(max_length=50, unique=False, null=True)
+    staff_id = models.CharField(max_length=20, unique=True, null=True)
+    status = models.CharField(max_length=15, unique=False, default='Active')
+    date_added = models.DateTimeField(auto_now=True)

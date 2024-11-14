@@ -1,9 +1,19 @@
 {% extends "side_nav.html" %}
 {% block personal_page %}
 {% load static %}
+<style>
+  form{
+      width: 40% !important;
+    }
+  @media screen and (max-width: 800px) {
+    form{
+      width: 90% !important;
+    }
+  }
+</style>
 
-<section class="mx-auto" style="width: fit-content;">
-    <form action="" method="post" class="card p-5 rounded-0 row d-flex" enctype="multipart/form-data">
+<section class="">
+    <form action="" method="post" class="card p-3 rounded-0 row d-flex mx-auto" enctype="multipart/form-data">
 
       <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" style="color: #bbb;" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
       {% if all_profile %}
@@ -17,6 +27,11 @@
     
         {{user_form.as_p}}
         
+          <div class="my-2">
+            <label for="">{{profile_form.other_name.label}}:</label>
+            {{profile_form.other_name}}
+          </div>
+
           <div class="my-2">
             <label for="">{{profile_form.address.label}}:</label>
             {{profile_form.address}}
@@ -32,6 +47,14 @@
             <label for="">{{profile_form.d_o_b.label}}:</label>
             {{profile_form.d_o_b}}
           </div>
+
+          {% if profile.users_status.student == False or profile.users_status.aspirant == False %}
+          <div class="my-2">
+            <label for="">{{staff_form.department.label}}:</label>
+            {{staff_form.department}}
+          </div>
+          {% endif %}
+
 
           <div class="my-2">
             <label for="">{{profile_form.marital_status.label}}:</label>
@@ -150,7 +173,7 @@
             {% endif %}
 
             {% if request.user.is_superuser %}
-            {% if not profile.users_status.stduent == True %}
+            {% if profile.users_status.student == False or profile.users_ststus.aspirant == False %}
               
             <div class="my-2">
               <label for="">Staff:</label>&nbsp;
