@@ -72,32 +72,11 @@
   }
 
   </style> 
-  <!-- <style>
-    .accordion-button:not(.collapsed)::after {
-    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230c63e4'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e);
-    transform: rotate(
-    -180deg);
-    }
-    .accordion-button::after {
-    order: -1;
-    margin-left: 0;
-    margin-right:0.5em;
-    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529' fill-rule='evenodd' d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z' d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/%3e%3c/svg%3e);
-    /* background-color: white; */
-} -->
-  </style>
+  
   <body>
     
 
     <section id="home-sect" class="">
-      <!-- <nav id="nav-bar" class="navbar position-fixed w-100 d-flex align-items-center justify-content-center top-0" style="z-index: 99;">
-        <div class="">
-          <a class="navbar-brand text-white fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a>
-        </div>
-        </nav> -->
-    
-
-
     <nav class="navbar navbar-light bg-tranparent fixed-top" style="background-color: #162239;">
       <div class="container-fluid container">
         <a class="navbar-brand text-white fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a>
@@ -243,9 +222,11 @@
             <div id="flush-collapseOnee" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="transition: 1s ease-in-out;">
               <div class="accordion-body bg-secondary bg-opacity-25">
                 <ul class="list-unstyled" id="nav-items">
-                <!-- <li id="accordion_li">
+                {% if request.user.is_superuser %}
+                  <li id="accordion_li">
                   <a id="accordion_link" href="{% url 'edit_profile' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-edit"></i> Update Profile</a>
-                </li> -->
+                </li>
+                {% endif %}
                 <li id="accordion_li">
                   <a id="accordion_link" href="{% url 'aspirant_profile' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-eye"></i> View Profile</a>
                 </li>
@@ -257,6 +238,54 @@
           </div>
           </div>
 
+
+          {% if request.user.is_superuser %}
+          
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed shadow-none border-0" style="background-color: #0c1228;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                <span class="text-white fs-5">
+                  <i class="fa fa-money"></i> Payments
+                </span>
+              </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="transition: 1s ease-in-out;">
+              <div class="accordion-body bg-secondary bg-opacity-25">
+                <ul class="list-unstyled" id="nav-items">
+                  
+                  <li id="accordion_li">
+                    <a id="accordion_link" href="{% url 'display_fees' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-credit-card"></i> View Fees</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsefour" aria-expanded="false" aria-controls="flush-collapsefour" style="background-color: #0c1228;">
+                <span class="text-white fs-5">
+                  <i class="fa fa-graduation-cap"></i> Examinations
+                </span>
+              </button>
+            </h2>
+            <div id="flush-collapsefour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="transition: 1s ease-in-out;">
+              <div class="accordion-body bg-secondary bg-opacity-25">
+                <ul class="list-unstyled" id="nav-items">
+                  <li id="accordion_li">
+                    <a id="accordion_link" href="{% url 'cbt_reg' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i>CBT Questions</a>
+                  </li>
+                  <li id="accordion_li">
+                    <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i> Result</a>
+                  </li>
+                 </ul>  
+              </div>
+            </div>
+          </div> 
+        </div>
+
+          {% endif %}
 
 
 

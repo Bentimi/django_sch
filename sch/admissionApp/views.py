@@ -147,12 +147,11 @@ def profileDashboardEdit(request, user_id):
         invoice_table.objects.create(user_id=request.user.id).DoesNotExist
         return redirect('payment_details', request.user.id, 'reg_form')
     return render(request, 'admissionApp/edit_profile.html')
-
 @login_required
 def admissionApproval(request, user_id):
-#    admission_approval.objects.create(aspirant_id=user_id,).DoesNotExist
    user_status = admission_approval.objects.filter(aspirant_id=user_id)
    matric_year = time.strftime('%Y',)
+   matric_year_ = time.strftime('%y',)
    user_id_ = None
    if not user_status:
         admission_approval.objects.create(aspirant_id=user_id,).DoesNotExist
@@ -169,11 +168,13 @@ def admissionApproval(request, user_id):
                     student = student_table.objects.filter(user_id=user.user.id)
                     if not student:
                         student_table.objects.create(user_id=user.user.id, department=user.course, year=matric_year).DoesNotExist
-       return redirect('aspirant_profile', user_id_)
-#    else:
-#         admission_approval.objects.create(aspirant_id=user_id, status=False)
-
-#         viewProfile(request, user_id_)
+                        std_info = student_table.objects.filter(user_id=user.user.id, department=user.course)
+                        if std_info:
+                            for std in std_info:
+                                if not std.matric_number:
+                                    martic_no = f'GD/{matric_year_}/00{std.sequence}'
+                                    student_table.objects.filter(user_id=user.user.id, department=user.course).update(matric_number=martic_no)
+                    return redirect('aspirant_profile',  user_id_)
         
 
 @login_required
@@ -201,11 +202,7 @@ def admissionLetter(request, user_id):
             'all_profile':profile,
             'info' : other_info
         }
-        # return render(request, 'admissionApp/admission_letter.html', context=context)
     else:
-        # invoice_table.objects.create(user_id=request.user.id).DoesNotExist
-        #  return HttpResponsePermanentRedirect(reverse('payment_details', args=(,)))
-
         return redirect('payment_details', request.user.id, 'acceptance_fee')
     return render(request, 'admissionApp/admission_letter.html', context=context)
 

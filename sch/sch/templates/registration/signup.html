@@ -5,19 +5,24 @@
 {% endblock title %}
 {% block personal_page %}
 
-<section class="mx-auto" style="margin-top: 7em; width: fit-content;">
-    <form action="" method="post" class="card p-5 rounded-0">
+<section class="mx-auto" style="margin-top: 7em;">
+    <form action="" method="post" class="card p-5 rounded-0 w-50 mx-auto">
+
+        <div class="d-flex justify-content-center"><a class="navbar-brand fs-1" id="logo-container" style="color: #aaa;"><em id="logo">GRAD</em> SCHOOL</a></div>
+        <h5 class="text-center fst-italic" style="color: #aaa;">
+            Create an Account
+      </h5>
         {% csrf_token %}
     
-        <h2>
-            Create an Account
-        </h2>
+        
 
-        {{form.as_table}}
+        {{form.as_p}}
         
 
         <button class="btn btn-primary rounded-0 btn-lg" type="submit" style="width: fit-content;">Create Account</button><br>
-        <p class="text-start">Already have account? <a href="{% url 'login' %}" class="text-decoration-none">Login</a></p>
+        <div class="d-flex justify-content-center">
+            <p class="fs-5 fst-italic">Already have account? <a href="{% url 'login' %}" class="text-decoration-none">Login</a></p>
+        </div>
     </form>
 </section>
   

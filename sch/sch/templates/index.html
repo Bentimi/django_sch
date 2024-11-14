@@ -16,9 +16,75 @@
 <body>
 
     <!-- NAVBAR -->
+    <nav
+    id="nav-bar" class="navbar navbar-expand-lg position-fixed w-100 d-flex align-items-center"
+    >
+        <div class="container">
+            <a class="navbar-brand text-white fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a>
+            <button
+                class="navbar-toggler d-lg-none border-white bg-white"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsibleNavId"
+                aria-controls="collapsibleNavId"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0" id="nav-ul">
+                    <li class="nav-item">
+                        <a class="nav-link active bold text-white text-uppercase fs-6 p-3" href="{% url 'home' %}" aria-current="page" id="nav-link"
+                            >Home</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'course' %}" class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" id="nav-link">Courses</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="dropdownId"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            >Dropdown</a
+                        >
+                        <div
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownId"
+                        >
+                            <a class="dropdown-item" href="#"
+                                >Action 1</a
+                            >
+                            <a class="dropdown-item" href="#"
+                                >Action 2</a
+                            >
+                        </div>
+                    </li>
+                </ul>
+                <form class="d-flex my-2 my-lg-0">
+                    <input
+                        class="form-control me-sm-2"
+                        type="text"
+                        placeholder="Search"
+                    />
+                    <button
+                        class="btn btn-outline-success my-2 my-sm-0"
+                        type="submit"
+                    >
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    
 
     <header>
-        <nav id="nav-bar" class="navbar position-fixed w-100 d-flex align-items-center">
+        <!-- <nav id="nav-bar" class="navbar position-fixed w-100 d-flex align-items-center">
             <div class="container-fluid">
               <a class="navbar-brand text-white fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a>
     
@@ -29,24 +95,45 @@
                 <li id="nav-list" class="d-flex align-items-center">
                     <a href="{% url 'course' %}" class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" id="nav-link">Courses</a>
                 </li>
-                  
+                   {% if request.user.is_authenticated %}
+                   
+                   <li class="nav-item dropdown list-unstyled me-5 d-flex align-items-center pe-3">
+                    <a class="nav-link dropdown-toggle text-white fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-user" style="font-style: normal;"></i> {{request.user.username|upper}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item"  class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" href="{% url 'user_dashboard' %}"><i class="fa fa-user"></i> Dashboard</a></li>
+                        <li><a class="dropdown-item"  class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                      </ul>
+                  </li>
+                   
+                   {% else %}
+
+                   <li id="nav-list" class="d-flex align-items-center">
+                    <a href="{% url 'about' %}" class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" id="nav-link">About Us</a>
+                   </li>
+
+                   <li id="nav-list" class="d-flex align-items-center">
+                    <a href="{% url 'contact' %}" class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" id="nav-link">Contact</a>
+                   </li>
                    
                    {% if not request.user.is_authenticated %}
                    <li class="nav-item dropdown list-unstyled me-3 d-flex align-items-center pe-3">
                     <a class="nav-link dropdown-toggle text-white fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa fa-user" style="font-style: normal;"></i> Portals
+                      <i class="fa fa-sign-in" style="font-style: normal;"></i> Login
                     </a>
                     <ul class="dropdown-menu">
                        <li><a class="dropdown-item"  class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" href="{% url 'login' %}"><i class="fa fa-sign-in"></i> Login</a></li>
-                       <li><a class="dropdown-item"  class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" href="{% url 'admission_login' %}">Admission Portal</a></li>
+                       <li><a class="dropdown-item"  class="text-decoration-none fw-bold text-white text-uppercase fs-6 p-3" href="{% url 'admission_login' %}"><i class="fa fa-sign-in"></i> Admission Portal</a></li>
                       </ul>
-                  </li>
+                   </li>
                    {% endif %}
-                   
+                   {% endif %}
               </ul>
             </div>
-          </nav>
+          </nav> -->
     </header>
+
 
     <!-- BODY -->
 

@@ -7,16 +7,24 @@
   
   <section id="about_section" class="py-5">
     <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
-        <div class="card w-75 p-3">
+        <div class="card w-75 px-3 py-5" style="background-color: #eee;">
        <div>
         {% if my_profile  %}
           {% for profile in my_profile  %}
           {% if registration_profile %}
             {% for reg in registration_profile %}
             
-            <div class="d-flex justify-content-end">
-                <a class="text-decoration-none fw-bold fs-6" href="{% url 'admission_logout' %}">Logout</a>
+            <div class="d-flex justify-content-end py-3">
+                <a class="btn btn-outline-danger fw-bold fs-6" href="{% url 'admission_logout' %}">Logout</a>
             </div>
+
+            <div class="d-flex justify-content-between gap-1 row">
+                <div class="fw-bold fs-5 col-sm-12 col-md-5 col-lg-3">Welcome {{profile.username}}!</div>
+                <div class="fs-5 col-sm-12 col-md-5 col-lg-3">
+                   <strong>Last Login:</strong> {{profile.last_login}}
+                </div>
+            </div>
+
           <div class="d-flex justify-content-between align-items-center py-1">
 
              
@@ -34,8 +42,8 @@
           
        </div>
         <div class="row gap-2 g-2 justify-content-evenly ">
-            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 text-center bg-info" style="height: 7rem;">
-                <h5 class="fw-bold text-white">Admission Status</h5>
+            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 d-flex justify-content-center align-items-center" style="min-height: 7rem; max-height: 100%;">
+                <h5 class="fw-bold">Admission Status</h5>
                 {% if reg.registration_status == True and reg.admission_approval.status == False %}
                 <div><p class="">In progress... <i class="fa fa-hourglass-half"></i></p></div>
                 {% elif reg.registration_status == True and reg.admission_approval.status == True %}
@@ -45,8 +53,8 @@
             {% endif %}
                 
             </div>
-            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 text-center bg-warning" style="height: 7rem;">
-                <h5 class="fw-bold text-white">Registration Status</h5>
+            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 d-flex justify-content-center align-items-center" style="min-height: 7rem; max-height: 100%;">
+                <h5 class="fw-bold">Registration Status</h5>
                
                     {% if reg.registration_status == True %}
                     <p class="text-success">Completed <i class="fa fa-check-circle"></i></p>
@@ -59,8 +67,9 @@
                
                 
             </div>
-            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 text-center bg-success" style="height: 7rem;">
-                <h5 class="fw-bold text-white">Transaction History</h5>
+            <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 d-flex justify-content-center align-items-center" style="min-height: 7rem; max-height: 100%;">
+                <h5 class="fw-bold"><i class="fa fa-user"></i> Profile</h5>
+                <div><a href="{% url 'aspirant_profile' reg.user_id %}" class="btn btn-outline-primary">View</a></div>
             </div>
         </div>
         
@@ -70,7 +79,7 @@
                 {% if reg.registration_status is True %}
                     
                 <div class="d-flex gap-2">
-                    <a href="{% url 'aspirant_profile' profile.id %}" class="btn btn-primary rounded-0">Profile</a>
+                    <!-- <a href="{% url 'aspirant_profile' profile.id %}" class="btn btn-primary rounded-0">Profile</a> -->
                      <!-- Modal trigger button -->
                     <button
                     type="button"

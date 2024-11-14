@@ -1,0 +1,182 @@
+{% extends "admission_bar.html" %}
+
+{% block title %}<title>Admission Reg Page</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section id="about_section" class="py-5">
+    <div class="d-flex row gap-5 justify-content-center" id="top_after_nav">
+        
+        <!-- {% if status.aspirant != 2 %} -->
+        
+        <form action="" method="post" class="d-flex row justify-content-center form-layout gap-3 card px-5 mx-auto w-50 rounded-0 py-5" enctype="multipart/form-data">
+         <h2 class="text-center">
+             View Profile
+       </h2>
+
+       {% if messages %}
+         {% for message in messages  %}
+           {{message}}
+         {% endfor %}
+       {% endif %}
+
+       {% csrf_token %}
+    
+       {{user.as_p}}
+       {{profile_form.as_p}}
+       {{admission_form}}
+      
+       
+       <button type="submit" class="btn btn-primary rounded-0" style="width: fit-content;">Submit</button>
+
+    </form>
+
+    {% else %}
+    {% if my_profile %}
+    {% for profile in my_profile  %}
+    
+     <!-- DETAILS -->
+     <div class="card p-4 col-10" style="min-height: 70vh; max-height: 100%;">
+                
+        <!-- passport -->
+        <div class="d-flex justify-content-between align-items-center">
+            <div><h3>Profile</h3></div>
+            {% if profile.passport %}
+                <img src="{{profile.passport.url}}" alt="{{profile.username}}" class="rounded-circle" style="width: 5em; height: 5em;">
+            {% else %}
+                    <img src="{% static '/images\profile_icon.png' %}" alt="{{profile.username}}" style="width: 8em; height: 8em;">
+            {% endif %}
+        </div>
+    
+        <!-- details -->
+        <div class="d-flex align-items-center">
+
+            <!-- Profile Information -->
+            <div class="my-2">
+                <h5 class="fw-bold text-capitalize text-decoration-underline">Profile Information</h5>
+
+                <div class="d-flex justify-content-evenly row g-2 gap-2">
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong>NAME:</strong> {{profile.last_name|upper}} {{profile.first_name}} {{profile.middle_name}}</div>
+
+                   
+                    <div class="col-sm-12 col-md-6 col-lg-5 d-flex gap-2"> <strong class="text-uppercase">contact:</strong> <a class="text-decoration-none d-flex align-items-center justify-content-center" href="tel:{{profile.phone_no}}"><i class="fa fa-phone fs-5 text-dark"></i>{{profile.profile.phone_no}}</a>  <a class="text-decoration-none d-flex align-items-center justify-content-center" href="mailto:{{profile.email}}"><i class="fa fa-envelope fs-5 text-dark"></i>{{profile.email}}</a></div>
+
+
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">date of birth:</strong> {{profile.d_o_b}}</div>
+                    
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">gender:</strong> {{profile.gender}}</div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">marital status:</strong> {{profile.marital_status}}</div>
+                    
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">address:</strong> {{profile.address}}</div>
+                    
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">state</strong> {{profile.state}}</div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">course</strong>  {% if profile.course %}
+                        {{profile.course}}
+                    {% else %}
+                        No Course Selected
+                    {% endif %}</div>
+                    
+             </div>
+
+             <!-- next of kin information -->
+             <div class="my-2">
+                <h5 class="fw-bold text-capitalize text-decoration-underline">next of kin information</h5>
+
+                <div class="d-flex justify-content-evenly row g-2 gap-2">
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong>NAME:</strong> {{profile.next_of_kin}}</div>
+
+                   
+                    <div class="col-sm-12 col-md-6 col-lg-5 d-flex gap-2"> <strong class="text-uppercase">contact:</strong> <a class="text-decoration-none d-flex align-items-center justify-content-center" href="tel:{{profile.next_of_kin_number}}"><i class="fa fa-phone fs-5 text-dark"></i>{{profile.next_of_kin_number}}</a>  <a class="text-decoration-none d-flex align-items-center justify-content-center" href="mailto:{{profile.next_of_kin_email}}"><i class="fa fa-envelope fs-5 text-dark"></i>{{profile.next_of_kin_email}}</a></div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">address:</strong> {{profile.next_of_kin_address}}</div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-5"> <strong class="text-uppercase">relationship:</strong> {{profile.next_of_kin_relationship}}</div>  
+             </div>
+
+             <!-- others -->
+             <div class="my-2">
+                <h5 class="fw-bold text-capitalize text-decoration-underline">other information</h5>
+
+                <div class="d-flex justify-content-evenly row g-2 gap-2">
+
+                    <div class="col-5"> <strong class="text-uppercase">passport:</strong> 
+                    <div>
+                       {% if profile.pasport %}
+                       <img src="{{profile.passport.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
+                       {% endif %}
+                    </div>
+                    
+                    {% if request.user.is_superuser and profile.passport %}
+                      <a href="{{profile.passport.url}}" class="text-decoration-none text-capitalize">view image</a>
+                    {% endif %}
+
+                    </div>
+
+                    <div class="col-5"> 
+                        <strong class="text-uppercase">o'level result:</strong> 
+                        <div>
+                            {% if profile.o_levels %}
+                            <img src="{{profile.o_levels.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
+                            {% endif %}
+                        </div>
+                        
+                        {% if request.user.is_superuser and profile.o_levels %}
+                          <a href="{{profile.o_levels.url}}" class="text-decoration-none text-capitalize">view image</a>
+                        {% endif %}
+
+                    </div>
+
+                    
+                    <div class="col-5"> 
+                        <strong class="text-uppercase">utme result:</strong> 
+                       <div>
+                        {% if profile.utme %}
+                        <img src="{{profile.utme.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
+                        {% endif %}
+                       </div>
+                       
+                       {% if request.user.is_superuser and profile.utme %}
+                         <a href="{{profile.utme.url}}" class="text-decoration-none text-capitalize">view image</a>
+                       {% endif %}
+
+                    </div>
+                   
+                    <div class="col-5"> 
+                        <strong class="text-uppercase">identity card:</strong> 
+                        <div>
+                            {% if national_identity %}
+                              <img src="{{profile.national_identity.url}}" alt="img" srcset="" style="height: 7rem; width: 7rem;">
+                            {% endif %}
+                        </div>
+                        
+                        {% if request.user.is_superuser and profile.national_identity %}
+                          <a href="{{profile.national_identity.url}}" class="text-decoration-none text-capitalize">view image</a>
+                        {% endif %}
+
+                    </div>
+                   
+                   
+             </div>
+
+        </div>
+
+</div>
+
+
+</div>
+
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+
+       <!-- <a href="{% url 'dashboard' %}">Back</a> -->
+
+          
+       
+    </div>
+</section>
+
+  {% endblock personal_page %}  

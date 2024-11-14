@@ -6,17 +6,43 @@ from userApp.models import Profile
 # from userApp.models import 
 
 class SignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=False, help_text='Optional')
-    last_name = forms.CharField(max_length=30, required=False, help_text='Optional')
-    email = forms.EmailField(max_length=30, required=False, help_text='Enter Valid Email Address')
-
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+         'placeholder':'First Name',
+         'class':'form-control shadow-sm rounded-0',
+         'type':'text'
+     }),max_length=30, required=False, help_text='Optional', label='First Name')
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+         'placeholder':'Last Name',
+         'class':'form-control shadow-sm rounded-0',
+         'type':'text'
+     }),max_length=30, required=False, help_text='Optional', label='Last Name')
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+         'placeholder':'Email',
+         'class':'form-control shadow-sm rounded-0',
+         'type':'email'
+     }),max_length=30, required=False, help_text='Enter Valid Email Address', label='Email')
+    username = forms.CharField(widget=forms.TextInput(attrs={
+         'placeholder':'Username',
+         'class':'form-control shadow-sm rounded-0',
+         'type':'text'
+     }), label='Username')
+    password1 = forms.CharField(widget=forms.TextInput(attrs={
+         'placeholder':'Password',
+         'class':'form-control shadow-sm rounded-0',
+         'type':'password'
+     }), label='Password')
+    password2 = forms.CharField(widget=forms.TextInput(attrs={
+         'placeholder':'Confirm Password',
+         'class':'form-control shadow-sm rounded-0',
+         'type':'password'
+     }), label='Confirm Password')
     class Meta:
         model = User
         fields = [
-            'username',
             'first_name',
             'last_name',
             'email',
+            'username',
             'password1',
             'password2'
         ]
