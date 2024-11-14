@@ -18,11 +18,8 @@
             <a href="{% url 'logout' %}" class="btn btn-outline-danger fw-bold">Logout</a>
           </div>
             
-            <div class="d-flex justify-content-between gap-1 row">
+            <div class="d-flex justify-content-start gap-1 row">
                 <div class="fw-bold fs-5 col-sm-12 col-md-5 col-lg-3">Welcome {{profile.username}}!</div>
-                <div class="fs-5 col-sm-12 col-md-5 col-lg-3">
-                   <strong>Last Login:</strong> {{profile.last_login}}
-                </div>
             </div>
           <div class="d-flex justify-content-between align-items-center py-1">
 
@@ -52,6 +49,12 @@
             <div class="card border-0 shadow-lg col-sm-12 col-md-5 col-lg-3 p-2 d-flex justify-content-center align-items-center" style="min-height: 7rem; max-height: 100%;">
                 <h5 class="fw-bold"><i class="fa fa-lock"></i> Change Password</h5>
                 <div><a href="{% url 'password_change' %}" class="btn btn-outline-primary">Update</a></div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-1 row my-4">
+            <div class="fs-6 col-sm-12 col-md-5 col-lg-3">
+               <strong>Last Login:</strong> {{profile.last_login}}
             </div>
         </div>
       
