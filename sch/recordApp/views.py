@@ -7,6 +7,7 @@ from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, Htt
 from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form, test_form
 from .models import User
 from recordApp.models import course_register, course_model, cbt, questions, course_form, grading
+from userApp.models import student_table
 from xhtml2pdf import pisa
 from io import BytesIO
 from django.template.loader import get_template
@@ -87,13 +88,19 @@ def editCourse(request, course_id):
             with transaction.atomic():
                 form_save = form.save(commit=False)
                 instructor = form.cleaned_data['instructor']
+                code = form.cleaned_data['course_code']
                 user = User.objects.all().filter(username=instructor)
                 if user:
                     for profile in user:
-                        form_save.user_id = profile.id
                         form_save.save()
-            messages.success(request, (f'{form_save.course_code} successfully updated!'))
-            return HttpResponsePermanentRedirect(reverse('course_details', args=(course_id,)))
+
+                        course_model.objects.filter(course_id=course_id, course=code).update(user_id=profile.id)
+                        
+                    messages.success(request, (f'{form_save.course_code} successfully updated!'))
+                    return HttpResponsePermanentRedirect(reverse('course_details', args=(course_id,)))
+                else:
+                    messages.error(request, ('Incorrect Input!'))
+                    return HttpResponsePermanentRedirect(reverse('edit_course', args=(course_id,)))
         else:
             messages.error(request, ('Course fails to update!'))
             return HttpResponsePermanentRedirect(reverse('edit_course', args=(course_id,)))
@@ -467,6 +474,13 @@ def confirmTest(request, test_id):
             'secs' : f'{time_remaining.seconds % 60:02}',
             'target_time':target_date,
             'date_now':date_now,
+    })
+@login_required
+def Result(request):
+    user_id = request.user.id
+    result = grading.objects.filter(submitted=True)
+    return render(request, 'recordApp/view_result.html', {
+        'result_data':result,
     })
 
 @login_required

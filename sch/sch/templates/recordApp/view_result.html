@@ -1,0 +1,45 @@
+{% extends "side_nav.html" %}
+{% block title %}<title>Course form reg</title>{% endblock title %}
+{% block personal_page %}
+{% load static %}
+    
+  
+  <section>
+    
+    {% if result_data %}
+      {% for result in result_data %}
+      
+      <div
+        class="table-responsive"
+      >
+        <table
+            class="table table-dark"
+        >
+            <thead>
+                <tr>
+                    <th scope="col">S/N</th>
+                    <th scope="col">Names</th>
+                    <th scope="col">dd</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="">
+                    <td scope="row">{{result.grade_id}}</td>
+                    <td>R1C2</td>
+                    <td>R1C3</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+      
+
+      {% endfor %}
+    {% else %}
+    <div class="d-flex align-items-center justify-content-center" style="height: 50vh;">
+        <p class="text-center text-white fs-5">No record found <a href="" class="text-decoration-none text-warning fst-italic">Refresh</a></p>
+    </div>
+    {% endif %}
+
+</section>
+
+  {% endblock personal_page %}  

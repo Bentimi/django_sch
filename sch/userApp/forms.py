@@ -156,7 +156,7 @@ class staffTable_form(forms.ModelForm):
     department = forms.CharField(widget=forms.Select(choices=department_options,attrs={
          'placeholder':'Department',
          'class':'form-select shadow-sm rounded-0',
-     }))
+     }), required=False)
     class Meta:
         model = Profile
         fields = ['department']
