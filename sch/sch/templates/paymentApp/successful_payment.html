@@ -69,6 +69,8 @@
             <a href="{% url 'dashboard_edit' invoice.user_id %}" class="btn btn-primary rounded-0 fw-bold" style="width: fit-content;">Continue</a>
           {% elif invoice.category == 'acceptance_fee' %}
             <a href="{% url 'dashboard' %}" class="btn btn-primary rounded-0 fw-bold" style="width: fit-content;">Continue</a>
+          {% elif invoice.category == 'tuition' %}
+            <a href="{% url 'user_dashboard' %}" class="btn btn-primary rounded-0 fw-bold" style="width: fit-content;">Continue</a>
           {% endif %}
        
          {% endfor %}

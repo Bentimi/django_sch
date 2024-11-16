@@ -32,6 +32,7 @@ class cbt(models.Model):
     execution_date = models.DateTimeField(max_length=50, unique=False, null=True)
     no_of_questions = models.CharField(max_length=500, unique=False, null=True)
     examiner = models.ForeignKey(User, on_delete=models.CASCADE, unique=False, null=True)
+    approved = models.BooleanField(default=False, unique=False)
     date_added = models.DateTimeField(auto_now_add=True)
 
 class questions(models.Model):
@@ -52,6 +53,7 @@ class grading(models.Model):
     score = models.CharField(max_length=20, unique=False, null=True)
     grade = models.CharField(max_length=20, unique=False, null=True)
     unit = models.CharField(max_length=10, unique=False, null=True) 
+    point = models.CharField(max_length=10, unique=False, null=True) 
     total_score = models.IntegerField(unique=False, null=True) 
     active = models.BooleanField(unique=False, default=False)
     submitted = models.BooleanField(unique=False, default=False)

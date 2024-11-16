@@ -6,9 +6,10 @@
   
   <section>
     <div class="d-flex row gap-5 justify-content-center">
-        <div class="gap-3 card px-2 w-50 rounded-0 py-5 d-flex align-items-center justify-content-center" style="min-height: 50vh;">
-            <div class="px-2 mx-auto w-50 rounded-0 py-5">
-                <h2 class="text-center fw-bold">
+        <div class="gap-3 card px-2 rounded-0 py-5 d-flex align-items-center justify-content-center" style="min-height: 30vh; max-height: 100%; width: 35rem;">
+            <div class="px-2 mx-auto rounded-0 py-5">
+                <div class="d-flex justify-content-center"><a class="navbar-brand text-secondary text-opacity-50 fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div>
+                <h2 class="text-center" style="color: #aaa;">
                     {% if grading %}
                       {% for grad in grading  %}
                         {% if grad.active is False and grad.submitted is True %}
@@ -16,57 +17,53 @@
                      {% endif %}
                      {% endfor %}
                      {% else %}
-                    Test Confirmation
+                     {% if cbt_info == True or cbt_info == False %}
+                     Confirmation
+                     {% endif %}
                 {% endif %}
                 </h2>
-                {% if messages %}
-                {% for message in messages  %}
-                {{message}}
-                {% endfor %}
-                {% endif %}
                 <div class="d-flex row justify-content-center gap-2 px-3">
                     
-
+                    {% if cbt_info == True %}
 
                     {% if grading %}
-                      {% for grad in grading  %}
-                        <!-- {{grad.cbt.course_code}}
-                        {{grad.active}} -->
-                        {% if grad.active is False and grad.submitted is True %}
-                       <div class="mx-auto">
-                        <div>
-                            {% if all_courses %}
-                            {% for course in all_courses %}
-                              <div class="d-flex justify-content-center row">
+                    {% for grad in grading  %}
+                      <!-- {{grad.cbt.course_code}}
+                      {{grad.active}} -->
+                      {% if grad.active is False and grad.submitted is True %}
+                     <div class="mx-auto">
+                      <div>
+                          {% if all_courses %}
+                          {% for course in all_courses %}
+                            <div class="d-flex justify-content-center row">
+                              <div class="mx-auto">
                                 <p class="fs-5 fw-bold">You have attempted your trial in <br> <strong>Course TItle: {{course.course.course}}</strong> <br><strong>Course Code: {{course.course.course_code}}</strong> </p>
-                            <div class="d-flex justify-content-center">
-                                <a href="{% url 'available_test' grad.user_id %}" class="btn btn-danger">Home</a>
-                            </div>
-                                  
-                              
+                                <div class="d-flex justify-content-center">
+                                    <a href="{% url 'available_test' grad.user_id %}" class="btn btn-danger">Home</a>
+                                </div>
+                                      
                               </div>
-                            {% endfor %}
-                          {% endif %}
-                           
-                        </div>
-                       </div>
-                           {% endif %}
-                        {% endfor %}
-                        {% else %}
-                        {% if target_time <= date_now %}
+                            
+                            </div>
+                          {% endfor %}
+                        {% endif %}
+                         
+                      </div>
+                     </div>
+                         {% endif %}
+                      {% endfor %}
+                      {% else %}
+                      {% if target_time <= date_now %}
 
-                        {% if all_courses %}
-                        {% for course in all_courses %}
-                          <div class="d-flex justify-content-center row">
-                              <p><strong>Course Title</strong>: {{course.course.course}}</p>
-                              <p><strong>Course Code</strong>: {{course.course.course_code}}</p>
-                          
-                          </div>
-                        {% endfor %}
-                      {% endif %}
+                      {% if all_courses %}
+                      {% for course in all_courses %}
+                      <div class="mx-auto">
+                            <div style="margin-left: 6rem; margin-right: 5rem;">
+                            <p style="text-align: justify;"><strong>Course Title</strong>: {{course.course.course}}</p>
+                            <p style="text-align: justify;"><strong>Course Code</strong>: {{course.course.course_code}}</p>
 
-                        <!-- Modal trigger button -->
-                       <div>
+                            <!-- Modal trigger button -->
+                     <div>
                         <button
                         type="button"
                         class="btn btn-primary btn-md"
@@ -78,93 +75,126 @@
                     </button>
                        </div>
                         
-                        <!-- Modal Body -->
-                        <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
-                        <div
-                            class="modal fade"
-                            id="modalId"
-                            tabindex="-1"
-                            data-bs-backdrop="static"
-                            data-bs-keyboard="false"
-                            
-                            role="dialog"
-                            aria-labelledby="modalTitleId"
-                            aria-hidden="true"
-                        >
-                            <div
-                                class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
-                                role="document"
-                            >
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalTitleId">
-                                           Test Confirmation
-                                        </h5>
-                                        <button
-                                            type="button"
-                                            class="btn-close shadow-none border-0"
-                                            data-bs-dismiss="modal"
-                                            aria-label="Close"
-                                        ></button>
-                                    </div>
-                                    <div class="modal-body"> {% if all_courses %}
-                                        {% for course in all_courses %}
-                                          <div class="">
-                                            <p>Confirm Exam Details</p>
-                                              <p><strong>Course Title</strong>: {{course.course.course}}</p>
-                                              <p><strong>Course Code</strong>: {{course.course.course_code}}</p>
-                                          </div>
-                                        {% endfor %}
-                                      {% endif %}</div>
-                                    <div class="modal-footer">
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger"
-                                            data-bs-dismiss="modal"
-                                        >
-                                            Cancel
-                                        </button>
-                                       <a type="button" href="{% url 'cbt_test' test_id %}" class="btn btn-primary" style="width: fit-content;">Confirm</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                        
-                        <!-- Optional: Place to the bottom of scripts -->
-                        <script>
-                            const myModal = new bootstrap.Modal(
-                                document.getElementById("modalId"),
-                                options,
-                            );
-                        </script>
-                        
-                        
-                        {% else %}
-                        <div class=" d-flex justify-content-center row">
-                            <div class="">
-                                <div class="d-flex row p-2">
-                                    <p class="fw-bold d-flex justify-content-center fs-5">Test would be available in</p>
-                                    <div class="text-danger fw-bold d-flex justify-content-center"> {{days}}d : {{hrs}}hr : {{mins}}min : {{secs}}s</div>  
+                       </div>
+                      {% endfor %}
+                    {% endif %}
+
+                      
+                      
+                      <!-- Modal Body -->
+                      <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+                      <div
+                          class="modal fade"
+                          id="modalId"
+                          tabindex="-1"
+                          data-bs-backdrop="static"
+                          data-bs-keyboard="false"
+                          
+                          role="dialog"
+                          aria-labelledby="modalTitleId"
+                          aria-hidden="true"
+                      >
+                          <div
+                              class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+                              role="document"
+                          >
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="modalTitleId">
+                                         Test Confirmation
+                                      </h5>
+                                      <button
+                                          type="button"
+                                          class="btn-close shadow-none border-0"
+                                          data-bs-dismiss="modal"
+                                          aria-label="Close"
+                                      ></button>
+                                  </div>
+                                  <div class="modal-body"> {% if all_courses %}
+                                      {% for course in all_courses %}
+                                        <div class="">
+                                          <p>Confirm Exam Details</p>
+                                            <p><strong>Course Title</strong>: {{course.course.course}}</p>
+                                            <p><strong>Course Code</strong>: {{course.course.course_code}}</p>
+                                        </div>
+                                      {% endfor %}
+                                    {% endif %}</div>
+                                  <div class="modal-footer">
+                                      <button
+                                          type="button"
+                                          class="btn btn-danger"
+                                          data-bs-dismiss="modal"
+                                      >
+                                          Cancel
+                                      </button>
+                                     <a type="button" href="{% url 'cbt_test' test_id %}" class="btn btn-primary" style="width: fit-content;">Confirm</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <!-- Optional: Place to the bottom of scripts -->
+                      <script>
+                          const myModal = new bootstrap.Modal(
+                              document.getElementById("modalId"),
+                              options,
+                          );
+                      </script>
+                      
+                      
+                      {% else %}
+                      <div class=" d-flex justify-content-center row">
+                          <div class="">
+                              <div class="d-flex row p-2">
+                                  <p class="fw-bold d-flex justify-content-center fs-5">Test would be available in</p>
+                                  <div class="text-danger fw-bold d-flex justify-content-center"> {{days}}d : {{hrs}}hr : {{mins}}min : {{secs}}s</div>  
+                              </div>
+                          </div>
+                          <div class="d-flex justify-content-center">
+                              <a href="{% url 'available_test' request.user.id %}" class="btn btn-info text-center fw-bold rounded-0">Return</a>
+                          </div>
+                      </div>
+                          <script>
+                      function updateCountdown(){
+                          fetch(window.location.pathname)
+                          .then(response => response.text())
+                      .then(html => {
+                          document.body.innerHTML = html;
+                      });
+                      }
+                      setInterval(updateCountdown, 1000);
+                      </script>
+                      <!-- <div class=" d-flex justify-content-center row">
+                          <div class="">
+                              <div class="d-flex row p-2">
+                                  <p class="fw-bold d-flex justify-content-center fs-5">Test not available</div>  
+                              </div>
+                          </div>
+                          <div class="d-flex justify-content-center">
+                              <a href="{% url 'available_test' request.user.id %}" class="btn btn-info text-center fw-bold rounded-0">Return</a>
+                          </div>
+                      </div> -->
+                      {% endif %}
+                         
+
+                  {% endif %}
+                      
+
+                    {% elif cbt_info == False %}
+                    <div class=" d-flex justify-content-center row">
+                        <div class="">
+                            <div class="d-flex row p-2">
+                                <p class="fw-bold d-flex justify-content-center fs-5 text-danger">Test not available</div>  
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center">
                                 <a href="{% url 'available_test' request.user.id %}" class="btn btn-info text-center fw-bold rounded-0">Return</a>
-                            </div>
-                        </div>
-                            <script>
-                        function updateCountdown(){
-                            fetch(window.location.pathname)
-                            .then(response => response.text())
-                        .then(html => {
-                            document.body.innerHTML = html;
-                        });
-                        }
-                        setInterval(updateCountdown, 1000);
-                        </script>
-                        {% endif %}
-                           
+                                    </div>
+                                </div>
+                              
+                    {% endif %}  
 
-                    {% endif %}
                     
                 </div>
             </div>

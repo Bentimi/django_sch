@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponse
-from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form, test_form
+from recordApp.forms import courseAddForm, courseEditForm, reg_cbt, course_details, question_form, test_form, resultEditForm
 from .models import User
 from recordApp.models import course_register, course_model, cbt, questions, course_form, grading
 from userApp.models import student_table
@@ -57,7 +57,7 @@ def courseSetup(request):
                             questions.objects.create(cbt_id=cbt_.id).DoesNotExist
 
             messages.success(request, ('Course Added successfully!'))
-            return redirect('course_setup')
+            return redirect('view_course')
         else:
             messages.error(request, ('Course fails to be added!'))
             return redirect('course_setup')
@@ -111,10 +111,6 @@ def editCourse(request, course_id):
 @login_required
 def courseDetails(request, course_id):
     course_details = course_register.objects.filter(reg_id=course_id)
-    # if course_details:
-    #     for course in course_details:
-            # if course.status is True or (course.status is True and request.user.is_superuser):
-            #     return render(request, 'recordApp/course_details.html',{'details':course_details})
     return render(request, 'recordApp/course_details.html', {'details':course_details})
 @login_required
 def deleteCourse(request, course_id):
@@ -122,15 +118,8 @@ def deleteCourse(request, course_id):
     for reg in reg_course:
             if reg.status == 'Active':
                 course_register.objects.filter(reg_id=course_id).update(status='Inactive')
-            # if reg.status == 'Inactive':
-            #     course_register.objects.filter(reg_id=course_id).update(status='Active')
-    
-    if request.user.is_superuser:
-        messages.success(request, ('Course successfully deleted!'))
-        return redirect('view_course')
-    elif request.user.is_staff:
-        messages.success(request, ('Course successfully deleted!'))
-        return redirect('course_setup')
+            messages.success(request, ('Course successfully deleted!'))
+            return redirect('view_course')
     
 @login_required
 def courseStatus(request, course_id):
@@ -139,15 +128,10 @@ def courseStatus(request, course_id):
         for reg in reg_course:
             if reg.status == 'Active':
                 course_register.objects.filter(reg_id=course_id).update(status='Inactive')
-            if reg.status == 'Inactive':
+            elif reg.status == 'Inactive':
                 course_register.objects.filter(reg_id=course_id).update(status='Active')
-    
-    if request.user.is_superuser:
-        messages.success(request, ('Course successfully deleted!'))
-        return redirect('view_course')
-    elif request.user.is_staff:
-        messages.success(request, ('Course successfully deleted!'))
-        return redirect('course_setup')
+            messages.success(request, ('Course successfully deleted!'))
+            return redirect('view_course')
 
 @login_required
 def cbtReg(request, user_id):
@@ -284,6 +268,10 @@ def cbtTest(request, test_id):
             cbt_id = course_info.cbt_id
             unit = course_info.units
             question_data = questions.objects.filter(cbt_id=test_id)
+            if question_data:
+                for quest in question_data:
+                    title = quest.cbt.course_title
+                    code = quest.cbt.course_code
 
         test_instruction = cbt.objects.only('course_code').get(id=test_id)
         if test_instruction.execution_date:
@@ -294,8 +282,10 @@ def cbtTest(request, test_id):
             date_now = datetime.now()
             time_remaining = target_date - date_now
 
-        if not grading.objects.filter(active=True, cbt_id=cbt_id, user_id=request.user.id):
+        if not grading.objects.filter(cbt_id=cbt_id, user_id=request.user.id).exists:
             grading.objects.create(active=True, cbt_id=cbt_id, user_id=request.user.id).DoesNotExist
+        elif grading.objects.filter(cbt_id=cbt_id, user_id=request.user.id).exists:
+            grading.objects.filter(cbt_id=cbt_id, user_id=request.user.id).update(active=True)
 
         grading_ = grading.objects.filter(cbt_id=cbt_id, user_id=request.user.id)
         if grading_:
@@ -312,26 +302,51 @@ def cbtTest(request, test_id):
                         score +=1
             finished_time = time.strftime('%Y-%m-%d %H:%M: %S')
             total_score = ((int(score)/int(test_instruction.no_of_questions))*100)
-            if total_score <= 39:
-                grade = 'F'
-            elif total_score >= 70 and not total_score > 100:
-                grade = 'A'
-            elif total_score >= 60 and not total_score > 69:
-                grade = 'B'
-            elif total_score >= 50 and not total_score > 59:
-                grade = 'C'
-            elif total_score >= 45 and not total_score > 49:
-                grade = 'E'
-            elif total_score >= 40 and not total_score > 44:
-                grade = 'D'
-            grading.objects.filter(active=True, cbt_id=cbt_id, user_id=request.user.id).update(score=score, active=False,finished_time=finished_time, submitted=True, unit=unit, total_score=total_score, grade=grade)
+            grade = None
+            point = None
+            res = grading.objects.filter(cbt_id=cbt_id, user_id=request.user.id, active=True)
+            if res:
+                for result in res:
+                    course_uint = int(result.unit)
+                    if total_score <= 39:
+                        grade_ = 'F'
+                        grade = grade_
+                        point_ = (0*course_uint)
+                        point = point_
+                    elif total_score >= 70 and not total_score > 100:
+                        grade_ = 'A'
+                        grade = grade_
+                        point_ = (5*course_uint)
+                        point = point_
+                    elif total_score >= 60 and not total_score > 69:
+                        grade_ = 'B'
+                        grade = grade_
+                        point_ = (4*course_uint)
+                        point = point_
+                    elif total_score >= 50 and not total_score > 59:
+                        grade_ = 'C'
+                        grade = grade_
+                        point_ = (3*course_uint)
+                        point = point_
+                    elif total_score >= 45 and not total_score > 49:
+                        grade_ = 'E'
+                        grade = grade_
+                        point_ = (1*course_uint)
+                        point = point_
+                    elif total_score >= 40 and not total_score > 44:
+                        grade_ = 'D'
+                        grade = grade_
+                        point_ = (2*course_uint)
+                        point = point_
+            grading.objects.filter(active=True, cbt_id=cbt_id, user_id=request.user.id).update(score=score, active=False,finished_time=finished_time, submitted=True, unit=unit, total_score=total_score, grade=grade, point=point)
             return redirect('available_test', request.user.id)
     return render(request, 'recordApp/cbt_test.html', {
         'question_data':question_data,
         'time_remaining':time_remaining,
         'duration':test_instruction.duration,
         'executed_time':executed_time,
-        'score':score
+        'title':title,
+        'code':code
     })
 
 
@@ -350,7 +365,7 @@ def courseReg(request, user_id):
                     inv_id = invoice_table.objects.filter(user_id=user_id, category='late_reg', status='successful', completed=True).exists()
                     if inv_id:
                         request.user.id = user_id
-                        all_courses = course_register.objects.all()
+                        all_courses = course_register.objects.all().filter(status='Active')
                         registered_courses = course_form.objects.all().filter(user_id=user_id)
                         return render(request, 'recordApp/course_form_reg.html', {
                         'all_courses':all_courses,
@@ -362,11 +377,12 @@ def courseReg(request, user_id):
                 
                 else:
                     request.user.id = user_id
-                    all_courses = course_register.objects.all()
+                    all_courses = course_register.objects.all().filter(status='Active')
                     registered_courses = course_form.objects.all().filter(user_id=user_id)
+                   
                     return render(request, 'recordApp/course_form_reg.html', {
                     'all_courses':all_courses,
-                    'registered_courses':registered_courses
+                    'registered_courses':registered_courses,
                 })
     else:
         # invoice_table.objects.create(user_id=request.user.id, category='tuition').DoesNotExist
@@ -453,7 +469,8 @@ def confirmTest(request, test_id):
             cbt_id = course.cbt.id
             grading_data =  grading.objects.filter(cbt_id=cbt_id, user_id=request.user.id, active=False, submitted=True)
 
-    cbt_instruction = cbt.objects.all().filter(id=cbt_id)
+    cbt_instruction = cbt.objects.all().filter(id=cbt_id, approved=True)
+    # cbt_inst = cbt.objects.all().filter(id=cbt_id, execution_date=None)
     if cbt_instruction:
         for test_instruction in cbt_instruction:
             _date = test_instruction.execution_date
@@ -462,41 +479,127 @@ def confirmTest(request, test_id):
             target_date = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
             date_now = datetime.now()
             time_remaining = target_date - date_now
+            approval = test_instruction.approved
 
-    return render(request, 'recordApp/test_confirmation.html', {
-            'grading':grading_data,
-            'test_id':cbt_id,
-            'all_courses':course_info,
-            'registered_courses':registered_courses,
-            'days' : f'{time_remaining.days:02}',
-            'hrs' : f'{time_remaining.seconds // 3600:02}',
-            'mins' : f'{(time_remaining.seconds % 3600) // 60:02}',
-            'secs' : f'{time_remaining.seconds % 60:02}',
-            'target_time':target_date,
-            'date_now':date_now,
-    })
+        return render(request, 'recordApp/test_confirmation.html', {
+                'grading':grading_data,
+                'test_id':cbt_id,
+                'all_courses':course_info,
+                'registered_courses':registered_courses,
+                'days' : f'{time_remaining.days:02}',
+                'hrs' : f'{time_remaining.seconds // 3600:02}',
+                'mins' : f'{(time_remaining.seconds % 3600) // 60:02}',
+                'secs' : f'{time_remaining.seconds % 60:02}',
+                'target_time':target_date,
+                'date_now':date_now,
+                'cbt_info':approval,
+        })
+    else:
+         cbt_info = cbt.objects.all().filter(course_id=test_id)
+         if cbt_info:
+             for cbt_ in cbt_info:
+                 approval = cbt_.approved
+         return render(request, 'recordApp/test_confirmation.html', {
+                'grading':grading_data,
+                'test_id':cbt_id,
+                'all_courses':course_info,
+                'registered_courses':registered_courses,
+                'cbt_info':approval,
+        })
+
 @login_required
-def Result(request):
+def Result(request, course_id):
     user_id = request.user.id
-    result = grading.objects.filter(submitted=True)
-    return render(request, 'recordApp/view_result.html', {
-        'result_data':result,
-    })
+    cbt_info = cbt.objects.filter(course_id=course_id)
+    if cbt_info:
+        for cbt_ in cbt_info:
+
+            result = grading.objects.filter(submitted=True, cbt_id=cbt_.id)
+            return render(request, 'recordApp/view_result.html', {
+                'result_data':result,
+            })
 
 @login_required
 def viewResult(request, user_id):
     result = grading.objects.filter(submitted=True, user_id=user_id)
     user_info = User.objects.all().filter(id=user_id)
     unit = 0
+    gpa = 0.0
+    points_ = 0
     if result:
         reg_course = result.values()
         for reg in reg_course:
             unit += int(reg.get("unit"))
+            points_ += int(reg.get("point")) 
+            points = (float(points_) / float(unit))
         total_unit = unit
+        gpa = points
     else:
         total_unit=unit
     return render(request, 'recordApp/result.html', {
         'result_data':result,
         'user_info':user_info,
         'total_unit':total_unit,
+        'gpa':gpa,
     })
+
+@login_required
+def checkResult(request, user_id):
+    result = grading.objects.filter(submitted=True, user_id=user_id)
+    return render(request, 'recordApp/check_result.html', {
+        'result_data':result,
+    })
+
+@login_required
+def editResult(request, user_id):
+    user = get_object_or_404(grading, user_id=user_id)
+    if request.method == "POST":
+        result_form = resultEditForm(request.POST, instance=user)
+        if result_form.is_valid():
+            result_form.save()
+            total_score = grading.objects.filter(user_id=user_id, grade_id=user.grade_id)
+            if total_score:
+                grade = None
+                point = None
+                for score in total_score:
+                    course_uint = int(score.unit)
+                    if score.total_score <= 39:
+                        grade_ = 'F'
+                        grade = grade_
+                        point_ = (0*course_uint)
+                        point = point_
+                    elif score.total_score >= 70 and not score.total_score > 100:
+                        grade_ = 'A'
+                        grade = grade_
+                        point_ = (5*course_uint)
+                        point = point_
+                    elif score.total_score >= 60 and not score.total_score > 69:
+                        grade_ = 'B'
+                        grade = grade_
+                        point_ = (4*course_uint)
+                        point = point_
+                    elif score.total_score >= 50 and not score.total_score > 59:
+                        grade_ = 'C'
+                        grade = grade_
+                        point_ = (3*course_uint)
+                        point = point_
+                    elif score.total_score >= 45 and not score.total_score > 49:
+                        grade_ = 'E'
+                        grade = grade_
+                        point_ = (1*course_uint)
+                        point = point_
+                    elif score.total_score >= 40 and not score.total_score > 44:
+                        grade_ = 'D'
+                        grade = grade_
+                        point_ = (2*course_uint)
+                        point = point_
+                grading.objects.filter(user_id=user_id, grade_id=user.grade_id).update(grade=grade, point=point)
+            
+            return HttpResponsePermanentRedirect(reverse('check_result', args=user_id,))
+    else:
+        result_form = resultEditForm(instance=user)
+        result = grading.objects.filter(submitted=True, user_id=user_id)
+        return render(request, 'recordApp/edit_result.html', {
+            'result_form':result_form,
+            'result_data':result,
+        })

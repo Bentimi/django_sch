@@ -110,6 +110,8 @@
             
            
 
+          {% if request.user.is_superuser or request.user.is_staff %}
+          
           <div class="my-2">
             <label for="">{{profile_form.means_of_identity.label}}:</label>
             {% if profile.profile.means_of_identity %}
@@ -158,6 +160,8 @@
               
             {% endif %}
           </div>
+          {% endif %}
+
           {% endif %}
 
           <div class="my-2">

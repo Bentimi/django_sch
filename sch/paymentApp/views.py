@@ -232,10 +232,10 @@ def paymentSuccess(request, inv_id):
                    if invoice_details.paid == True:
                        lateReg_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, fee='Late Registration', paid=True)
             elif invoice.category == 'tuition':
-                if tuition_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).exists():
-                   tuition_invoice_table.objects.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, fee='Tuition', paid=True)
+                if tuition_invoice_table.objects.filter(invoice_id=invoice.invoice_id).exists():
+                   tuition_invoice_table.objects.filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, tuition_fee='Tuition', paid=True)
                 else:
-                   tuition_invoice_table.objects.create(invoice_id=invoice.invoice_id,form_fee=invoice.transaction_type, paid=True).DoesNotExist()
+                   tuition_invoice_table.objects.create(invoice_id=invoice.invoice_id,tuition_fee=invoice.transaction_type, paid=True).DoesNotExist()
                    invoice_details=tuition_invoice_table.objects.only('paid').get(invoice_id=invoice.invoice_id)
                    if invoice_details.paid == True:
                        tuition_invoice_table.all().filter(invoice_id=invoice.invoice_id).update(user_id=request.user.id, fee='Tuition', paid=True)

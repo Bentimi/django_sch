@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from recordApp.models import course_register, cbt, questions, course_form
+from recordApp.models import course_register, cbt, questions, course_form, grading
 
 class courseAddForm(forms.ModelForm):
     course = forms.CharField(widget=forms.TextInput(attrs={
@@ -26,7 +26,7 @@ class courseAddForm(forms.ModelForm):
             'placeholder': 'Lecturer Incharge',
             'class':'form-control shadow-sm border-1',
             'type' : 'text'
-        }), label='Lecturer Incharge')
+        }), label='Lecturer Incharge (Username)')
     
     class Meta:
         model = course_register
@@ -58,7 +58,7 @@ class courseEditForm(forms.ModelForm):
             'placeholder': 'Lecturer Incharge',
             'class':'form-control shadow-sm border-1',
             'type' : 'text'
-        }), label='Lecturer Incharge')
+        }), label='Lecturer Incharge (Username)')
     class Meta:
         model = course_register
         fields = [
@@ -79,10 +79,13 @@ class reg_cbt(forms.ModelForm):
             'class':'form-control shadow-sm border-1',
             'type':'datetime-local'
         }), label='Execution Date')
+    approved = forms.BooleanField(widget=forms.CheckboxInput(attrs={
+       'class':'shadow-sm border-1 form-check-input'
+    }),required=False, label='Test Approval')
     class Meta:
         model = cbt
         fields = [
-            'no_of_questions','duration', 'execution_date'
+            'no_of_questions','duration', 'execution_date', 'approved'
         ]
 
 class course_details(forms.ModelForm):
@@ -145,10 +148,8 @@ class test_form(forms.Form):
             'type' : 'text'
         }), label='Answer')
      
-# class courseForm(forms.ModelForm):
-#     class Meta:
-#         model = course_form
-#         fields = [
-
-#         ]
+class resultEditForm(forms.ModelForm):
+    class Meta:
+        model = grading
+        fields = ['total_score']
      

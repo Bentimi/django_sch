@@ -28,7 +28,9 @@
             <th>Course Title</th>
             <th>Course Code</th>
             <th>Unit</th>
-            <th>Status</th>
+           {% if request.user.is_superuser %}
+           <th>Status</th>
+           {% endif %}
             <th>Lecturer Incharge</th>
             <th>Date Added</th>
             <th>Action</th>
@@ -37,14 +39,16 @@
     <tbody class="table-group-divider">
                 {% for course in courses %}
                 <tr
-                    class="table-primary"
+                    class="table-light"
                 >
                     <td scope="row">{{course.reg_id}}</td>
                     <td>{{course.course}}</td>
                     <td>{{course.course_code}}</td>
                     <td>{{course.unit}}</td>
-                    <td>{% if course.status == 'Inactive' %}<a href="{% url 'course_status' course.reg_id %}" class="text-center fw-bold btn btn-danger" style="width: 5rem;">{{course.status}}</a>{% elif course.status == 'Active' %}<a href="{% url 'course_status' course.reg_id %}" class="text-center fw-bold btn btn-success" style="width: 5rem;">{{course.status}}</a>
+                   {% if request.user.is_superuser %}
+                   <td>{% if course.status == 'Inactive' %}<a href="{% url 'course_status' course.reg_id %}" class="text-center fw-bold btn btn-danger" style="width: 6rem;">{{course.status}}</a>{% elif course.status == 'Active' %}<a href="{% url 'course_status' course.reg_id %}" class="text-center fw-bold btn btn-success" style="width: 6rem;">{{course.status}}</a>
                     {% endif %}</td>
+                   {% endif %}
                     <td><a href="{% url 'profile' request.user.id %}">{{course.course_model.user.username}}</a></td>
                     <td>{{course.date_added}}</td>
                     <td><a href="{% url 'course_details' course.reg_id %}"><i class="fa fa-edit"></i></a></td>

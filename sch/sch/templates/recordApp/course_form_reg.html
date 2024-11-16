@@ -10,11 +10,6 @@
         <h2 class="text-center">
            Course Form Registration
       </h2>
-      {% if messages %}
-      {% for message in messages  %}
-        {{message}}
-      {% endfor %}
-      {% endif %}
        <div class="d-flex row justify-content-center gap-2 px-3">
        
        {% if all_courses %}
@@ -36,12 +31,10 @@
                 {% for course in all_courses %}
                 <tr class="">
                     
-                   
                    <td scope="row">{{course.course}}</td>
                    <td scope="row">{{course.course_code}}</td>
                    <td scope="row">{{course.unit}}</td>
                    <td><a href="{% url 'add_course' course.reg_id %}" class="btn btn-primary">Add Course</a></td>
-                  
                     
                 </tr>
         

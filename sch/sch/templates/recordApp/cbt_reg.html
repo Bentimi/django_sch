@@ -11,11 +11,6 @@
         <h2 class="text-center">
           CBT SETUP
         </h2>
-        {% if messages %}
-        {% for message in messages  %}
-        {{message}}
-      {% endfor %}
-      {% endif %}
        <div class="d-flex row justify-content-center gap-2 px-3">
        
        <div
@@ -36,7 +31,7 @@
                 <tr class="">
                     <td scope="row">{{profile.course}}</td>
                     <td scope="row">{{profile.course_code}}</td>
-                    <td><a class="btn btn-info" href="{% url 'view_questions' profile.reg_id %}">Questions</a></td>
+                    <td><a class="btn btn-info" href="{% url 'view_questions' profile.reg_id %}">Questions</a> <a class="btn btn-primary" href="{% url 'results' profile.reg_id %}">Results</a></td>
                 </tr>
         
                  {% endfor %}

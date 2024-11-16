@@ -13,20 +13,28 @@
         class="table-responsive"
       >
         <table
-            class="table table-dark"
+            class="table table-striped table-hover table-borderless table-light align-middle"
         >
-            <thead>
+            <thead class="table-dark">
                 <tr>
                     <th scope="col">S/N</th>
-                    <th scope="col">Names</th>
-                    <th scope="col">dd</th>
+                    <th>Names</th>
+                    <th>Matric Number</th>
+                    <th>Course</th>
+                    <!-- <th>Executed Time</th> -->
+                    <th>Submitted Time</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="">
                     <td scope="row">{{result.grade_id}}</td>
-                    <td>R1C2</td>
-                    <td>R1C3</td>
+                    <td>{{result.user.last_name}} {{result.user.first_name}} {{result.user.profile.other_name}}</td>
+                    <td>{{result.user.student_table.matric_number}}</td>
+                    <td>{{result.cbt.course_code}}</td>
+                    <!-- <td>{{result.executed_time}}</td> -->
+                    <td>{{result.finished_time}}</td>
+                    <td><a href="{% url 'check_result' result.user.id %}" class="btn btn-primary">View</a></td>
                 </tr>
             </tbody>
         </table>

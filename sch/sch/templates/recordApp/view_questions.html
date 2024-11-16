@@ -15,12 +15,9 @@
     class="table-responsive"
     >
     <table
-    class="table table-striped table-hover table-borderless table-primary align-middle"
+    class="table table-striped table-hover table-borderless table-light align-middle"
     >
-    <thead class="table-light">
-        <caption>
-            Table Name
-        </caption>
+    <thead class="table-dark">
         <tr>
             <th>S/N</th>
             <th>Question</th>
@@ -31,7 +28,7 @@
     <tbody class="table-group-divider">
                 {% for info in all_questions %}
                     <tr
-                    class="table-primary"
+                    class="table-light"
                 >
                     <td scope="row">{{info.id}}</td>
                     <td>

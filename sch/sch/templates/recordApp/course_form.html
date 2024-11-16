@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-center"><a class="navbar-brand text-secondary text-opacity-50 fs-1" id="logo-container"><em id="logo">GRAD</em> SCHOOL</a></div> 
 
         {% if registered_courses %}
-        <h2 class="text-center">
+        <h2 class="text-center" style="color: #aaa;">
            Course Form
       </h2>
       {% if user_info %}
@@ -22,8 +22,8 @@
             <div><strong>Name:</strong> {{user.last_name}} {{user.first_name}} {% if user.profile.other_name %} {{user.profile.other_name}} {% endif %}</div>
     
             <div><strong>Level:</strong> None</div>
-            <div><strong>Department:</strong> None</div>
-            <div><strong>Matric Number:</strong> None</div>
+            <div><strong>Department:</strong> {{user.student_table.department}}</div>
+            <div><strong>Matric Number:</strong> {{user.student_table.matric_number}}</div>
           </div>
           
         <div>
@@ -57,7 +57,7 @@
                 <tr class="">
                     <td scope="row">{{reg_course.course.course}}</td>
                     <td scope="row">{{reg_course.course.course_code}}</td>
-                    <td scope="row">{{reg_course.course.unit}} </td>
+                    <td scope="row">{{reg_course.units}} </td>
                 </tr>
                 
                 {% endfor %}

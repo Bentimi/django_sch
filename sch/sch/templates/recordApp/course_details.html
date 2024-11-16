@@ -43,6 +43,7 @@
            >
            Deactivate
           </button>
+          {% if request.user.is_superuser %}
           {% elif detail.status == 'Inactive' %}
           <button
             type="button"
@@ -52,6 +53,7 @@
            >
            Activate
           </button>
+          {% endif %}
           {% endif %}
         </div>
         
