@@ -339,6 +339,13 @@ def cbtTest(request, test_id):
                         point_ = (2*course_uint)
                         point = point_
             grading.objects.filter(active=True, cbt_id=cbt_id, user_id=request.user.id).update(score=score, active=False,finished_time=finished_time, submitted=True, unit=unit, total_score=total_score, grade=grade, point=point)
+            result_info = grading.objects.filter(submitted=True, cbt_id=cbt_id, user_id=request.user.id)
+            if result_info:
+                for result in result_info:
+                    grading_id = result.grade_id
+                course_form.objects.filter(cbt_id=cbt_id, user_id=request.user.id).update(score_id=grading_id)
+
+
             return redirect('available_test', request.user.id)
     return render(request, 'recordApp/cbt_test.html', {
         'question_data':question_data,
@@ -603,3 +610,12 @@ def editResult(request, user_id):
             'result_form':result_form,
             'result_data':result,
         })
+
+@login_required
+def allResult(request):
+    result = grading.objects.filter(submitted=True)
+    result_agg = grading.objects.filter(submitted=True).count()
+    return render(request, 'recordApp/general_result.html', {
+        'result_data':result,
+        'result_agg':result_agg
+    })

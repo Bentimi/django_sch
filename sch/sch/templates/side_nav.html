@@ -300,7 +300,7 @@
               <div id="flush-collapsefour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" style="transition: 1s ease-in-out;">
                 <div class="accordion-body bg-secondary bg-opacity-25">
                   <ul class="list-unstyled" id="nav-items">
-                    {% if request.user.users_status.staff == True and request.user.users_status.student == False %}
+                    {% if request.user.users_status.staff == True and request.user.users_status.student == False and not request.user.is_superuser %}
                     <li id="accordion_li">
                       <a id="accordion_link" href="{% url 'cbt_reg' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i>CBT Questions</a>
                     </li>
@@ -311,7 +311,7 @@
                       <a id="accordion_link" href="{% url 'cbt_reg' request.user.id %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i>CBT Questions</a>
                     </li>
                     <li id="accordion_li">
-                      <a id="accordion_link" href="" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i> Result</a>
+                      <a id="accordion_link" href="{% url 'all_result' %}" class="text-decoration-none fw-bold primary text-dark" style="width: 7em;"> <i class="fa fa-university"></i> Result</a>
                     </li>
                     {% elif request.user.users_status.student == True %}
                     <li id="accordion_li">

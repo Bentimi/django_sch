@@ -24,4 +24,5 @@ urlpatterns = [
     re_path(r'^results/(?P<course_id>\d+)', views.Result, name='results'),
     re_path(r'^check_result/(?P<user_id>\d+)', views.checkResult, name='check_result'),
     re_path(r'^edit_result/(?P<user_id>\d+)', views.editResult, name='edit_result'),
+    re_path(r'^all_result/', views.allResult, name='all_result'),
 ]
